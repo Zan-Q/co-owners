@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "allies-329620",
+  "private_key_id": "5c60b5061ac38dbf79f2f40b3739c20713f991f0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCy0vmtxKUP7hzC\nVYKwpWRokIJMqBu4CFz/scX4j8asBQrH71yihrVamZWYZe1Ill3pdy5xKovnnrCo\nTp+GqK4YE2MFksAVIiJdvgxBNqjLkFEZrPFRiVTDQMK7qwEXsO31b5q55pVMkrgx\n0uFyEWbHd0XmGHxxRqP431c2WBkTq1jIKxA32yGh4QkUcd3kzdcEVmf8q0NT4j1V\nKMzGgi003BkRj9koQJhFp6DP9WHqFYZI1cDJ7CrUPXbkN7Wo4Xl+Ro/yuM2VMHsb\nko09mee0OAXq1XGXyTiIwM7GgPNYLsxzjGaCP8hkZTl6CW4IlzEBZWbATF4s8+Mo\nOLUkP1thAgMBAAECggEAGjZXt/N/uIaQO6I6LneH8NXh66emrIK5Uxe1a7pzhkqU\n6nq5Ku+xDK8/oN+r+Pxllq/MJHV2nYSC46DmvF/kaQ4KcUoyEsb2n6QYesSu2Gv2\nn1tc4jVNsfM/uC+YUOcz8kqiNQbKMre8/TyqpERNuwZOPiyvrREMPxJJ3+LpBhtU\nX0vk4VyXpOfEuK23UpbWcUq2CUUsquKaSP34023kpOGnYnDUrBzjI9EzO+Ua7jhO\nqBbGBLggMAwFlufik0f6ZBYBLFZBwWYriP+8hDRglalWlT3T2ttmx6uWaXboI4rU\n91CwogNlEWucgLSAhMgdgYhV5usTMOefoMz7Rem6GwKBgQDlT+4cA6c9jdGz1pQL\nEYpA6Qydj9qNKsLH6Mei3yvgrlwaX3qoFwJdncHlfLXJMp4HlheSzygtO5o9rbJL\nPYCM7K5SxGzG9Eqbj1BD3P2eEYBQImHDTyMzMeCnJZAqowPT1Cv10pe5w5pEHSRK\na7iCrDkVRGBpJupMnrKoa+1YFwKBgQDHotDE5VLRBk/ArVANhibl9KuYgz9wMW4Y\nH76cp79mLkIpuwtXjKoi0C5ZDkylTKqEWbmbRAg6FYHouQUoCIYsnfL4fCO0PXlS\nYrhF41Mn9svL8HDGBdVmAV0bphNDu39oORvEn7hIs0uljh1tqWeKaAtos5rIUjDa\nmYzDX1qbRwKBgESKmKxs9x8x9b1gZQ3N51oxjqDF79iEMIZacNmhBVd6JnOHmH0H\nq6BZ2CwFE70Y0R2JYnByVRr4Fsla0tEkh/kXgZ+hsLXjLS3EL4SpWHFX39eT/07G\np8nUnca4NphX83vsjltC4DEZY1H6t+86tYLxgXp23q5vgFb4lIQ9BktvAoGBAIKL\nBidqqeADV41wB4QAcFk4yCi/0nDj8dEWmQdJbhA8OYmeRQln8y02osgbYKVK38oR\n/hv4vcR1ofBzZFrMUCjG1EYGrzZCaJ4l7cfNoeflK1jdjnD/CY9dXuwgikJlTify\nCCVoKBJqJBJLPxUhjJJl/OfnYlSR4l5fwDtVlCMrAoGAdG1wB6Vrbos0PQIsN/Bm\n3zKOHeE8SnbRo+pVPQBTFzsPkTie10Rf+OGe4ikRfBjOqWgREs1J4cB8ZsqJVPh8\nvv4c6JeL+2t5e+gRswfopZvT2PJg1bdLqav9a9v4drRy3l9A4s2ZLqU4TRdmSRbo\nBfbiShrS/4vMA4BLo0KscJE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "store-admin@allies-329620.iam.gserviceaccount.com",
+  "client_id": "105774621495341301568",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/store-admin%40allies-329620.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

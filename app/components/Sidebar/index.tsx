@@ -1,0 +1,357 @@
+import React, { useState } from "react";
+import SidebarItem from "#app/components/Sidebar/SidebarItem";
+import ClickOutside from "#app/components/ClickOutside.tsx";
+
+//IsMobile
+import { isMobile } from "react-device-detect";
+
+interface SidebarProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: (arg: boolean) => void;
+  userRole: string;
+}
+
+const adminMenuGroups = [
+  {
+    name: "ADMIN",
+    menuItems: [
+      {
+        icon: (
+          <svg 
+            fill="none" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M323.5-192h-9a1.5,1.5,0,0,0-1.5,1.5V-176h12v-14.5A1.5,1.5,0,0,0,323.5-192ZM318-177v-3h2v3Zm6,0h-3v-3.5a.5.5,0,0,0-.5-.5h-3a.5.5,0,0,0-.5.5v3.5h-3v-13.5a.5.5,0,0,1,.5-.5h9a.5.5,0,0,1,.5.5Zm-8-12h2v2h-2Zm4,0h2v2h-2Zm-4,4h2v2h-2Zm4,0h2v2h-2Z" 
+              transform="translate(-313 192)"
+              fill= "white"
+            />
+          </svg>
+        ),
+        label: "Create Company",
+        route: '/admin/createcompany',
+      },
+      {
+        icon: (
+          <svg 
+            fill="none" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg"
+          >            
+            <path d="M17 13H21V19C21 20.1046 20.1046 21 19 21M17 13V19C17 20.1046 17.8954 21 19 21M17 13V5.75707C17 4.85168 17 4.39898 16.8098 4.13646C16.6439 3.90746 16.3888 3.75941 16.1076 3.72897C15.7853 3.69408 15.3923 3.91868 14.6062 4.36788L14.2938 4.54637C14.0045 4.7117 13.8598 4.79438 13.7062 4.82675C13.5702 4.85539 13.4298 4.85539 13.2938 4.82675C13.1402 4.79438 12.9955 4.7117 12.7062 4.54637L10.7938 3.45359C10.5045 3.28826 10.3598 3.20559 10.2062 3.17322C10.0702 3.14457 9.92978 3.14457 9.79383 3.17322C9.64019 3.20559 9.49552 3.28826 9.20618 3.4536L7.29382 4.54637C7.00448 4.71171 6.85981 4.79438 6.70617 4.82675C6.57022 4.85539 6.42978 4.85539 6.29383 4.82675C6.14019 4.79438 5.99552 4.71171 5.70618 4.54637L5.39382 4.36788C4.60772 3.91868 4.21467 3.69408 3.89237 3.72897C3.61123 3.75941 3.35611 3.90746 3.1902 4.13646C3 4.39898 3 4.85168 3 5.75707V16.2C3 17.8801 3 18.7202 3.32698 19.362C3.6146 19.9264 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H19M12 10.5C11.5 10.376 10.6851 10.3714 10 10.376C9.77091 10.3775 9.90941 10.3678 9.6 10.376C8.79258 10.4012 8.00165 10.7368 8 11.6875C7.99825 12.7003 9 13 10 13C11 13 12 13.2312 12 14.3125C12 15.1251 11.1925 15.4812 10.1861 15.5991C9.3861 15.5991 9 15.625 8 15.5M10 16V17M10 8.99998V9.99998" 
+              stroke="#000000" 
+              stroke-width="2" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              fill="white"
+            />
+          </svg>
+        ),
+        label: "Confirm Receipts",
+        route: '/upload/receipt',
+      }
+    ]
+  },
+];
+
+const menuGroups = [
+  {
+    name: "DASHBOARD",
+    menuItems: [
+      {
+        icon: (
+          <svg
+            className="text-white fill-current"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.00009 17.2498C8.58588 17.2498 8.25009 17.5856 8.25009 17.9998C8.25009 18.414 8.58588 18.7498 9.00009 18.7498H15.0001C15.4143 18.7498 15.7501 18.414 15.7501 17.9998C15.7501 17.5856 15.4143 17.2498 15.0001 17.2498H9.00009Z"
+              fill="white"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12 1.25C11.2749 1.25 10.6134 1.44911 9.88928 1.7871C9.18832 2.11428 8.37772 2.59716 7.36183 3.20233L5.90622 4.06943C4.78711 4.73606 3.89535 5.26727 3.22015 5.77524C2.52314 6.29963 1.99999 6.8396 1.65907 7.55072C1.31799 8.26219 1.22554 9.0068 1.25519 9.87584C1.2839 10.717 1.43105 11.7397 1.61556 13.0219L1.90792 15.0537C2.14531 16.7036 2.33368 18.0128 2.61512 19.0322C2.90523 20.0829 3.31686 20.9169 4.05965 21.5565C4.80184 22.1956 5.68984 22.4814 6.77634 22.6177C7.83154 22.75 9.16281 22.75 10.8423 22.75H13.1577C14.8372 22.75 16.1685 22.75 17.2237 22.6177C18.3102 22.4814 19.1982 22.1956 19.9404 21.5565C20.6831 20.9169 21.0948 20.0829 21.3849 19.0322C21.6663 18.0129 21.8547 16.7036 22.0921 15.0537L22.3844 13.0219C22.569 11.7396 22.7161 10.717 22.7448 9.87584C22.7745 9.0068 22.682 8.26219 22.3409 7.55072C22 6.8396 21.4769 6.29963 20.7799 5.77524C20.1047 5.26727 19.2129 4.73606 18.0938 4.06943L16.6382 3.20233C15.6223 2.59716 14.8117 2.11428 14.1107 1.7871C13.3866 1.44911 12.7251 1.25 12 1.25ZM8.09558 4.51121C9.15309 3.88126 9.89923 3.43781 10.5237 3.14633C11.1328 2.86203 11.5708 2.75 12 2.75C12.4293 2.75 12.8672 2.86203 13.4763 3.14633C14.1008 3.43781 14.8469 3.88126 15.9044 4.51121L17.2893 5.33615C18.4536 6.02973 19.2752 6.52034 19.8781 6.9739C20.4665 7.41662 20.7888 7.78294 20.9883 8.19917C21.1877 8.61505 21.2706 9.09337 21.2457 9.82469C21.2201 10.5745 21.0856 11.5163 20.8936 12.8511L20.6148 14.7884C20.3683 16.5016 20.1921 17.7162 19.939 18.633C19.6916 19.5289 19.3939 20.0476 18.9616 20.4198C18.5287 20.7926 17.9676 21.0127 17.037 21.1294C16.086 21.2486 14.8488 21.25 13.1061 21.25H10.8939C9.15124 21.25 7.91405 21.2486 6.963 21.1294C6.03246 21.0127 5.47129 20.7926 5.03841 20.4198C4.60614 20.0476 4.30838 19.5289 4.06102 18.633C3.80791 17.7162 3.6317 16.5016 3.3852 14.7884L3.10643 12.851C2.91437 11.5163 2.77991 10.5745 2.75432 9.82469C2.72937 9.09337 2.81229 8.61505 3.01167 8.19917C3.21121 7.78294 3.53347 7.41662 4.12194 6.9739C4.72482 6.52034 5.54643 6.02973 6.71074 5.33615L8.09558 4.51121Z"
+              fill="white"
+            />
+          </svg>
+        ),
+        label: "Overview",
+        route: "/dashboard",
+      },
+      {
+        icon: (
+          <svg 
+            class="w-6 h-6 text-white dark:text-white" 
+            aria-hidden="true" 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            fill="none" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              stroke="currentColor" 
+              stroke-linecap="round" 
+              stroke-width="2" 
+              d="M3 21h18M4 18h16M6 10v8m4-8v8m4-8v8m4-8v8M4 9.5v-.955a1 1 0 0 1 .458-.84l7-4.52a1 1 0 0 1 1.084 0l7 4.52a1 1 0 0 1 .458.84V9.5a.5.5 0 0 1-.5.5h-15a.5.5 0 0 1-.5-.5Z"
+            />
+          </svg>
+        ),
+        label: "Browse Stocks",
+        route: "/",
+      },
+      {
+        icon: (
+          <svg 
+            xmlns="http://www.w3.org/2000/svg"
+            width="24" 
+            height="24" 
+            fill="white"  
+            viewBox="0 0 122.88 66.49"
+          >
+            <path
+              stroke="white" 
+              stroke-linecap="round" 
+              stroke-width="2"  
+              d="M2.27,18.3H34.05a2.27,2.27,0,0,1,2.27,2.27V64.22a2.27,2.27,0,0,1-2.27,2.27H2.27A2.27,2.27,0,0,1,0,64.22V20.57A2.27,2.27,0,0,1,2.27,18.3ZM68.4,9.44V31H61V17.39l-4.52,1.8-2-5.3,7.66-4.45ZM26,49.45H11V43.81l2.84-2.75c.62-.57,1.21-1.13,1.77-1.7L17,38a7.69,7.69,0,0,0,1-1.24,3.52,3.52,0,0,0,.54-1,2.82,2.82,0,0,0,.09-.71,1.08,1.08,0,0,0-.5-1.08,4.54,4.54,0,0,0-1.73-.23,24,24,0,0,0-4.32.36l-.69.13L11,28.58a21.3,21.3,0,0,1,7.12-1.21A9.13,9.13,0,0,1,24,29.06a5.64,5.64,0,0,1,2.12,4.68,9.36,9.36,0,0,1-1,4.7A11.9,11.9,0,0,1,21.45,42l-2.19,1.54H26v5.9ZM103.1,37.19q4.82,0,7,1.37t2.18,4.85a6.81,6.81,0,0,1-.44,2.75,4.59,4.59,0,0,1-1.56,1.74A6.49,6.49,0,0,1,112,49.78a5.44,5.44,0,0,1,.52,2.64q0,4.09-2.13,5.65t-6.58,1.55A28.12,28.12,0,0,1,98,59l-1.08-.23L97.07,53q3.77.33,5.37.33a8,8,0,0,0,2.13-.18.76.76,0,0,0,.53-.79.91.91,0,0,0-.37-.83,2.48,2.48,0,0,0-1.37-.33H98.74v-5.8h4.32c1.18,0,1.77-.33,1.77-1s-.75-1-2.26-1c-1,0-2.53.08-4.52.23l-.85.07L97,38.14a26.29,26.29,0,0,1,6.06-1ZM45.55,0H77.33A2.27,2.27,0,0,1,79.6,2.27v62a2.27,2.27,0,0,1-2.27,2.27H45.55a2.27,2.27,0,0,1-2.27-2.27V2.27A2.27,2.27,0,0,1,45.55,0ZM88.83,30.35h31.78a2.28,2.28,0,0,1,2.27,2.27v31.6a2.27,2.27,0,0,1-2.27,2.27H88.83a2.27,2.27,0,0,1-2.27-2.27V32.62a2.27,2.27,0,0,1,2.27-2.27Z"
+            />
+          </svg>
+        ),
+        label: "Leaderboard",
+        route: "/leaderboard",
+      },
+    ],
+  },
+  {
+    name: "HISTORY",
+    menuItems: [
+      {
+        icon: (
+          <svg
+            className="text-white fill-current"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M14.2544 1.36453C13.1584 1.05859 12.132 1.38932 11.4026 2.05955C10.6845 2.71939 10.25 3.70552 10.25 4.76063V11.4551C10.25 12.7226 11.2775 13.75 12.5449 13.75H19.2394C20.2945 13.75 21.2806 13.3156 21.9405 12.5974C22.6107 11.868 22.9414 10.8416 22.6355 9.74563C21.5034 5.69003 18.31 2.49663 14.2544 1.36453ZM11.75 4.76063C11.75 4.10931 12.0201 3.52918 12.4175 3.16407C12.8035 2.80935 13.3035 2.65643 13.8511 2.8093C17.4013 3.80031 20.1997 6.59875 21.1907 10.1489C21.3436 10.6965 21.1907 11.1965 20.8359 11.5825C20.4708 11.9799 19.8907 12.25 19.2394 12.25H12.5449C12.1059 12.25 11.75 11.8941 11.75 11.4551V4.76063Z"
+              fill="white"
+            />
+            <path
+              d="M8.67232 4.71555C9.0675 4.59143 9.28724 4.17045 9.16312 3.77527C9.039 3.38009 8.61803 3.16036 8.22285 3.28447C4.18231 4.55353 1.25 8.32793 1.25 12.7892C1.25 18.2904 5.70962 22.75 11.2108 22.75C15.6721 22.75 19.4465 19.8177 20.7155 15.7772C20.8397 15.382 20.6199 14.961 20.2247 14.8369C19.8296 14.7128 19.4086 14.9325 19.2845 15.3277C18.2061 18.761 14.9982 21.25 11.2108 21.25C6.53805 21.25 2.75 17.462 2.75 12.7892C2.75 9.00185 5.23899 5.79389 8.67232 4.71555Z"
+              fill="white"
+            />
+          </svg>
+        ),
+        label: "Transactions",
+        route: "/history",
+      },
+    ],
+  },
+  {
+    name: "ACCOUNTS",
+    menuItems: [
+      {
+        icon: (
+          <svg
+            className="text-white fill-current"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M11.9999 1.25C9.37654 1.25 7.24989 3.37665 7.24989 6C7.24989 8.62335 9.37654 10.75 11.9999 10.75C14.6232 10.75 16.7499 8.62335 16.7499 6C16.7499 3.37665 14.6232 1.25 11.9999 1.25ZM8.74989 6C8.74989 4.20507 10.205 2.75 11.9999 2.75C13.7948 2.75 15.2499 4.20507 15.2499 6C15.2499 7.79493 13.7948 9.25 11.9999 9.25C10.205 9.25 8.74989 7.79493 8.74989 6Z"
+              fill="white"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M11.9999 12.25C9.68634 12.25 7.55481 12.7759 5.97534 13.6643C4.41937 14.5396 3.24989 15.8661 3.24989 17.5L3.24982 17.602C3.24869 18.7638 3.24728 20.222 4.5263 21.2635C5.15577 21.7761 6.03637 22.1406 7.2261 22.3815C8.41915 22.6229 9.97412 22.75 11.9999 22.75C14.0257 22.75 15.5806 22.6229 16.7737 22.3815C17.9634 22.1406 18.844 21.7761 19.4735 21.2635C20.7525 20.222 20.7511 18.7638 20.75 17.602L20.7499 17.5C20.7499 15.8661 19.5804 14.5396 18.0244 13.6643C16.445 12.7759 14.3134 12.25 11.9999 12.25ZM4.74989 17.5C4.74989 16.6487 5.37127 15.7251 6.71073 14.9717C8.02669 14.2315 9.89516 13.75 11.9999 13.75C14.1046 13.75 15.9731 14.2315 17.289 14.9717C18.6285 15.7251 19.2499 16.6487 19.2499 17.5C19.2499 18.8078 19.2096 19.544 18.5263 20.1004C18.1558 20.4022 17.5364 20.6967 16.4761 20.9113C15.4192 21.1252 13.9741 21.25 11.9999 21.25C10.0257 21.25 8.58063 21.1252 7.52368 20.9113C6.46341 20.6967 5.84401 20.4022 5.47348 20.1004C4.79021 19.544 4.74989 18.8078 4.74989 17.5Z"
+              fill="white"
+            />
+          </svg>
+        ),
+        label: "Profile",
+        route: "/user",
+      },
+    ],
+  },
+];  
+
+const Sidebar = ({ sidebarOpen, setSidebarOpen, userRole }: SidebarProps) => {
+
+  const [pageName, setPageName] = useState("Overview");
+  
+  if (isMobile) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const adminItem = [
+      { name: 'Create Company', path: '/admin/createcompany' },
+      { name: 'Process Receipts', path: '/upload/receipt' },
+    ];
+
+    const menuItems = [
+      { name: 'Overview', path: '/dashboard' },
+      { name: 'Browse Stocks', path: '/' },
+      { name: 'Leaderboard', path: '/leaderboard' },
+      { name: 'Transactions', path: '/history' },
+      { name: 'Profile', path: '/user' }
+    ];
+
+    const toggleMenu = () => {
+      setIsOpen(!isOpen);
+    };
+
+    return (
+      <nav className="relative bg-black text-white w-full">
+        {/* Hamburger Button */}
+        <button 
+          onClick={toggleMenu}
+          className="md:hidden z-50 relative p-4"
+          aria-label="Toggle Menu"
+        >
+          {isOpen ? '✕' : '☰'}
+        </button>
+        
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="absolute top-full left-0 w-full bg-black shadow-lg md:hidden">
+            <ul className="flex flex-col items-center space-y-4 p-4">
+              {userRole === "admin" && adminItem.map((item) => (
+                <li key={item.path} className="w-full text-center">
+                  <a 
+                    href={item.path}
+                    className="block py-2 px-4 hover:bg-gray-700"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+              {menuItems.map((item) => (
+                <li key={item.path} className="w-full text-center">
+                  <a 
+                    href={item.path}
+                    className="block py-2 px-4 hover:bg-gray-700"
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+  
+        {/* Desktop Menu */}
+        <div className="hidden md:flex space-x-4 p-4">
+          {menuItems.map((item) => (
+            <a
+              key={item.path}
+              href={item.path}
+              className="text-gray-300 hover:text-blue-500"
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+      </nav>
+    );
+  }
+
+  else {
+    return (
+      <ClickOutside onClick={() => setSidebarOpen(false)}>
+        <aside
+          className={`fixed left-0 top-0 z-50 flex min-h-full pr-5 flex-col border-r border-stroke bg-black dark:border-stroke-dark dark:bg-gray-dark overflow-y-auto ${
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:static lg:translate-x-0`}
+        >
+          {/* <!-- SIDEBAR HEADER --> */}
+          <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 xl:py-10">
+
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="block lg:hidden"
+            >
+              <svg
+                className="text-white fill-current"
+                width="20"
+                height="18"
+                viewBox="0 0 20 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 8.175H2.98748L9.36248 1.6875C9.69998 1.35 9.69998 0.825 9.36248 0.4875C9.02498 0.15 8.49998 0.15 8.16248 0.4875L0.399976 8.3625C0.0624756 8.7 0.0624756 9.225 0.399976 9.5625L8.16248 17.4375C8.31248 17.5875 8.53748 17.7 8.76248 17.7C8.98748 17.7 9.17498 17.625 9.36248 17.475C9.69998 17.1375 9.69998 16.6125 9.36248 16.275L3.02498 9.8625H19C19.45 9.8625 19.825 9.4875 19.825 9.0375C19.825 8.55 19.45 8.175 19 8.175Z"
+                  fill="white"
+                />
+              </svg>
+            </button>
+          </div>
+          {/* <!-- SIDEBAR HEADER --> */}
+
+          <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+            {/* <!-- Sidebar Menu --> */}
+            <nav className="mt-1 px-4 lg:px-6 text-gray-500">
+              {userRole === "admin" &&
+                adminMenuGroups.map((group, groupIndex) => (
+                  <div key={groupIndex}>
+                    <h3 className="mb-5 text-sm font-medium text-dark-4 dark:text-dark-6">
+                      {group.name}
+                    </h3>
+
+                    <ul className="mb-6 flex flex-col gap-2 text-gray-400">
+                      {group.menuItems.map((menuItem, menuIndex) => (
+                        <SidebarItem
+                          key={menuIndex}
+                          item={menuItem}
+                          pageName={pageName}
+                          setPageName={setPageName}
+                        />
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              {menuGroups.map((group, groupIndex) => (
+                <div key={groupIndex}>
+                  <h3 className="mb-5 text-sm font-medium text-dark-4 dark:text-dark-6">
+                    {group.name}
+                  </h3>
+
+                  <ul className="mb-6 flex flex-col gap-2 text-gray-400">
+                    {group.menuItems.map((menuItem, menuIndex) => (
+                      <SidebarItem
+                        key={menuIndex}
+                        item={menuItem}
+                        pageName={pageName}
+                        setPageName={setPageName}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+            {/* <!-- Sidebar Menu --> */}
+          </div>
+        </aside>
+      </ClickOutside>
+    );
+  }
+};
+
+export default Sidebar;

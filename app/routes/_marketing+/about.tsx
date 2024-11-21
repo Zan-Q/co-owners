@@ -1,0 +1,24 @@
+import React from 'react';
+
+const AboutSection = () => (
+  <div className="container mx-auto p-4">
+    <h1 className="text-3xl font-bold mb-4">About Community Owners</h1>
+    <p className="mb-4">
+      Welcome to Community Owners, an innovative real-life Monopoly-inspired game that transforms how we interact with and invest in our local communities. By bringing the basic mechanics of business share structures and the development of economic value into the real world, we create meaningful opportunities for community members to participate in local economic growth and neighborhood enhancement.
+    </p>
+    <p className="mb-4">
+      At Community Owners, we believe that thriving communities are built through active participation and strategic investment. Our platform enables players to purchase shares in local businesses – all while earning real returns on their investments.
+    </p>
+    <p className="mb-4">
+      Our game mechanics go beyond traditional investment by incorporating community-focused challenges, collaborative development opportunities, and special events that encourage players to think both strategically and socially. Whether you're interested in business investment, community development, or simply want to make a positive impact in your neighborhood, Community Owners provides an engaging way to participate in local growth.
+    </p>
+    <p className="mb-4">
+      Join us in this exciting venture where gaming meets community development, and every move you make contributes to building stronger, more vibrant neighborhoods. Together, we're not just playing a game – we're creating lasting positive change in our communities.
+    </p>
+    <p className="text-sm text-gray-600">
+      For any questions or inquiries, please contact us at <a href="mailto:ptang@co-owners.ca" className="text-blue-500 hover:underline">ptang@co-owners.ca</a>.
+    </p>
+  </div>
+);
+
+export default AboutSection;
