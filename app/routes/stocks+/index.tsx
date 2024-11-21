@@ -24,20 +24,6 @@ interface Business {
 
 export const defaultCoordinates = { lat: 52.1505506, lng: -106.7468104 };
 
-// Loader function to fetch static data
-/*export const loader: LoaderFunction = async () => {
-  const businesses = await generalAPI.getLocalCompanies(defaultCoordinates.lat, defaultCoordinates.lng);
-
-  // Transform _id to id
-  const transformedBusinesses = businesses.map((business: any) => ({
-    id: business._id,
-    name: business.name,
-    coordinates: business.coordinates,
-  }));
-
-  return json(transformedBusinesses);
-};*/
-
 export default function Stocks() {
   //const initialBusinesses = useLoaderData<Business[]>();
   const [businesses, setBusinesses] = useState<Business[] | null>(null);

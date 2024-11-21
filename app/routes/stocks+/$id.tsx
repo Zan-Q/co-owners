@@ -1,6 +1,7 @@
 import { LoaderFunction, json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { Meta, useLoaderData } from '@remix-run/react';
 import { useCallback, useEffect, useState } from 'react';
+import { MetaFunction } from '@remix-run/node';
 import { sessionKey } from '#app/utils/auth.server.ts'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
@@ -133,6 +134,30 @@ export const loader: LoaderFunction = async ({ params, request }) => {
     return json({business});
   }
 };
+
+// Meta function to add social media headers
+export const meta: MetaFunction = ({ data }: { data: any }) => {
+  if (!data || !data.business) {
+    return [];
+  }
+
+  const { business } = data;
+  
+  return [
+    { title: `Co-Owners: ${business.name}` },
+    { property: "og:title", content: `Co-Owners: ${business.name}` },
+    { property: "og:description", content: `${business.name} co-owners page` },
+    { property: "og:image", content: business.logo },
+    { property: "og:url", content: `https://co-owners.ca/stocks/${business.id}` },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: `Co-Owners: ${business.name}` },
+    { name: "twitter:description", content: `${business.name} co-owners page` },
+    { name: "twitter:image", content: business.logo },
+    { name: "twitter:url", content: `https://co-owners.ca/stocks/${business.id}` },
+  ];
+};
+
 
 export default function BusinessDetails() {
 
@@ -412,7 +437,7 @@ export default function BusinessDetails() {
   if (isMobile) {
     return (
       <div>
-        {googleMapsPanel(business)}
+        {googleMapsPanel()}
         <div className="bg-gray-200">
           <div className="flex flex-col w-3/4 mx-auto p-4">
             <div className="flex items-start flex-col justify-between items-center mb-4">
@@ -449,7 +474,7 @@ export default function BusinessDetails() {
     return (
       <div>
         <ToastContainer position='top-center' />
-        {googleMapsPanel(business)}
+        {googleMapsPanel()}
 
         <div className="bg-gray-200">
           <div className="flex flex-col w-3/4 mx-auto p-4">

@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from 'react';
-import { LoaderFunction, json } from '@remix-run/node';
+import { LoaderFunction, MetaFunction, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { authSessionStorage } from '#app/utils/session.server.ts';
 import { sessionKey } from '#app/utils/auth.server.ts';
@@ -77,6 +77,24 @@ export const loader: LoaderFunction = async ({ request }) => {
         return json({ leaderboard: leaderboard.data, session: null, role: null });
     }
 }
+
+// Meta function to add social media headers
+export const meta: MetaFunction = () => {
+	
+	return [
+	  { title: `Co-Owners Leaderboard` },
+	  { property: "og:title", content: `Co-Owners Leaderboard` },
+	  { property: "og:description", content: `The CommUnity Owners Monopoly Leaderboard` },
+	  { property: "og:image", content: `https://co-owners.ca/logo.png` },
+	  { property: "og:url", content: `https://co-owners.ca/leaderboard` },
+	  { property: "og:type", content: "website" },
+	  { name: "twitter:card", content: "summary_large_image" },
+	  { name: "twitter:title", content: `Co-Owners Leaderboard` },
+	  { name: "twitter:description", content: `The CommUnity Owners Monopoly Leaderboard` },
+	  { name: "twitter:image", content: `https://co-owners.ca/logo.png` },
+	  { name: "twitter:url", content: `https://co-owners.ca/leaderboard` },
+	];
+};
 
 const Leaderboard = () => {
     const { leaderboard, session, role, username } = useLoaderData<{ leaderboard: LeaderboardData, session: string, role: string, username: string }>();

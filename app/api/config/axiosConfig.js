@@ -2,8 +2,8 @@ import axios from "axios"
 
 export const api = axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:8000/v1/",
-  //baseURL: "https://ctradesprod.co-owners.ca:9000/v1/",
+  //baseURL: "http://localhost:8000/v1/",
+  baseURL: "https://prod.co-owners.ca:8000/v1/",
 })
 
 

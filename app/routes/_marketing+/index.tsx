@@ -19,8 +19,6 @@ import { redirect } from '@remix-run/node';
 import { generalAPI } from "../../api/generalAPI.js"; // Adjust the path as necessary
 import { userAPI } from '../../api/userAPI';
 
-export const meta: MetaFunction = () => [{ title: 'Co Owners' }]
-
 // Tailwind Grid cell classes lookup
 const columnClasses: Record<(typeof logos)[number]['column'], string> = {
 	1: 'xl:col-start-1',
@@ -144,6 +142,25 @@ export const loader: LoaderFunction = async ({request}) => {
 			downtrendingBusinesses
 		});
 	}
+};
+
+
+// Meta function to add social media headers
+export const meta: MetaFunction = () => {
+	
+	return [
+	  { title: `Co Owners` },
+	  { property: "og:title", content: `Co-Owners` },
+	  { property: "og:description", content: `The CommUnity Owners Monopoly Game` },
+	  { property: "og:image", content: `https://co-owners.ca/logo.png` },
+	  { property: "og:url", content: `https://co-owners.ca/` },
+	  { property: "og:type", content: "website" },
+	  { name: "twitter:card", content: "summary_large_image" },
+	  { name: "twitter:title", content: `Co-Owners` },
+	  { name: "twitter:description", content: `The CommUnity Owners Monopoly Game` },
+	  { name: "twitter:image", content: `https://co-owners.ca/logo.png` },
+	  { name: "twitter:url", content: `https://co-owners.ca/` },
+	];
 };
 
 export default function Index() {
