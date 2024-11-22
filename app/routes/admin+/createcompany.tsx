@@ -219,7 +219,14 @@ function CreateCompany() {
             setLoading(true);
             
             //Create the Business
-            createBusiness();
+            createBusiness()
+              .then(() => {
+                // Handle success (e.g., show a success message)
+              })
+              .catch((error) => {
+                // Handle error (e.g., show an error message)
+                console.error(error);
+              });
         }
 
     };

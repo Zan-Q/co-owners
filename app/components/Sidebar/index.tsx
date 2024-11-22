@@ -90,7 +90,7 @@ const menuGroups = [
       {
         icon: (
           <svg 
-            class="w-6 h-6 text-white dark:text-white" 
+            className="w-6 h-6 text-white dark:text-white" 
             aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg" 
             width="24" 

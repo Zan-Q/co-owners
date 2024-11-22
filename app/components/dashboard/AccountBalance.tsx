@@ -79,15 +79,15 @@ function AccountBalance({ token, balance, gains, investments }: AccountBalancePr
         display: false,
       },
       datalabels: {
-        formatter: (value, context) => {
+        formatter: (value: any, context: any) => {
           const dataset = context.chart.data.datasets[0];
-          const total = dataset.data.reduce((acc, value) => acc + value, 0);
+          const total = dataset?.data.reduce((acc: number, value: number) => acc + value, 0) || 0;
           const percentage = ((value / total) * 100).toFixed(2);
           return `${percentage}%`;
         },
         color: 'white',
         font: {
-          weight: 'bold',
+          weight: 'bold' as 'bold',
           size: 15,
         },
       },

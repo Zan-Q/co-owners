@@ -50,13 +50,13 @@ const Valuation = ({ profit, valuation }: ValuationProps) => {
     const diff = profitData.dates.length - valuationData.dates.length;
     for (let i = 0; i < diff; i++) {
       valuationData.dates.push('');
-      valuationData.valuation.push(0);
+      valuationData.valuation.push('0');
     }
   } else if (valuationData.dates.length > profitData.dates.length) {
     const diff = valuationData.dates.length - profitData.dates.length;
     for (let i = 0; i < diff; i++) {
       profitData.dates.push('');
-      profitData.profit.push(0);
+      profitData.profit.push('0');
     }
   }
 
@@ -75,7 +75,7 @@ const Valuation = ({ profit, valuation }: ValuationProps) => {
         borderWidth: 2,
         fill: true, // Enable fill under the line
         tension: 0.4, // Smooth out the lines
-        backgroundColor: (context) => {
+        backgroundColor: (context: any) => {
             const chart = context.chart;
             const { ctx, chartArea } = chart;
   
@@ -101,7 +101,7 @@ const Valuation = ({ profit, valuation }: ValuationProps) => {
         borderWidth: 2,
         fill: true, // Enable fill under the line
         tension: 0.4, // Smooth out the lines
-        backgroundColor: (context) => {
+        backgroundColor: (context: any) => {
             const chart = context.chart;
             const { ctx, chartArea } = chart;
   

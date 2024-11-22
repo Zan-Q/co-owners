@@ -1,6 +1,7 @@
+import React, { useState } from 'react';
+
 import { LoaderFunction, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { useCallback, useEffect, useState } from 'react';
 import { sessionKey } from '#app/utils/auth.server.ts'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 import { useNavigate } from 'react-router-dom';
@@ -178,7 +179,7 @@ export default function BusinessDetails() {
     const [buyPrice, setBuyPrice] = useState<number | "">(0);
     const [sellPrice, setSellPrice] = useState<number | "">(0);
     
-    const handleBuySubmit = (event: React.FormEvent) => {
+    const handleBuySubmit = async (event: React.FormEvent) => {
       
       event.preventDefault();
 
@@ -192,12 +193,18 @@ export default function BusinessDetails() {
 
         const isConfirmed = window.confirm(`Are you sure you want to buy at $${sellPrice}?`);
         if (isConfirmed) {
-          handleBuyClick(buyPrice);
+          try {
+            await handleBuyClick(buyPrice);
+            // Handle success (e.g., show a success message)
+          } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error(error);
+          }
         };
       }
     };
   
-    const handleSellSubmit = (event: React.FormEvent) => {
+    const handleSellSubmit = async (event: React.FormEvent) => {
 
       event.preventDefault();
 
@@ -211,7 +218,13 @@ export default function BusinessDetails() {
       else if (typeof sellPrice === 'number' && sellPrice > 0) {
         const isConfirmed = window.confirm(`Are you sure you want to sell at $${sellPrice}?`);
         if (isConfirmed) {
-          handleSellClick(sellPrice);
+          try {
+            await handleSellClick(sellPrice);
+            // Handle success (e.g., show a success message)
+          } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error(error);
+          }
         };
       }
     };

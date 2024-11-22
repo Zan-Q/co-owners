@@ -1,3 +1,7 @@
+import React from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+
 import { LoaderFunction, json } from '@remix-run/node';
 import { Meta, useLoaderData } from '@remix-run/react';
 import { useCallback, useEffect, useState } from 'react';
@@ -35,9 +39,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Loading Screen
 import RingLoader from "react-spinners/RingLoader";
 
-//Image Carousel
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
+
 
 //Embla
 import '#app/styles/embla.css';
@@ -408,7 +410,7 @@ export default function BusinessDetails() {
   /**
    * Image Carousel of the Business
    */
-  const imageCarousel = () => {
+  const imageCarousel: React.FC = () => {
     const [viewportRef, embla] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
     return (
