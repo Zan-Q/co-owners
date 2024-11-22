@@ -76,16 +76,7 @@ export async function login({
 	username: User['username']
 	password: string
 }) {
-	/*const user = await verifyUserPassword({ username }, password)
-	if (!user) return null
-	const session = await prisma.session.create({
-		select: { id: true, expirationDate: true, userId: true },
-		data: {
-			expirationDate: getSessionExpirationDate(),
-			userId: user.id,
-		},
-	})
-	return session*/
+	
 	const user = await userAPI.login(username, password);
 
 	if (!user) return null
@@ -99,17 +90,7 @@ export async function resetUserPassword({
 	username: User['username']
 	password: string
 }) {
-	//const hashedPassword = await getPasswordHash(password)
-	/*return prisma.user.update({
-		where: { username },
-		data: {
-			password: {
-				update: {
-					hash: hashedPassword,
-				},
-			},
-		},
-	})*/
+	
 	return userAPI.updatePassword( username, password );
 }
 
@@ -166,20 +147,7 @@ export async function logout(
 		request.headers.get('cookie'),
 	)
 	const sessionId = authSession.get(sessionKey)
-	// if this fails, we still need to delete the session from the user's browser
-	// and it doesn't do any harm staying in the db anyway.
-	/*if (sessionId) {
-		// the .catch is important because that's what triggers the query.
-		// learn more about PrismaPromise: https://www.prisma.io/docs/orm/reference/prisma-client-reference#prismapromise-behavior
-		void prisma.session.deleteMany({ where: { id: sessionId } }).catch(() => {})
-	}
-	throw redirect(safeRedirect(redirectTo), {
-		...responseInit,
-		headers: combineHeaders(
-			{ 'set-cookie': await authSessionStorage.destroySession(authSession) },
-			responseInit?.headers,
-		),
-	})*/
+	
 	return redirect(safeRedirect(redirectTo), {
 		...responseInit,
 		headers: combineHeaders(
@@ -194,24 +162,3 @@ export async function getPasswordHash(password: string) {
 	return hash
 }
 
-export async function verifyUserPassword(
-	where: Pick<User, 'username'> | Pick<User, 'id'>,
-	password: Password['hash'],
-) {
-	const userWithPassword = await prisma.user.findUnique({
-		where,
-		select: { id: true, password: { select: { hash: true } } },
-	})
-
-	if (!userWithPassword || !userWithPassword.password) {
-		return null
-	}
-
-	const isValid = await bcrypt.compare(password, userWithPassword.password.hash)
-
-	if (!isValid) {
-		return null
-	}
-
-	return { id: userWithPassword.id }
-}

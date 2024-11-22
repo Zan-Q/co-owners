@@ -17,7 +17,6 @@ import {
 	requireRecentVerification,
 } from '#app/routes/_auth+/verify.server.ts'
 import { requireUserId } from '#app/utils/auth.server.ts'
-import { prisma } from '#app/utils/db.server.ts'
 import { sendEmail } from '#app/utils/email.server.ts'
 import { useIsPending } from '#app/utils/misc.tsx'
 import { EmailSchema } from '#app/utils/user-validation.ts'
@@ -39,10 +38,7 @@ const ChangeEmailSchema = z.object({
 export async function loader({ request }: LoaderFunctionArgs) {
 	await requireRecentVerification(request)
 	const user = await requireUserId(request)
-	/*const user = await prisma.user.findUnique({
-		where: { id: userId },
-		select: { email: true },
-	})*/
+	
 	if (!user) {
 		const params = new URLSearchParams({ redirectTo: request.url })
 		throw redirect(`/login?${params}`)
@@ -53,55 +49,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
 	const userId = await requireUserId(request)
 	const formData = await request.formData()
-	const submission = await parseWithZod(formData, {
-		schema: ChangeEmailSchema.superRefine(async (data, ctx) => {
-			const existingUser = await prisma.user.findUnique({
-				where: { email: data.email },
-			})
-			if (existingUser) {
-				ctx.addIssue({
-					path: ['email'],
-					code: z.ZodIssueCode.custom,
-					message: 'This email is already in use.',
-				})
-			}
-		}),
-		async: true,
-	})
-
-	if (submission.status !== 'success') {
-		return json(
-			{ result: submission.reply() },
-			{ status: submission.status === 'error' ? 400 : 200 },
-		)
-	}
-	const { otp, redirectTo, verifyUrl } = await prepareVerification({
-		period: 10 * 60,
-		request,
-		target: userId,
-		type: 'change-email',
-	})
-
-	const response = await sendEmail({
-		to: submission.value.email,
-		subject: `Epic Notes Email Change Verification`,
-		react: <EmailChangeEmail verifyUrl={verifyUrl.toString()} otp={otp} />,
-	})
-
-	if (response.status === 'success') {
-		const verifySession = await verifySessionStorage.getSession()
-		verifySession.set(newEmailAddressSessionKey, submission.value.email)
-		return redirect(redirectTo.toString(), {
-			headers: {
-				'set-cookie': await verifySessionStorage.commitSession(verifySession),
-			},
-		})
-	} else {
-		return json(
-			{ result: submission.reply({ formErrors: [response.error.message] }) },
-			{ status: 500 },
-		)
-	}
 }
 
 export default function ChangeEmailIndex() {

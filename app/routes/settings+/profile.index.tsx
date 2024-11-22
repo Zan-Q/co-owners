@@ -14,12 +14,10 @@ import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { requireUserId, sessionKey } from '#app/utils/auth.server.ts'
-import { prisma } from '#app/utils/db.server.ts'
 import { getUserImgSrc, useDoubleCheck } from '#app/utils/misc.tsx'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
 import { NameSchema, UsernameSchema } from '#app/utils/user-validation.ts'
-import { twoFAVerificationType } from './profile.two-factor.tsx'
 import { useLocation } from 'react-router-dom';
 
 //API
@@ -191,12 +189,6 @@ async function signOutOfSessionsAction({ request, userId }: ProfileActionArgs) {
 		sessionId,
 		'You must be authenticated to sign out of other sessions',
 	)
-	await prisma.session.deleteMany({
-		where: {
-			userId,
-			id: { not: sessionId },
-		},
-	})
 	return json({ status: 'success' } as const)
 }
 
@@ -238,7 +230,6 @@ function SignOutOfSessions() {
 }
 
 async function deleteDataAction({ userId }: ProfileActionArgs) {
-	await prisma.user.delete({ where: { id: userId } })
 	return redirectWithToast('/', {
 		type: 'success',
 		title: 'Data Deleted',

@@ -14,7 +14,6 @@ import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 import { ErrorList, Field } from '#app/components/forms.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
-import { prisma } from '#app/utils/db.server.ts'
 import { sendEmail } from '#app/utils/email.server.ts'
 import { checkHoneypot } from '#app/utils/honeypot.server.ts'
 import { EmailSchema, UsernameSchema } from '#app/utils/user-validation.ts'
@@ -37,15 +36,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	checkHoneypot(formData)
 	const submission = await parseWithZod(formData, {
 		schema: ForgotPasswordSchema.superRefine(async (data, ctx) => {
-			/*const user = await prisma.user.findFirst({
-				where: {
-					OR: [
-						{ email: data.usernameOrEmail },
-						{ username: data.usernameOrEmail },
-					],
-				},
-				select: { id: true },
-			})*/
+		
 			const { user, token, expirationDate } = await userAPI.checkExistingEmail(data.usernameOrEmail);
 
 			if (!user) {
@@ -67,11 +58,6 @@ export async function action({ request }: ActionFunctionArgs) {
 	}
 	const { usernameOrEmail } = submission.value
 
-	/*const user = await prisma.user.findFirstOrThrow({
-		where: { OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }] },
-		select: { email: true, username: true },
-	})*/
-
 	const { verifyUrl, redirectTo, otp } = await prepareVerification({
 		period: 10 * 60,
 		request,
@@ -79,13 +65,7 @@ export async function action({ request }: ActionFunctionArgs) {
 		target: usernameOrEmail,
 	})
 
-	/*const response = await sendEmail({
-		to: user.email,
-		subject: `Epic Notes Password Reset`,
-		react: (
-			<ForgotPasswordEmail onboardingUrl={verifyUrl.toString()} otp={otp} />
-		),
-	})*/
+
 	const response = await userAPI.sendEmailVerification(usernameOrEmail, otp, verifyUrl.toString());
 
 	if (response.data.status === 'success') {

@@ -1,2 +1,0 @@
-import{j as t}from"./jsx-runtime-D2HyDbKh.js";import{I as o}from"./icon-CldSu2rP.js";import{O as r}from"./index-PxjvPj8E.js";import"./misc-D_OAexT3.js";import"./clsx-B-dksMZM.js";import"./index-Cd_vq22D.js";const p={breadcrumb:t.jsx(o,{name:"lock-closed",children:"2FA"}),getSitemapEntries:()=>null};function c(){return t.jsx(r,{})}export{c as default,p as handle};
-//# sourceMappingURL=profile.two-factor-rn66V8Ov.js.map

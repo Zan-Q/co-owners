@@ -1,8 +1,8 @@
 var _a;
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { PassThrough } from "node:stream";
-import { createReadableStreamFromReadable, json, createCookieSessionStorage, redirect as redirect$1, unstable_parseMultipartFormData, unstable_createMemoryUploadHandler } from "@remix-run/node";
-import { RemixServer, useFormAction, useNavigation, useRouteError, useParams, isRouteErrorResponse, useRouteLoaderData, useRevalidator, redirect, useFetcher, useFetchers, useLoaderData, useMatches, Link, Outlet, useSubmit, Form, Meta, Links, ScrollRestoration, Scripts, useLocation, useActionData, useSearchParams, useNavigate as useNavigate$1, NavLink } from "@remix-run/react";
+import { createReadableStreamFromReadable, json, createCookieSessionStorage, redirect as redirect$1 } from "@remix-run/node";
+import { RemixServer, useFormAction, useNavigation, useRouteError, useParams, isRouteErrorResponse, useRouteLoaderData, useRevalidator, redirect, useFetcher, useFetchers, useLoaderData, useMatches, Link, Outlet, useSubmit, Form, Meta, Links, ScrollRestoration, Scripts, useLocation, useActionData, useSearchParams, useNavigate as useNavigate$1 } from "@remix-run/react";
 import * as Sentry from "@sentry/remix";
 import { captureRemixErrorBoundaryError, withSentry } from "@sentry/remix";
 import chalk from "chalk";
@@ -20,7 +20,7 @@ import { toast, Toaster } from "sonner";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { useForm, getFormProps, useInputControl, getInputProps, FormProvider, getTextareaProps, getFieldsetProps } from "@conform-to/react";
+import { useForm, getFormProps, useInputControl, getInputProps } from "@conform-to/react";
 import { parseWithZod, getZodConstraint } from "@conform-to/zod";
 import { invariant, invariantResponse } from "@epic-web/invariant";
 import { ServerOnly } from "remix-utils/server-only";
@@ -28,25 +28,22 @@ import { getHintUtils } from "@epic-web/client-hints";
 import { clientHint, subscribeToSchemeChange } from "@epic-web/client-hints/color-scheme";
 import { clientHint as clientHint$1 } from "@epic-web/client-hints/time-zone";
 import * as cookie from "cookie";
-import bcrypt from "bcryptjs";
+import "bcryptjs";
 import { Authenticator } from "remix-auth";
 import { safeRedirect } from "remix-utils/safe-redirect";
 import { createId } from "@paralleldrive/cuid2";
 import { OIDCStrategy } from "web-oidc/remix";
-import { remember } from "@epic-web/remember";
-import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import { Honeypot, SpamError } from "remix-utils/honeypot/server";
 import { useNavigate, useNavigationType, NavigationType } from "react-router-dom";
-import { MantineProvider, TextInput, Textarea as Textarea$1 } from "@mantine/core";
+import { MantineProvider, TextInput, Textarea } from "@mantine/core";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { OTPInput, OTPInputContext, REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { ensurePrimary } from "litefs-js/remix.js";
-import * as E from "@react-email/components";
-import { renderAsync } from "@react-email/components";
 import { generateTOTP, getTOTPAuthUri } from "@epic-web/totp";
+import * as E from "@react-email/components";
 import { isMobile } from "react-device-detect";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { Doughnut, Line } from "react-chartjs-2";
@@ -56,12 +53,14 @@ import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { generateRobotsTxt, generateSitemap } from "@nasa-gcn/remix-seo";
 import { Resend } from "resend";
+import { remember } from "@epic-web/remember";
+import { PrismaClient } from "@prisma/client";
 import * as QRCode from "qrcode";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { LoadScript, GoogleMap, Marker } from "@react-google-maps/api";
 import { toast as toast$1, ToastContainer } from "react-toastify";
-import { format, formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import RingLoader from "react-spinners/RingLoader.js";
 import { Elements, useStripe, useElements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -341,9 +340,6 @@ const extendedTheme = {
 };
 function getUserImgSrc(imageUrl) {
   return imageUrl ? `${imageUrl}` : "/img/user.png";
-}
-function getNoteImgSrc(imageId) {
-  return `/resources/note-images/${imageId}`;
 }
 function getErrorMessage(error) {
   if (typeof error === "string") return error;
@@ -926,7 +922,7 @@ const ThemeFormSchema = z.object({
   // this is useful for progressive enhancement
   redirectTo: z.string().optional()
 });
-async function action$l({ request }) {
+async function action$f({ request }) {
   const formData = await request.formData();
   const submission = parseWithZod(formData, {
     schema: ThemeFormSchema
@@ -1004,14 +1000,14 @@ function useTheme() {
   }
   return requestInfo.userPrefs.theme ?? hints.theme;
 }
-const route28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ThemeSwitch,
-  action: action$l,
+  action: action$f,
   useOptimisticThemeMode,
   useTheme
 }, Symbol.toStringTag, { value: "Module" }));
-const tailwindStyleSheetUrl = "/assets/tailwind-Bpv8r1mq.css";
+const tailwindStyleSheetUrl = "/assets/tailwind-CEzgS5aj.css";
 const toastKey = "toast";
 const ToastSchema = z.object({
   description: z.string(),
@@ -1127,27 +1123,6 @@ const providers = {
 function handleMockAction(providerName, request) {
   return providers[providerName].handleMockAction(request);
 }
-function resolveConnectionData(providerName, providerId, options2) {
-  return providers[providerName].resolveConnectionData(providerId, options2);
-}
-const prisma$1 = remember("prisma", () => {
-  const logThreshold = 20;
-  const client = new PrismaClient({
-    log: [
-      { level: "query", emit: "event" },
-      { level: "error", emit: "stdout" },
-      { level: "warn", emit: "stdout" }
-    ]
-  });
-  client.$on("query", async (e) => {
-    if (e.duration < logThreshold) return;
-    const color = e.duration < logThreshold * 1.1 ? "green" : e.duration < logThreshold * 1.2 ? "blue" : e.duration < logThreshold * 1.3 ? "yellow" : e.duration < logThreshold * 1.4 ? "redBright" : "red";
-    const dur = chalk[color](`${e.duration}ms`);
-    console.info(`prisma:query - ${dur} - ${e.query}`);
-  });
-  void client.$connect();
-  return client;
-});
 const authSessionStorage = createCookieSessionStorage({
   cookie: {
     name: "en_session",
@@ -1437,23 +1412,23 @@ async function getUserId(request) {
   );
   const sessionId = authSession.get(sessionKey);
   if (!sessionId) return null;
-  const user = await userAPI.checklogintoken(sessionId);
-  return user;
+  const user2 = await userAPI.checklogintoken(sessionId);
+  return user2;
 }
 async function requireUserId(request, { redirectTo } = {}) {
-  const user = await getUserId(request);
-  if (!user) {
+  const user2 = await getUserId(request);
+  if (!user2) {
     const requestUrl = new URL(request.url);
     redirectTo = redirectTo === null ? null : redirectTo ?? `${requestUrl.pathname}${requestUrl.search}`;
     const loginParams = redirectTo ? new URLSearchParams({ redirectTo }) : null;
     const loginRedirect = ["/login", loginParams == null ? void 0 : loginParams.toString()].filter(Boolean).join("?");
     throw redirect$1(loginRedirect);
   }
-  return user;
+  return user2;
 }
 async function requireAnonymous(request) {
-  const user = await getUserId(request);
-  if (user) {
+  const user2 = await getUserId(request);
+  if (user2) {
     throw redirect$1("/");
   }
 }
@@ -1461,9 +1436,9 @@ async function login({
   username,
   password
 }) {
-  const user = await userAPI.login(username, password);
-  if (!user) return null;
-  return user.data;
+  const user2 = await userAPI.login(username, password);
+  if (!user2) return null;
+  return user2.data;
 }
 async function resetUserPassword({
   username,
@@ -1507,24 +1482,6 @@ async function logout({
     )
   });
 }
-async function getPasswordHash(password) {
-  const hash = await bcrypt.hash(password, 10);
-  return hash;
-}
-async function verifyUserPassword(where, password) {
-  const userWithPassword = await prisma$1.user.findUnique({
-    where,
-    select: { id: true, password: { select: { hash: true } } }
-  });
-  if (!userWithPassword || !userWithPassword.password) {
-    return null;
-  }
-  const isValid = await bcrypt.compare(password, userWithPassword.password.hash);
-  if (!isValid) {
-    return null;
-  }
-  return { id: userWithPassword.id };
-}
 const honeypot = new Honeypot({
   validFromFieldName: process.env.NODE_ENV === "test" ? null : void 0,
   encryptionSeed: process.env.HONEYPOT_SECRET
@@ -1539,8 +1496,8 @@ function checkHoneypot(formData) {
     throw error;
   }
 }
-function isUser(user) {
-  return user && typeof user === "object" && typeof user.id === "string";
+function isUser(user2) {
+  return user2 && typeof user2 === "object" && typeof user2.id === "string";
 }
 function useOptionalUser() {
   const data = useRouteLoaderData("root");
@@ -1557,23 +1514,6 @@ function useUser() {
     );
   }
   return maybeUser;
-}
-function parsePermissionString(permissionString) {
-  const [action2, entity, access] = permissionString.split(":");
-  return {
-    action: action2,
-    entity,
-    access: access ? access.split(",") : void 0
-  };
-}
-function userHasPermission(user, permission) {
-  if (!user) return false;
-  const { action: action2, entity, access } = parsePermissionString(permission);
-  return user.roles.some(
-    (role) => role.permissions.some(
-      (permission2) => permission2.entity === entity && permission2.action === action2 && (!access || access.includes(permission2.access))
-    )
-  );
 }
 const links = () => {
   return [
@@ -1595,27 +1535,27 @@ const links = () => {
     { rel: "stylesheet", href: tailwindStyleSheetUrl }
   ].filter(Boolean);
 };
-const meta$b = ({ data }) => {
+const meta$9 = ({ data }) => {
   return [
     { title: data ? "Co Owners" : "Error | Co Owners" },
     { name: "description", content: `CommUnity Owners Platform` }
   ];
 };
-async function loader$F({ request }) {
+async function loader$u({ request }) {
   const timings = makeTimings("root loader");
-  const user = await time(() => getUserId(request), {
+  const user2 = await time(() => getUserId(request), {
     timings,
     type: "getUserId",
     desc: "getUserId in root"
   });
-  if (!user) {
+  if (!user2) {
     await logout({ request, redirectTo: "/" });
   }
   const { toast: toast2, headers: toastHeaders } = await getToast(request);
   const honeyProps = honeypot.getInputProps();
   return json(
     {
-      user,
+      user: user2,
       requestInfo: {
         hints: getHints(request),
         origin: getDomainUrl(request),
@@ -1636,7 +1576,7 @@ async function loader$F({ request }) {
     }
   );
 }
-const headers$1 = ({ loaderHeaders }) => {
+const headers = ({ loaderHeaders }) => {
   const headers2 = {
     "Server-Timing": loaderHeaders.get("Server-Timing") ?? ""
   };
@@ -1677,7 +1617,7 @@ function Document({
 function App() {
   const data = useLoaderData();
   const nonce = useNonce();
-  const user = useOptionalUser();
+  const user2 = useOptionalUser();
   const theme = useTheme();
   const matches = useMatches();
   matches.find((m) => m.id === "routes/users+/index");
@@ -1696,7 +1636,7 @@ function App() {
         /* @__PURE__ */ jsxs("div", { className: "flex h-screen flex-col justify-between", children: [
           /* @__PURE__ */ jsx("header", { className: "container py-6", children: /* @__PURE__ */ jsxs("nav", { className: "flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8", children: [
             /* @__PURE__ */ jsx(Logo, { navigationType, navigate, type: "header" }),
-            /* @__PURE__ */ jsx("div", { className: "flex items-center gap-10", children: user ? /* @__PURE__ */ jsx(UserDropdown, {}) : /* @__PURE__ */ jsx(Button, { asChild: true, variant: "default", size: "lg", children: /* @__PURE__ */ jsx(Link, { to: "/login", children: "Log In" }) }) })
+            /* @__PURE__ */ jsx("div", { className: "flex items-center gap-10", children: user2 ? /* @__PURE__ */ jsx(UserDropdown, {}) : /* @__PURE__ */ jsx(Button, { asChild: true, variant: "default", size: "lg", children: /* @__PURE__ */ jsx(Link, { to: "/login", children: "Log In" }) }) })
           ] }) }),
           /* @__PURE__ */ jsx("div", { className: "flex-1", children: /* @__PURE__ */ jsx(Outlet, {}) }),
           /* @__PURE__ */ jsx("div", { className: "container pb-5 mt-5 w-full", children: /* @__PURE__ */ jsx(Logo, { navigationType, navigate, type: "footer" }) })
@@ -1720,7 +1660,7 @@ function Logo({ navigationType, navigate, type }) {
     type === "header" && navigationType !== NavigationType.Pop && /* @__PURE__ */ jsxs(
       "button",
       {
-        onClick: () => navigate(-1),
+        onClick: () => navigate == null ? void 0 : navigate(-1),
         className: "ml-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50",
         children: [
           /* @__PURE__ */ jsx(
@@ -1769,7 +1709,7 @@ function AppWithProviders() {
 }
 const root = withSentry(AppWithProviders);
 function UserDropdown() {
-  const user = useUser();
+  const user2 = useUser();
   const submit = useSubmit();
   const formRef = useRef(null);
   return /* @__PURE__ */ jsxs(DropdownMenu, { children: [
@@ -1784,11 +1724,11 @@ function UserDropdown() {
             "img",
             {
               className: "h-8 w-8 rounded-full object-cover",
-              alt: user.name ?? user.username,
-              src: getUserImgSrc(user.imageUrl)
+              alt: user2.name ?? user2.username,
+              src: getUserImgSrc(user2.imageUrl)
             }
           ),
-          /* @__PURE__ */ jsx("span", { className: "text-body-sm font-bold", children: user.name ?? user.username })
+          /* @__PURE__ */ jsx("span", { className: "text-body-sm font-bold", children: user2.name ?? user2.username })
         ]
       }
     ) }) }),
@@ -1809,26 +1749,26 @@ function UserDropdown() {
     ] }) })
   ] });
 }
-function ErrorBoundary$a() {
+function ErrorBoundary$7() {
   const nonce = useNonce();
   return /* @__PURE__ */ jsx(Document, { nonce, children: /* @__PURE__ */ jsx(GeneralErrorBoundary, {}) });
 }
 const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ErrorBoundary: ErrorBoundary$a,
+  ErrorBoundary: ErrorBoundary$7,
   default: root,
-  headers: headers$1,
+  headers,
   links,
-  loader: loader$F,
-  meta: meta$b
+  loader: loader$u,
+  meta: meta$9
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$E() {
+async function loader$t() {
   throw new Response("Not found", { status: 404 });
 }
 function NotFound() {
-  return /* @__PURE__ */ jsx(ErrorBoundary$9, {});
+  return /* @__PURE__ */ jsx(ErrorBoundary$6, {});
 }
-function ErrorBoundary$9() {
+function ErrorBoundary$6() {
   const location = useLocation();
   return /* @__PURE__ */ jsx(
     GeneralErrorBoundary,
@@ -1847,9 +1787,9 @@ function ErrorBoundary$9() {
 }
 const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ErrorBoundary: ErrorBoundary$9,
+  ErrorBoundary: ErrorBoundary$6,
   default: NotFound,
-  loader: loader$E
+  loader: loader$t
 }, Symbol.toStringTag, { value: "Module" }));
 const GOOGLE_PROVIDER_NAME = "google";
 const providerNames = [
@@ -1912,10 +1852,10 @@ function getRedirectCookieValue(request) {
   const redirectTo = parsedCookies[key];
   return redirectTo || null;
 }
-async function loader$D() {
+async function loader$s() {
   return redirect$1("/login");
 }
-async function action$k({ request, params }) {
+async function action$e({ request, params }) {
   const providerName = ProviderNameSchema.parse(params.provider);
   try {
     await handleMockAction(providerName, request);
@@ -1935,8 +1875,8 @@ async function action$k({ request, params }) {
 }
 const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$k,
-  loader: loader$D
+  action: action$e,
+  loader: loader$s
 }, Symbol.toStringTag, { value: "Module" }));
 const normalizeEmail = (s) => s.toLowerCase();
 const normalizeUsername = (s) => s.replace(/[^a-zA-Z0-9_]/g, "_").toLowerCase();
@@ -1994,36 +1934,10 @@ async function handleVerification$3({
   const verifySession = await verifySessionStorage.getSession(
     request.headers.get("cookie")
   );
-  const remember2 = verifySession.get(rememberKey);
+  verifySession.get(rememberKey);
   const { redirectTo } = submission.value;
   const headers2 = new Headers();
   authSession.set(verifiedTimeKey, Date.now());
-  const unverifiedSessionId = verifySession.get(unverifiedSessionIdKey);
-  if (unverifiedSessionId) {
-    const session = await prisma$1.session.findUnique({
-      select: { expirationDate: true },
-      where: { id: unverifiedSessionId }
-    });
-    if (!session) {
-      throw await redirectWithToast("/login", {
-        type: "error",
-        title: "Invalid session",
-        description: "Could not find session to verify. Please try again."
-      });
-    }
-    authSession.set(sessionKey, unverifiedSessionId);
-    headers2.append(
-      "set-cookie",
-      await authSessionStorage.commitSession(authSession, {
-        expires: remember2 ? session.expirationDate : void 0
-      })
-    );
-  } else {
-    headers2.append(
-      "set-cookie",
-      await authSessionStorage.commitSession(authSession)
-    );
-  }
   headers2.append(
     "set-cookie",
     await verifySessionStorage.destroySession(verifySession)
@@ -2038,8 +1952,8 @@ async function shouldRequestTwoFA(request) {
     request.headers.get("cookie")
   );
   if (verifySession.has(unverifiedSessionIdKey)) return true;
-  const user = await getUserId(request);
-  if (!user) return false;
+  const user2 = await getUserId(request);
+  if (!user2) return false;
   const verifiedTime = authSession.get(verifiedTimeKey) ?? /* @__PURE__ */ new Date(0);
   const twoHours = 1e3 * 60 * 2;
   return Date.now() - verifiedTime > twoHours;
@@ -2111,22 +2025,6 @@ const InputOTPSlot = React.forwardRef(({ index, className, ...props }, ref) => {
 InputOTPSlot.displayName = "InputOTPSlot";
 const InputOTPSeparator = React.forwardRef(({ ...props }, ref) => /* @__PURE__ */ jsx("div", { ref, role: "separator", ...props, children: "-" }));
 InputOTPSeparator.displayName = "InputOTPSeparator";
-const Textarea = React.forwardRef(
-  ({ className, ...props }, ref) => {
-    return /* @__PURE__ */ jsx(
-      "textarea",
-      {
-        className: cn(
-          "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid]:border-input-invalid md:text-sm",
-          className
-        ),
-        ref,
-        ...props
-      }
-    );
-  }
-);
-Textarea.displayName = "Textarea";
 function ErrorList({
   id,
   errors
@@ -2191,29 +2089,6 @@ function OTPField({
             /* @__PURE__ */ jsx(InputOTPSlot, { index: 5 })
           ] })
         ]
-      }
-    ),
-    /* @__PURE__ */ jsx("div", { className: "min-h-[32px] px-4 pb-3 pt-1", children: errorId ? /* @__PURE__ */ jsx(ErrorList, { id: errorId, errors }) : null })
-  ] });
-}
-function TextareaField({
-  labelProps,
-  textareaProps,
-  errors,
-  className
-}) {
-  const fallbackId = useId();
-  const id = textareaProps.id ?? textareaProps.name ?? fallbackId;
-  const errorId = (errors == null ? void 0 : errors.length) ? `${id}-error` : void 0;
-  return /* @__PURE__ */ jsxs("div", { className, children: [
-    /* @__PURE__ */ jsx(Label, { htmlFor: id, ...labelProps }),
-    /* @__PURE__ */ jsx(
-      Textarea,
-      {
-        id,
-        "aria-invalid": errorId ? true : void 0,
-        "aria-describedby": errorId,
-        ...textareaProps
       }
     ),
     /* @__PURE__ */ jsx("div", { className: "min-h-[32px] px-4 pb-3 pt-1", children: errorId ? /* @__PURE__ */ jsx(ErrorList, { id: errorId, errors }) : null })
@@ -2331,11 +2206,11 @@ async function requireOnboardingEmail(request) {
   }
   return email;
 }
-async function loader$C({ request }) {
+async function loader$r({ request }) {
   const email = await requireOnboardingEmail(request);
   return json({ email });
 }
-async function action$j({ request }) {
+async function action$d({ request }) {
   const email = await requireOnboardingEmail(request);
   const formData = await request.formData();
   checkHoneypot(formData);
@@ -2378,7 +2253,7 @@ async function action$j({ request }) {
     { headers: headers2 }
   );
 }
-const meta$a = () => {
+const meta$8 = () => {
   return [{ title: "Setup Epic Notes Account" }];
 };
 function OnboardingRoute() {
@@ -2507,10 +2382,10 @@ function OnboardingRoute() {
 }
 const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$j,
+  action: action$d,
   default: OnboardingRoute,
-  loader: loader$C,
-  meta: meta$a,
+  loader: loader$r,
+  meta: meta$8,
   onboardingEmailSessionKey
 }, Symbol.toStringTag, { value: "Module" }));
 const providerIdKey = "providerId";
@@ -2547,7 +2422,7 @@ async function requireData({
     throw redirect$1("/signup");
   }
 }
-async function loader$B({ request, params }) {
+async function loader$q({ request, params }) {
   const { email } = await requireData({ request, params });
   const connectionSession = await connectionSessionStorage.getSession(
     request.headers.get("cookie")
@@ -2568,7 +2443,7 @@ async function loader$B({ request, params }) {
     }
   });
 }
-async function action$i({ request, params }) {
+async function action$c({ request, params }) {
   const { email, providerId, providerName } = await requireData({
     request,
     params
@@ -2579,8 +2454,8 @@ async function action$i({ request, params }) {
   );
   const submission = await parseWithZod(formData, {
     schema: SignupFormSchema.superRefine(async (data, ctx) => {
-      const { user, token, expirationDate } = await userAPI.checkExistingEmail(email);
-      if (user) {
+      const { user: user2, token, expirationDate } = await userAPI.checkExistingEmail(email);
+      if (user2) {
         ctx.addIssue({
           path: ["username"],
           code: z.ZodIssueCode.custom,
@@ -2629,7 +2504,7 @@ async function action$i({ request, params }) {
     { headers: headers2 }
   );
 }
-const meta$9 = () => {
+const meta$7 = () => {
   return [{ title: "Setup CoOwners Account" }];
 };
 function OnboardingProviderRoute() {
@@ -2743,15 +2618,15 @@ function OnboardingProviderRoute() {
 }
 const route8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$i,
+  action: action$c,
   default: OnboardingProviderRoute,
-  loader: loader$B,
-  meta: meta$9,
+  loader: loader$q,
+  meta: meta$7,
   prefilledProfileKey,
   providerIdKey
 }, Symbol.toStringTag, { value: "Module" }));
 const destroyRedirectTo = { "set-cookie": destroyRedirectToHeader };
-async function loader$A({ request, params }) {
+async function loader$p({ request, params }) {
   await ensurePrimary();
   const providerName = ProviderNameSchema.parse(params.provider);
   const redirectTo = getRedirectCookieValue(request);
@@ -2773,10 +2648,10 @@ async function loader$A({ request, params }) {
     );
   }
   const { data: profile } = authResult;
-  const { user, token, expirationDate } = await userAPI.checkExistingEmail(profile.email);
-  if (user) {
+  const { user: user2, token, expirationDate } = await userAPI.checkExistingEmail(profile.email);
+  if (user2) {
     return makeSession(
-      { request, userId: user.id, token, expirationDate },
+      { request, userId: user2.id, token, expirationDate },
       {
         headers: await createToastHeaders({
           title: "Connected",
@@ -2820,77 +2695,9 @@ async function makeSession({
 }
 const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$A
+  loader: loader$p
 }, Symbol.toStringTag, { value: "Module" }));
-const resendErrorSchema = z.union([
-  z.object({
-    name: z.string(),
-    message: z.string(),
-    statusCode: z.number()
-  }),
-  z.object({
-    name: z.literal("UnknownError"),
-    message: z.literal("Unknown Error"),
-    statusCode: z.literal(500),
-    cause: z.any()
-  })
-]);
-const resendSuccessSchema = z.object({
-  id: z.string()
-});
-async function sendEmail({
-  react,
-  ...options2
-}) {
-  const from = "peter.tang.lai@gmail.com";
-  const email = {
-    from,
-    ...options2,
-    ...react ? await renderReactEmail(react) : null
-  };
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    body: JSON.stringify(email),
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      "Content-Type": "application/json"
-    }
-  });
-  const data = await response.json();
-  const parsedData = resendSuccessSchema.safeParse(data);
-  if (response.ok && parsedData.success) {
-    return {
-      status: "success",
-      data: parsedData
-    };
-  } else {
-    const parseResult = resendErrorSchema.safeParse(data);
-    if (parseResult.success) {
-      return {
-        status: "error",
-        error: parseResult.data
-      };
-    } else {
-      return {
-        status: "error",
-        error: {
-          name: "UnknownError",
-          message: "Unknown Error",
-          statusCode: 500,
-          cause: data
-        }
-      };
-    }
-  }
-}
-async function renderReactEmail(react) {
-  const [html, text] = await Promise.all([
-    renderAsync(react),
-    renderAsync(react, { plainText: true })
-  ]);
-  return { html, text };
-}
-const handle$f = {
+const handle$b = {
   breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "envelope-closed", children: "Change Email" }),
   getSitemapEntries: () => null
 };
@@ -2898,64 +2705,18 @@ const newEmailAddressSessionKey = "new-email-address";
 const ChangeEmailSchema = z.object({
   email: EmailSchema
 });
-async function loader$z({ request }) {
+async function loader$o({ request }) {
   await requireRecentVerification(request);
-  const user = await requireUserId(request);
-  if (!user) {
+  const user2 = await requireUserId(request);
+  if (!user2) {
     const params = new URLSearchParams({ redirectTo: request.url });
     throw redirect$1(`/login?${params}`);
   }
-  return json({ user });
+  return json({ user: user2 });
 }
-async function action$h({ request }) {
-  const userId = await requireUserId(request);
-  const formData = await request.formData();
-  const submission = await parseWithZod(formData, {
-    schema: ChangeEmailSchema.superRefine(async (data, ctx) => {
-      const existingUser = await prisma$1.user.findUnique({
-        where: { email: data.email }
-      });
-      if (existingUser) {
-        ctx.addIssue({
-          path: ["email"],
-          code: z.ZodIssueCode.custom,
-          message: "This email is already in use."
-        });
-      }
-    }),
-    async: true
-  });
-  if (submission.status !== "success") {
-    return json(
-      { result: submission.reply() },
-      { status: submission.status === "error" ? 400 : 200 }
-    );
-  }
-  const { otp, redirectTo, verifyUrl } = await prepareVerification({
-    period: 10 * 60,
-    request,
-    target: userId,
-    type: "change-email"
-  });
-  const response = await sendEmail({
-    to: submission.value.email,
-    subject: `Epic Notes Email Change Verification`,
-    react: /* @__PURE__ */ jsx(EmailChangeEmail, { verifyUrl: verifyUrl.toString(), otp })
-  });
-  if (response.status === "success") {
-    const verifySession = await verifySessionStorage.getSession();
-    verifySession.set(newEmailAddressSessionKey, submission.value.email);
-    return redirect$1(redirectTo.toString(), {
-      headers: {
-        "set-cookie": await verifySessionStorage.commitSession(verifySession)
-      }
-    });
-  } else {
-    return json(
-      { result: submission.reply({ formErrors: [response.error.message] }) },
-      { status: 500 }
-    );
-  }
+async function action$b({ request }) {
+  await requireUserId(request);
+  await request.formData();
 }
 function ChangeEmailIndex() {
   const data = useLoaderData();
@@ -3000,12 +2761,12 @@ function ChangeEmailIndex() {
     ] }) })
   ] });
 }
-const route32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$h,
+  action: action$b,
   default: ChangeEmailIndex,
-  handle: handle$f,
-  loader: loader$z,
+  handle: handle$b,
+  loader: loader$o,
   newEmailAddressSessionKey
 }, Symbol.toStringTag, { value: "Module" }));
 async function handleVerification$2({
@@ -3033,20 +2794,6 @@ async function handleVerification$2({
       { status: 400 }
     );
   }
-  const preUpdateUser = await prisma$1.user.findFirstOrThrow({
-    select: { email: true },
-    where: { id: submission.value.target }
-  });
-  const user = await prisma$1.user.update({
-    where: { id: submission.value.target },
-    select: { id: true, email: true, username: true },
-    data: { email: newEmail }
-  });
-  void sendEmail({
-    to: preUpdateUser.email,
-    subject: "Epic Stack email changed",
-    react: /* @__PURE__ */ jsx(EmailChangeNoticeEmail, { userId: user.id })
-  });
   return redirectWithToast(
     "/settings/profile",
     {
@@ -3061,32 +2808,7 @@ async function handleVerification$2({
     }
   );
 }
-function EmailChangeEmail({
-  verifyUrl,
-  otp
-}) {
-  return /* @__PURE__ */ jsx(E.Html, { lang: "en", dir: "ltr", children: /* @__PURE__ */ jsxs(E.Container, { children: [
-    /* @__PURE__ */ jsx("h1", { children: /* @__PURE__ */ jsx(E.Text, { children: "Epic Notes Email Change" }) }),
-    /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsxs(E.Text, { children: [
-      "Here's your verification code: ",
-      /* @__PURE__ */ jsx("strong", { children: otp })
-    ] }) }),
-    /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx(E.Text, { children: "Or click the link:" }) }),
-    /* @__PURE__ */ jsx(E.Link, { href: verifyUrl, children: verifyUrl })
-  ] }) });
-}
-function EmailChangeNoticeEmail({ userId }) {
-  return /* @__PURE__ */ jsx(E.Html, { lang: "en", dir: "ltr", children: /* @__PURE__ */ jsxs(E.Container, { children: [
-    /* @__PURE__ */ jsx("h1", { children: /* @__PURE__ */ jsx(E.Text, { children: "Your Epic Notes email has been changed" }) }),
-    /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx(E.Text, { children: "We're writing to let you know that your Epic Notes email has been changed." }) }),
-    /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx(E.Text, { children: "If you changed your email address, then you can safely ignore this. But if you did not change your email address, then please contact support immediately." }) }),
-    /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsxs(E.Text, { children: [
-      "Your Account ID: ",
-      userId
-    ] }) })
-  ] }) });
-}
-const handle$e = {
+const handle$a = {
   breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "lock-closed", children: "2FA" }),
   getSitemapEntries: () => null
 };
@@ -3094,10 +2816,10 @@ const twoFAVerificationType = "2fa";
 function TwoFactorRoute$2() {
   return /* @__PURE__ */ jsx(Outlet, {});
 }
-const route38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: TwoFactorRoute$2,
-  handle: handle$e,
+  handle: handle$a,
   twoFAVerificationType
 }, Symbol.toStringTag, { value: "Module" }));
 async function handleVerification$1({ submission }) {
@@ -3113,7 +2835,7 @@ async function handleVerification$1({ submission }) {
     }
   });
 }
-const handle$d = {
+const handle$9 = {
   getSitemapEntries: () => null
 };
 const resetPasswordUsernameSessionKey = "resetPasswordUsername";
@@ -3131,11 +2853,11 @@ async function requireResetPasswordUsername(request) {
   }
   return resetPasswordUsername;
 }
-async function loader$y({ request }) {
+async function loader$n({ request }) {
   const resetPasswordUsername = await requireResetPasswordUsername(request);
   return json({ resetPasswordUsername });
 }
-async function action$g({ request }) {
+async function action$a({ request }) {
   const resetPasswordUsername = await requireResetPasswordUsername(request);
   const formData = await request.formData();
   const submission = parseWithZod(formData, {
@@ -3156,7 +2878,7 @@ async function action$g({ request }) {
     }
   });
 }
-const meta$8 = () => {
+const meta$6 = () => {
   return [{ title: "Reset Password | Epic Notes" }];
 };
 function ResetPasswordPage() {
@@ -3225,17 +2947,17 @@ function ResetPasswordPage() {
     ] }) })
   ] });
 }
-function ErrorBoundary$8() {
+function ErrorBoundary$5() {
   return /* @__PURE__ */ jsx(GeneralErrorBoundary, {});
 }
 const route9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ErrorBoundary: ErrorBoundary$8,
-  action: action$g,
+  ErrorBoundary: ErrorBoundary$5,
+  action: action$a,
   default: ResetPasswordPage,
-  handle: handle$d,
-  loader: loader$y,
-  meta: meta$8,
+  handle: handle$9,
+  loader: loader$n,
+  meta: meta$6,
   resetPasswordUsernameSessionKey
 }, Symbol.toStringTag, { value: "Module" }));
 async function handleVerification({ submission }) {
@@ -3244,22 +2966,22 @@ async function handleVerification({ submission }) {
     "Submission should be successful by now"
   );
   const target = submission.value.target;
-  const { user, token, expirationDate } = await userAPI.checkExistingEmail(target);
-  if (!user) {
+  const { user: user2, token, expirationDate } = await userAPI.checkExistingEmail(target);
+  if (!user2) {
     return json(
       { result: submission.reply({ fieldErrors: { code: ["Invalid code"] } }) },
       { status: 400 }
     );
   }
   const verifySession = await verifySessionStorage.getSession();
-  verifySession.set(resetPasswordUsernameSessionKey, user.username);
+  verifySession.set(resetPasswordUsernameSessionKey, user2.username);
   return redirect$1("/reset-password", {
     headers: {
       "set-cookie": await verifySessionStorage.commitSession(verifySession)
     }
   });
 }
-const handle$c = {
+const handle$8 = {
   getSitemapEntries: () => null
 };
 const codeQueryParam = "code";
@@ -3274,7 +2996,7 @@ const VerifySchema$1 = z.object({
   [targetQueryParam]: z.string(),
   [redirectToQueryParam]: z.string().optional()
 });
-async function action$f({ request }) {
+async function action$9({ request }) {
   const formData = await request.formData();
   checkHoneypot(formData);
   return validateRequest(request, formData);
@@ -3370,17 +3092,17 @@ function VerifyRoute() {
     ] })
   ] });
 }
-function ErrorBoundary$7() {
+function ErrorBoundary$4() {
   return /* @__PURE__ */ jsx(GeneralErrorBoundary, {});
 }
 const route11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ErrorBoundary: ErrorBoundary$7,
+  ErrorBoundary: ErrorBoundary$4,
   VerifySchema: VerifySchema$1,
-  action: action$f,
+  action: action$9,
   codeQueryParam,
   default: VerifyRoute,
-  handle: handle$c,
+  handle: handle$8,
   redirectToQueryParam,
   targetQueryParam,
   typeQueryParam
@@ -3400,13 +3122,13 @@ function getRedirectToUrl({
   return redirectToUrl;
 }
 async function requireRecentVerification(request) {
-  const user = await requireUserId(request);
+  const user2 = await requireUserId(request);
   const shouldReverify = await shouldRequestTwoFA(request);
   if (shouldReverify) {
     const reqUrl = new URL(request.url);
     const redirectUrl = getRedirectToUrl({
       request,
-      target: user.id,
+      target: user2.id,
       type: twoFAVerificationType,
       redirectTo: reqUrl.pathname + reqUrl.search
     });
@@ -3489,19 +3211,19 @@ async function validateRequest(request, body) {
     }
   }
 }
-const handle$b = {
+const handle$7 = {
   getSitemapEntries: () => null
 };
 const ForgotPasswordSchema = z.object({
   usernameOrEmail: z.union([EmailSchema, UsernameSchema])
 });
-async function action$e({ request }) {
+async function action$8({ request }) {
   const formData = await request.formData();
   checkHoneypot(formData);
   const submission = await parseWithZod(formData, {
     schema: ForgotPasswordSchema.superRefine(async (data, ctx) => {
-      const { user, token, expirationDate } = await userAPI.checkExistingEmail(data.usernameOrEmail);
-      if (!user) {
+      const { user: user2, token, expirationDate } = await userAPI.checkExistingEmail(data.usernameOrEmail);
+      if (!user2) {
         ctx.addIssue({
           path: ["usernameOrEmail"],
           code: z.ZodIssueCode.custom,
@@ -3535,7 +3257,7 @@ async function action$e({ request }) {
     );
   }
 }
-const meta$7 = () => {
+const meta$5 = () => {
   return [{ title: "Password Recovery for Epic Notes" }];
 };
 function ForgotPasswordRoute() {
@@ -3595,18 +3317,18 @@ function ForgotPasswordRoute() {
     ] })
   ] }) });
 }
-function ErrorBoundary$6() {
+function ErrorBoundary$3() {
   return /* @__PURE__ */ jsx(GeneralErrorBoundary, {});
 }
 const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ErrorBoundary: ErrorBoundary$6,
-  action: action$e,
+  ErrorBoundary: ErrorBoundary$3,
+  action: action$8,
   default: ForgotPasswordRoute,
-  handle: handle$b,
-  meta: meta$7
+  handle: handle$7,
+  meta: meta$5
 }, Symbol.toStringTag, { value: "Module" }));
-const handle$a = {
+const handle$6 = {
   getSitemapEntries: () => null
 };
 const LoginFormSchema = z.object({
@@ -3615,11 +3337,11 @@ const LoginFormSchema = z.object({
   redirectTo: z.string().optional(),
   remember: z.boolean().optional()
 });
-async function loader$x({ request }) {
+async function loader$m({ request }) {
   await requireAnonymous(request);
   return json({});
 }
-async function action$d({ request }) {
+async function action$7({ request }) {
   await requireAnonymous(request);
   const formData = await request.formData();
   checkHoneypot(formData);
@@ -3779,45 +3501,45 @@ function LoginPage() {
     ] }) })
   ] }) });
 }
-const meta$6 = () => {
+const meta$4 = () => {
   return [{ title: "Login to Epic Notes" }];
 };
-function ErrorBoundary$5() {
+function ErrorBoundary$2() {
   return /* @__PURE__ */ jsx(GeneralErrorBoundary, {});
 }
 const route5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ErrorBoundary: ErrorBoundary$5,
-  action: action$d,
+  ErrorBoundary: ErrorBoundary$2,
+  action: action$7,
   default: LoginPage,
-  handle: handle$a,
-  loader: loader$x,
-  meta: meta$6
+  handle: handle$6,
+  loader: loader$m,
+  meta: meta$4
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$w() {
+async function loader$l() {
   return redirect$1("/");
 }
-async function action$c({ request }) {
+async function action$6({ request }) {
   return logout({ request });
 }
 const route6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$c,
-  loader: loader$w
+  action: action$6,
+  loader: loader$l
 }, Symbol.toStringTag, { value: "Module" }));
-const handle$9 = {
+const handle$5 = {
   getSitemapEntries: () => null
 };
 const SignupSchema = z.object({
   email: EmailSchema
 });
-async function action$b({ request }) {
+async function action$5({ request }) {
   const formData = await request.formData();
   checkHoneypot(formData);
   const submission = await parseWithZod(formData, {
     schema: SignupSchema.superRefine(async (data, ctx) => {
-      const { user, token, expirationDate } = await userAPI.checkExistingEmail(data.email);
-      if (user) {
+      const { user: user2, token, expirationDate } = await userAPI.checkExistingEmail(data.email);
+      if (user2) {
         ctx.addIssue({
           path: ["email"],
           code: z.ZodIssueCode.custom,
@@ -3869,7 +3591,7 @@ function SignupEmail({
     /* @__PURE__ */ jsx(E.Link, { href: onboardingUrl, children: onboardingUrl })
   ] }) });
 }
-const meta$5 = () => {
+const meta$3 = () => {
   return [{ title: "Sign Up | Co Owners" }];
 };
 function SignupRoute() {
@@ -3933,17 +3655,17 @@ function SignupRoute() {
     ] })
   ] });
 }
-function ErrorBoundary$4() {
+function ErrorBoundary$1() {
   return /* @__PURE__ */ jsx(GeneralErrorBoundary, {});
 }
 const route10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ErrorBoundary: ErrorBoundary$4,
+  ErrorBoundary: ErrorBoundary$1,
   SignupEmail,
-  action: action$b,
+  action: action$5,
   default: SignupRoute,
-  handle: handle$9,
-  meta: meta$5
+  handle: handle$5,
+  meta: meta$3
 }, Symbol.toStringTag, { value: "Module" }));
 const AboutSection = () => /* @__PURE__ */ jsxs("div", { className: "container mx-auto p-4", children: [
   /* @__PURE__ */ jsx("h1", { className: "text-3xl font-bold mb-4", children: "About Community Owners" }),
@@ -3969,7 +3691,7 @@ const github = "data:image/svg+xml,%3csvg%20width='98'%20height='96'%20xmlns='ht
 const msw = "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='UTF-8'?%3e%3csvg%20width='128px'%20height='128px'%20viewBox='0%200%20128%20128'%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%20xmlns:xlink='http://www.w3.org/1999/xlink'%3e%3ctitle%3eLOGO%3c/title%3e%3cg%20id='LOGO'%20stroke='none'%20stroke-width='1'%20fill='none'%20fill-rule='evenodd'%3e%3crect%20id='Rectangle'%20fill='%23000000'%20x='0'%20y='0'%20width='128'%20height='128'%20rx='24'%3e%3c/rect%3e%3cg%20id='logo'%20transform='translate(-27.172013,%20-27.850148)'%20stroke-width='17.85'%3e%3cg%20id='Group'%20transform='translate(91.172013,%2091.850148)%20rotate(-42.000000)%20translate(-91.172013,%20-91.850148)%20translate(30.956217,%2022.472129)'%3e%3cpath%20d='M63.77676,39.8567809%20C66.7201615,39.8567809%2069.3849115,41.0498301%2071.3138112,42.9787297%20C73.2427108,44.9076293%2074.43576,47.5723793%2074.43576,50.5157809%20C74.43576,53.1536096%2073.4576536,55.6977418%2071.690581,57.6562093%20L40.9074742,91.7734893%20C40.2942428,92.4531409%2039.4635827,92.8198888%2038.6163176,92.863416%20C37.7690524,92.9069431%2036.9051822,92.6272495%2036.2255306,92.0140181%20L5.20189513,57.6562093%20C3.23012026,55.470868%202.33079774,52.693193%202.47075426,49.9689097%20C2.61071079,47.2446264%203.78994636,44.5737347%205.97528769,42.6019599%20C7.93375514,40.8348872%2010.4778874,39.8567809%2013.1157161,39.8567809%20Z'%20id='back'%20stroke='%23FF3333'%20opacity='0.48'%20transform='translate(38.446238,%2069.378019)%20rotate(90.000000)%20translate(-38.446238,%20-69.378019)%20'%3e%3c/path%3e%3cpath%20d='M123.833688,39.8567809%20C124.7491,39.8567809%20125.57785,40.2278249%20126.177747,40.8277219%20C126.777644,41.4276189%20127.148688,42.2563689%20127.148688,43.1717809%20C127.148688,43.9921582%20126.844492,44.7833955%20126.294924,45.3924883%20L84.4465906,91.7734893%20C83.8333592,92.4531409%2083.0026991,92.8198888%2082.1554339,92.863416%20C81.3081688,92.9069431%2080.4442986,92.6272495%2079.764647,92.0140181%20L37.6757849,45.3924883%20C37.0625535,44.7128367%2036.7828599,43.8489665%2036.826387,43.0017013%20C36.8699142,42.1544362%2037.2366621,41.3237761%2037.9163137,40.7105447%20C38.5254064,40.1609766%2039.3166437,39.8567809%2040.1370211,39.8567809%20Z'%20id='front'%20stroke='%23FF6A33'%20transform='translate(81.985354,%2069.378019)%20rotate(-90.000000)%20translate(-81.985354,%20-69.378019)%20'%3e%3c/path%3e%3c/g%3e%3c/g%3e%3c/g%3e%3c/svg%3e";
 const playwright = "/assets/playwright-D0Du3LFd.svg";
 const prettier = "/assets/prettier-DbIVlkV4.svg";
-const prisma = "/assets/prisma-IaIz7Mrr.svg";
+const prisma$1 = "/assets/prisma-IaIz7Mrr.svg";
 const radixUI = "data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='250'%20height='250'%20viewBox='0%200%2025%2025'%20fill='none'%20style='margin-right:3px'%3e%3cpath%20d='M12%2025C7.58173%2025%204%2021.4183%204%2017C4%2012.5817%207.58173%209%2012%209V25Z'%20fill='currentcolor'%3e%3c/path%3e%3cpath%20d='M12%200H4V8H12V0Z'%20fill='currentcolor'%3e%3c/path%3e%3cpath%20d='M17%208C19.2091%208%2021%206.20914%2021%204C21%201.79086%2019.2091%200%2017%200C14.7909%200%2013%201.79086%2013%204C13%206.20914%2014.7909%208%2017%208Z'%20fill='currentcolor'%3e%3c/path%3e%3c/svg%3e";
 const reactEmail = "/assets/react-email-DKP-k4Ck.svg";
 const remix = "data:image/svg+xml,%3csvg%20width='800'%20height='800'%20viewBox='0%200%20800%20800'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3crect%20width='800'%20height='800'%20fill='%23212121'/%3e%3cg%20filter='url(%23filter0_dd_126_53)'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M587.947%20527.768C592.201%20582.418%20592.201%20608.036%20592.201%20636H465.756C465.756%20629.909%20465.865%20624.337%20465.975%20618.687C466.317%20601.123%20466.674%20582.807%20463.828%20545.819C460.067%20491.667%20436.748%20479.634%20393.871%20479.634H355.883H195V381.109H399.889C454.049%20381.109%20481.13%20364.633%20481.13%20321.011C481.13%20282.654%20454.049%20259.41%20399.889%20259.41H195V163H422.456C545.069%20163%20606%20220.912%20606%20313.42C606%20382.613%20563.123%20427.739%20505.201%20435.26C554.096%20445.037%20582.681%20472.865%20587.947%20527.768Z'%20fill='%23E8F2FF'/%3e%3cpath%20d='M195%20636V562.553H328.697C351.029%20562.553%20355.878%20579.116%20355.878%20588.994V636H195Z'%20fill='%23E8F2FF'/%3e%3c/g%3e%3cdefs%3e%3cfilter%20id='filter0_dd_126_53'%20x='131'%20y='99'%20width='539'%20height='601'%20filterUnits='userSpaceOnUse'%20color-interpolation-filters='sRGB'%3e%3cfeFlood%20flood-opacity='0'%20result='BackgroundImageFix'/%3e%3cfeColorMatrix%20in='SourceAlpha'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20127%200'%20result='hardAlpha'/%3e%3cfeOffset/%3e%3cfeGaussianBlur%20stdDeviation='28'/%3e%3cfeComposite%20in2='hardAlpha'%20operator='out'/%3e%3cfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.223529%200%200%200%200%200.572549%200%200%200%200%201%200%200%200%201%200'/%3e%3cfeBlend%20mode='normal'%20in2='BackgroundImageFix'%20result='effect1_dropShadow_126_53'/%3e%3cfeColorMatrix%20in='SourceAlpha'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20127%200'%20result='hardAlpha'/%3e%3cfeOffset/%3e%3cfeGaussianBlur%20stdDeviation='32'/%3e%3cfeComposite%20in2='hardAlpha'%20operator='out'/%3e%3cfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.223529%200%200%200%200%200.572549%200%200%200%200%201%200%200%200%200.9%200'/%3e%3cfeBlend%20mode='normal'%20in2='effect1_dropShadow_126_53'%20result='effect2_dropShadow_126_53'/%3e%3cfeBlend%20mode='normal'%20in='SourceGraphic'%20in2='effect2_dropShadow_126_53'%20result='shape'/%3e%3c/filter%3e%3c/defs%3e%3c/svg%3e";
@@ -4005,7 +3727,7 @@ const logos = [
     row: 3
   },
   {
-    src: prisma,
+    src: prisma$1,
     alt: "Prisma",
     href: "https://prisma.io",
     column: 2,
@@ -4190,14 +3912,14 @@ const rowClasses = {
   5: "xl:row-start-5",
   6: "xl:row-start-6"
 };
-const loader$v = async ({ request }) => {
+const loader$k = async ({ request }) => {
   const authSession = await authSessionStorage.getSession(
     request.headers.get("cookie")
   );
   const session = authSession.get(sessionKey);
   if (session) {
-    const user = await userAPI.checklogintoken(session);
-    if (user) {
+    const user2 = await userAPI.checklogintoken(session);
+    if (user2) {
       const announcements = await generalAPI.getAnnouncements();
       const trendingBusinesses = await generalAPI.getTrendingBusinesses();
       const downtrendingBusinesses = await generalAPI.getDownTrendingBusinesses();
@@ -4205,10 +3927,10 @@ const loader$v = async ({ request }) => {
         announcements,
         trendingBusinesses,
         downtrendingBusinesses,
-        userId: user._id
+        userId: user2._id
       });
     } else {
-      const announcements = await generalAPI.getAnnoucements();
+      const announcements = await generalAPI.getAnnouncements();
       const trendingBusinesses = await generalAPI.getTrendingBusinesses();
       const downtrendingBusinesses = await generalAPI.getDownTrendingBusinesses();
       return json({
@@ -4218,7 +3940,7 @@ const loader$v = async ({ request }) => {
       });
     }
   } else {
-    const announcements = await generalAPI.getAnnoucements();
+    const announcements = await generalAPI.getAnnouncements();
     const trendingBusinesses = await generalAPI.getTrendingBusinesses();
     const downtrendingBusinesses = await generalAPI.getDownTrendingBusinesses();
     return json({
@@ -4228,7 +3950,7 @@ const loader$v = async ({ request }) => {
     });
   }
 };
-const meta$4 = () => {
+const meta$2 = () => {
   return [
     { title: `Co Owners` },
     { property: "og:title", content: `Co-Owners` },
@@ -4350,8 +4072,8 @@ function Index() {
 const route13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Index,
-  loader: loader$v,
-  meta: meta$4
+  loader: loader$k,
+  meta: meta$2
 }, Symbol.toStringTag, { value: "Module" }));
 function PrivacyRoute() {
   return /* @__PURE__ */ jsxs("div", { className: "container mx-auto p-6", children: [
@@ -4551,14 +4273,14 @@ const businessAPI = {
     }
   }
 };
-const loader$u = async ({ request }) => {
+const loader$j = async ({ request }) => {
   const authSession = await authSessionStorage.getSession(
     request.headers.get("cookie")
   );
   const session = authSession.get(sessionKey);
   if (session) {
-    const user = await userAPI.checklogintoken(session);
-    if (user && user.role === "admin") {
+    const user2 = await userAPI.checklogintoken(session);
+    if (user2 && user2.role === "admin") {
       return json({ message: "You are an admin" });
     } else {
       return redirect$1("/");
@@ -4723,7 +4445,7 @@ function CreateCompany() {
       }
     ) }),
     /* @__PURE__ */ jsx("div", { className: "inputBox", children: /* @__PURE__ */ jsx(
-      Textarea$1,
+      Textarea,
       {
         id: "description",
         label: "Description",
@@ -4764,7 +4486,7 @@ function CreateCompany() {
 const route18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: CreateCompany,
-  loader: loader$u
+  loader: loader$j
 }, Symbol.toStringTag, { value: "Module" }));
 const SidebarDropdown = ({ item }) => {
   const location = useLocation();
@@ -5075,8 +4797,8 @@ const menuGroups = [
 ];
 const Sidebar = ({ sidebarOpen, setSidebarOpen, userRole }) => {
   const [pageName, setPageName] = useState("Overview");
+  const [isOpen, setIsOpen] = useState(false);
   if (isMobile) {
-    const [isOpen, setIsOpen] = useState(false);
     const adminItem = [
       { name: "Create Company", path: "/admin/createcompany" },
       { name: "Process Receipts", path: "/upload/receipt" }
@@ -5541,19 +5263,19 @@ const WatchList = ({ watchlist }) => {
     ] }, index)) })
   ] });
 };
-const loader$t = async ({ params, request }) => {
+const loader$i = async ({ params, request }) => {
   new URL(request.url);
   const authSession = await authSessionStorage.getSession(
     request.headers.get("cookie")
   );
   const session = authSession.get(sessionKey);
   if (session) {
-    const user = await userAPI.checklogintoken(session);
-    if (user) {
+    const user2 = await userAPI.checklogintoken(session);
+    if (user2) {
       const { balance, historical_gains, monthly_gains, businesses } = await userAPI.getUserBalanceStocks(session);
       const { monthlyProfits, monthlyValuation } = await userAPI.getUserProfitValuation(session);
       const { watchlist } = await userAPI.getUserWatchList(session);
-      return json({ session, user, balance, historical_gains, monthly_gains, businesses, profit: monthlyProfits, valuation: monthlyValuation, watchlist });
+      return json({ session, user: user2, balance, historical_gains, monthly_gains, businesses, profit: monthlyProfits, valuation: monthlyValuation, watchlist });
     } else {
       return redirect$1("/");
     }
@@ -5563,17 +5285,17 @@ const loader$t = async ({ params, request }) => {
 };
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { session, user, balance, historical_gains, monthly_gains, businesses, profit, valuation, watchlist, tab, leaderboard } = useLoaderData();
+  const { session, user: user2, balance, historical_gains, monthly_gains, businesses, profit, valuation, watchlist, tab, leaderboard } = useLoaderData();
   if (isMobile) {
     return /* @__PURE__ */ jsxs("div", { className: "bg-gray-200", children: [
-      /* @__PURE__ */ jsx("div", { className: "flex flex-col", children: /* @__PURE__ */ jsx(Sidebar, { sidebarOpen, setSidebarOpen, userRole: user.role }) }),
+      /* @__PURE__ */ jsx("div", { className: "flex flex-col", children: /* @__PURE__ */ jsx(Sidebar, { sidebarOpen, setSidebarOpen, userRole: user2.role }) }),
       /* @__PURE__ */ jsx("div", { className: "items-center justify-between pl-[1vw] pr-[1vw] pt-[2vw] pb-[2vw]", children: /* @__PURE__ */ jsx(AccountBalance, { token: session, balance, gains: historical_gains, investments: businesses }) }),
       /* @__PURE__ */ jsx("div", { className: "items-center justify-between pl-[1vw] pr-[1vw]", children: /* @__PURE__ */ jsx(Valuation, { profit, valuation }) }),
       /* @__PURE__ */ jsx("div", { className: "items-center justify-between pl-[5vw] pr-[5vw]", children: /* @__PURE__ */ jsx(WatchList, { watchlist }) })
     ] });
   } else {
     return /* @__PURE__ */ jsxs("div", { className: "flex overflow-hidden", children: [
-      /* @__PURE__ */ jsx(Sidebar, { sidebarOpen, setSidebarOpen, userRole: user.role }),
+      /* @__PURE__ */ jsx(Sidebar, { sidebarOpen, setSidebarOpen, userRole: user2.role }),
       /* @__PURE__ */ jsxs("div", { className: "flex-1 bg-gray-200", children: [
         /* @__PURE__ */ jsx("div", { className: "items-center justify-between pl-[5vw] pr-[5vw] pt-[2vw] pb-[2vw]", children: /* @__PURE__ */ jsx(AccountBalance, { token: session, balance, gains: historical_gains, investments: businesses }) }),
         /* @__PURE__ */ jsx("div", { className: "items-center justify-between pl-[5vw] pr-[5vw]", children: /* @__PURE__ */ jsx(Valuation, { profit, valuation }) }),
@@ -5585,18 +5307,18 @@ function Dashboard() {
 const route19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Dashboard,
-  loader: loader$t
+  loader: loader$i
 }, Symbol.toStringTag, { value: "Module" }));
-const loader$s = async ({ request }) => {
+const loader$h = async ({ request }) => {
   const authSession = await authSessionStorage.getSession(
     request.headers.get("cookie")
   );
   const session = authSession.get(sessionKey);
   if (session) {
-    const user = await userAPI.checklogintoken(session);
-    if (user) {
-      const history = user.history.reverse();
-      return json({ history, session, role: user.role });
+    const user2 = await userAPI.checklogintoken(session);
+    if (user2) {
+      const history = user2.history.reverse();
+      return json({ history, session, role: user2.role });
     } else {
       return redirect$1("/");
     }
@@ -5676,7 +5398,7 @@ const TabContent$1 = ({ title, data }) => {
 const route20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: History,
-  loader: loader$s
+  loader: loader$h
 }, Symbol.toStringTag, { value: "Module" }));
 const leaderboardAPI = {
   getLeaderboard: async function(sessionToken) {
@@ -5696,16 +5418,16 @@ const leaderboardAPI = {
     }
   }
 };
-const loader$r = async ({ request }) => {
+const loader$g = async ({ request }) => {
   const authSession = await authSessionStorage.getSession(
     request.headers.get("cookie")
   );
   const session = authSession.get(sessionKey);
   if (session) {
-    const user = await userAPI.checklogintoken(session);
+    const user2 = await userAPI.checklogintoken(session);
     const leaderboard = await leaderboardAPI.getLeaderboard(session);
-    if (user) {
-      return json({ leaderboard: leaderboard.data, session, role: user.role, username: user.username });
+    if (user2) {
+      return json({ leaderboard: leaderboard.data, session, role: user2.role, username: user2.username });
     } else {
       return json({ leaderboard: leaderboard.data, session: null, role: null });
     }
@@ -5714,7 +5436,7 @@ const loader$r = async ({ request }) => {
     return json({ leaderboard: leaderboard.data, session: null, role: null });
   }
 };
-const meta$3 = () => {
+const meta$1 = () => {
   return [
     { title: `Co-Owners Leaderboard` },
     { property: "og:title", content: `Co-Owners Leaderboard` },
@@ -5853,22 +5575,22 @@ const TabContent = ({ title, data, username }) => {
   const paginatedData = applyPagination(data, page - 1, limit);
   return /* @__PURE__ */ jsxs("div", { children: [
     /* @__PURE__ */ jsx("h2", { className: "text-xl font-bold mb-4", children: title }),
-    /* @__PURE__ */ jsx("div", { className: "overflow-y-auto", children: /* @__PURE__ */ jsx("ul", { className: "space-y-2", children: paginatedData.map((user, index) => /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx("div", { className: "overflow-y-auto", children: /* @__PURE__ */ jsx("ul", { className: "space-y-2", children: paginatedData.map((user2, index) => /* @__PURE__ */ jsxs(
       "li",
       {
-        className: `flex items-center justify-between p-4 rounded-lg shadow-md ${user.username === username ? "bg-red-500 text-white" : index % 2 === 0 ? "bg-gray-100" : "bg-white"}`,
+        className: `flex items-center justify-between p-4 rounded-lg shadow-md ${user2.username === username ? "bg-red-500 text-white" : index % 2 === 0 ? "bg-gray-100" : "bg-white"}`,
         children: [
           /* @__PURE__ */ jsxs("div", { className: "flex items-center space-x-4", children: [
-            /* @__PURE__ */ jsx("span", { className: "text-md font-bold", children: user.position }),
-            /* @__PURE__ */ jsx("span", { className: "text-md", children: user.username })
+            /* @__PURE__ */ jsx("span", { className: "text-md font-bold", children: user2.position }),
+            /* @__PURE__ */ jsx("span", { className: "text-md", children: user2.username })
           ] }),
           /* @__PURE__ */ jsxs("span", { className: "text-md font-semibold", children: [
             title.includes("Profits") ? "$" : "",
-            user.score
+            user2.score
           ] })
         ]
       },
-      user.position
+      user2.position
     )) }) }),
     /* @__PURE__ */ jsx(Box, { display: "flex", alignItems: "center", justifyContent: "center", mt: 4, children: /* @__PURE__ */ jsxs("div", { className: "flex mt-5 flex-row gap-2 justify-center", children: [
       /* @__PURE__ */ jsx(IconButton, { onClick: handlePreviousPage, disabled: page === 1, children: /* @__PURE__ */ jsx(FaArrowLeft, {}) }),
@@ -5885,12 +5607,12 @@ const TabContent = ({ title, data, username }) => {
 const route21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Leaderboard,
-  loader: loader$r,
-  meta: meta$3
+  loader: loader$g,
+  meta: meta$1
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$q({ request }) {
-  const user = await requireUserId(request);
-  if (!user) {
+async function loader$f({ request }) {
+  const user2 = await requireUserId(request);
+  if (!user2) {
     const requestUrl = new URL(request.url);
     const loginParams = new URLSearchParams([
       ["redirectTo", `${requestUrl.pathname}${requestUrl.search}`]
@@ -5903,18 +5625,18 @@ async function loader$q({ request }) {
 }
 const route22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$q
+  loader: loader$f
 }, Symbol.toStringTag, { value: "Module" }));
-function loader$p({ request }) {
+function loader$e({ request }) {
   return generateRobotsTxt([
     { type: "sitemap", value: `${getDomainUrl(request)}/sitemap.xml` }
   ]);
 }
 const route23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$p
+  loader: loader$e
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$o({ request, context }) {
+async function loader$d({ request, context }) {
   const serverBuild = await context.serverBuild;
   return generateSitemap(request, serverBuild.build.routes, {
     siteUrl: getDomainUrl(request),
@@ -5925,96 +5647,27 @@ async function loader$o({ request, context }) {
 }
 const route24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$o
+  loader: loader$d
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$n({ request }) {
-  const user = await requireUserId(request);
+async function loader$c({ request }) {
+  const user2 = await requireUserId(request);
   const domain = getDomainUrl(request);
   return json({
     user: {
-      ...user,
-      image: user.image ? {
-        ...user.image,
-        url: `${domain}/resources/user-images/${user.image.id}`
+      ...user2,
+      image: user2.image ? {
+        ...user2.image,
+        url: `${domain}/resources/user-images/${user2.image.id}`
       } : null
-      /*notes: user.notes.map((note) => ({
-      	...note,
-      	images: note.images.map((image) => ({
-      		...image,
-      		url: `${domain}/resources/note-images/${image.id}`,
-      	})),
-      })),*/
     }
   });
 }
 const route25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$n
-}, Symbol.toStringTag, { value: "Module" }));
-async function loader$m({ request }) {
-  const host = request.headers.get("X-Forwarded-Host") ?? request.headers.get("host");
-  try {
-    await Promise.all([
-      prisma$1.user.count(),
-      fetch(`${new URL(request.url).protocol}${host}`, {
-        method: "HEAD",
-        headers: { "X-Healthcheck": "true" }
-      }).then((r) => {
-        if (!r.ok) return Promise.reject(r);
-      })
-    ]);
-    return new Response("OK");
-  } catch (error) {
-    console.log("healthcheck ❌", { error });
-    return new Response("ERROR", { status: 500 });
-  }
-}
-const route26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  loader: loader$m
-}, Symbol.toStringTag, { value: "Module" }));
-async function loader$l({ params }) {
-  invariantResponse(params.imageId, "Image ID is required", { status: 400 });
-  const image = await prisma$1.noteImage.findUnique({
-    where: { id: params.imageId },
-    select: { contentType: true, blob: true }
-  });
-  invariantResponse(image, "Not found", { status: 404 });
-  return new Response(image.blob, {
-    headers: {
-      "Content-Type": image.contentType,
-      "Content-Length": Buffer.byteLength(image.blob).toString(),
-      "Content-Disposition": `inline; filename="${params.imageId}"`,
-      "Cache-Control": "public, max-age=31536000, immutable"
-    }
-  });
-}
-const route27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  loader: loader$l
-}, Symbol.toStringTag, { value: "Module" }));
-async function loader$k({ params }) {
-  invariantResponse(params.imageId, "Image ID is required", { status: 400 });
-  const image = await prisma$1.userImage.findUnique({
-    where: { id: params.imageId },
-    select: { contentType: true, blob: true }
-  });
-  invariantResponse(image, "Not found", { status: 404 });
-  return new Response(image.blob, {
-    headers: {
-      "Content-Type": image.contentType,
-      "Content-Length": Buffer.byteLength(image.blob).toString(),
-      "Content-Disposition": `inline; filename="${params.imageId}"`,
-      "Cache-Control": "public, max-age=31536000, immutable"
-    }
-  });
-}
-const route29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  loader: loader$k
+  loader: loader$c
 }, Symbol.toStringTag, { value: "Module" }));
 const resend = new Resend(process.env.RESEND_API_KEY);
-const loader$j = async () => {
+const loader$b = async () => {
   const { data, error } = await resend.emails.send({
     from: "peter.tang.lai@gmail.com",
     to: "peter.tang.lai@gmail.com",
@@ -6026,19 +5679,19 @@ const loader$j = async () => {
   }
   return json(data, 200);
 };
-const route30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$j
+  loader: loader$b
 }, Symbol.toStringTag, { value: "Module" }));
 const BreadcrumbHandle = z.object({ breadcrumb: z.any() });
-const handle$8 = {
+const handle$4 = {
   breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "file-text", children: "Edit Profile" }),
   getSitemapEntries: () => null
 };
 const BreadcrumbHandleMatch = z.object({
   handle: BreadcrumbHandle
 });
-async function loader$i({ request }) {
+async function loader$a({ request }) {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
   const username = searchParams.get("username");
@@ -6082,164 +5735,14 @@ function EditUserProfile$1() {
     /* @__PURE__ */ jsx("main", { className: "mx-auto bg-muted px-6 py-8 md:container md:rounded-3xl", children: /* @__PURE__ */ jsx(Outlet, {}) })
   ] });
 }
-const route31 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   BreadcrumbHandle,
   default: EditUserProfile$1,
-  handle: handle$8,
-  loader: loader$i
+  handle: handle$4,
+  loader: loader$a
 }, Symbol.toStringTag, { value: "Module" }));
-const handle$7 = {
-  breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "link-2", children: "Connections" }),
-  getSitemapEntries: () => null
-};
-async function userCanDeleteConnections(userId) {
-  const user = await prisma$1.user.findUnique({
-    select: {
-      password: { select: { userId: true } },
-      _count: { select: { connections: true } }
-    },
-    where: { id: userId }
-  });
-  if (user == null ? void 0 : user.password) return true;
-  return Boolean((user == null ? void 0 : user._count.connections) && (user == null ? void 0 : user._count.connections) > 1);
-}
-async function loader$h({ request }) {
-  const userId = await requireUserId(request);
-  const timings = makeTimings("profile connections loader");
-  const rawConnections = await prisma$1.connection.findMany({
-    select: { id: true, providerName: true, providerId: true, createdAt: true },
-    where: { userId }
-  });
-  const connections = [];
-  for (const connection of rawConnections) {
-    const r = ProviderNameSchema.safeParse(connection.providerName);
-    if (!r.success) continue;
-    const providerName = r.data;
-    const connectionData = await resolveConnectionData(
-      providerName,
-      connection.providerId,
-      { timings }
-    );
-    connections.push({
-      ...connectionData,
-      providerName,
-      id: connection.id,
-      createdAtFormatted: connection.createdAt.toLocaleString()
-    });
-  }
-  return json(
-    {
-      connections,
-      canDeleteConnections: await userCanDeleteConnections(userId)
-    },
-    { headers: { "Server-Timing": timings.toString() } }
-  );
-}
-const headers = ({ loaderHeaders }) => {
-  const headers2 = {
-    "Server-Timing": loaderHeaders.get("Server-Timing") ?? ""
-  };
-  return headers2;
-};
-async function action$a({ request }) {
-  const userId = await requireUserId(request);
-  const formData = await request.formData();
-  invariantResponse(
-    formData.get("intent") === "delete-connection",
-    "Invalid intent"
-  );
-  invariantResponse(
-    await userCanDeleteConnections(userId),
-    "You cannot delete your last connection unless you have a password."
-  );
-  const connectionId = formData.get("connectionId");
-  invariantResponse(typeof connectionId === "string", "Invalid connectionId");
-  await prisma$1.connection.delete({
-    where: {
-      id: connectionId,
-      userId
-    }
-  });
-  const toastHeaders = await createToastHeaders({
-    title: "Deleted",
-    description: "Your connection has been deleted."
-  });
-  return json({ status: "success" }, { headers: toastHeaders });
-}
-function Connections() {
-  const data = useLoaderData();
-  return /* @__PURE__ */ jsxs("div", { className: "mx-auto max-w-md", children: [
-    data.connections.length ? /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2", children: [
-      /* @__PURE__ */ jsx("p", { children: "Here are your current connections:" }),
-      /* @__PURE__ */ jsx("ul", { className: "flex flex-col gap-4", children: data.connections.map((c) => /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx(
-        Connection,
-        {
-          connection: c,
-          canDelete: data.canDeleteConnections
-        }
-      ) }, c.id)) })
-    ] }) : /* @__PURE__ */ jsx("p", { children: "You don't have any connections yet." }),
-    /* @__PURE__ */ jsx("div", { className: "mt-5 flex flex-col gap-5 border-b-2 border-t-2 border-border py-3", children: providerNames.map((providerName) => /* @__PURE__ */ jsx(
-      ProviderConnectionForm,
-      {
-        type: "Connect",
-        providerName
-      },
-      providerName
-    )) })
-  ] });
-}
-function Connection({
-  connection,
-  canDelete
-}) {
-  var _a2;
-  const deleteFetcher = useFetcher();
-  const [infoOpen, setInfoOpen] = useState(false);
-  const icon = providerIcons[connection.providerName];
-  return /* @__PURE__ */ jsxs("div", { className: "flex justify-between gap-2", children: [
-    /* @__PURE__ */ jsxs("span", { className: `inline-flex items-center gap-1.5`, children: [
-      icon,
-      /* @__PURE__ */ jsxs("span", { children: [
-        connection.link ? /* @__PURE__ */ jsx("a", { href: connection.link, className: "underline", children: connection.displayName }) : connection.displayName,
-        " ",
-        "(",
-        connection.createdAtFormatted,
-        ")"
-      ] })
-    ] }),
-    canDelete ? /* @__PURE__ */ jsxs(deleteFetcher.Form, { method: "POST", children: [
-      /* @__PURE__ */ jsx("input", { name: "connectionId", value: connection.id, type: "hidden" }),
-      /* @__PURE__ */ jsx(TooltipProvider, { children: /* @__PURE__ */ jsxs(Tooltip, { children: [
-        /* @__PURE__ */ jsx(TooltipTrigger, { asChild: true, children: /* @__PURE__ */ jsx(
-          StatusButton,
-          {
-            name: "intent",
-            value: "delete-connection",
-            variant: "destructive",
-            size: "sm",
-            status: deleteFetcher.state !== "idle" ? "pending" : ((_a2 = deleteFetcher.data) == null ? void 0 : _a2.status) ?? "idle",
-            children: /* @__PURE__ */ jsx(Icon, { name: "cross-1" })
-          }
-        ) }),
-        /* @__PURE__ */ jsx(TooltipContent, { children: "Disconnect this account" })
-      ] }) })
-    ] }) : /* @__PURE__ */ jsx(TooltipProvider, { children: /* @__PURE__ */ jsxs(Tooltip, { open: infoOpen, onOpenChange: setInfoOpen, children: [
-      /* @__PURE__ */ jsx(TooltipTrigger, { onClick: () => setInfoOpen(true), children: /* @__PURE__ */ jsx(Icon, { name: "question-mark-circled" }) }),
-      /* @__PURE__ */ jsx(TooltipContent, { children: "You cannot delete your last connection unless you have a password." })
-    ] }) })
-  ] });
-}
-const route33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  action: action$a,
-  default: Connections,
-  handle: handle$7,
-  headers,
-  loader: loader$h
-}, Symbol.toStringTag, { value: "Module" }));
-const handle$6 = {
+const handle$3 = {
   getSitemapEntries: () => null
 };
 const ProfileFormSchema = z.object({
@@ -6247,7 +5750,7 @@ const ProfileFormSchema = z.object({
   username: UsernameSchema,
   email: z.string().email()
 });
-async function loader$g({ request }) {
+async function loader$9({ request }) {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
   const username = searchParams.get("username");
@@ -6264,7 +5767,7 @@ async function loader$g({ request }) {
 const profileUpdateActionIntent = "update-profile";
 const signOutOfSessionsActionIntent = "sign-out-of-sessions";
 const deleteDataActionIntent = "delete-data";
-async function action$9({ request }) {
+async function action$4({ request }) {
   const userId = await requireUserId(request);
   const formData = await request.formData();
   const intent = formData.get("intent");
@@ -6369,491 +5872,52 @@ async function signOutOfSessionsAction({ request, userId }) {
     sessionId,
     "You must be authenticated to sign out of other sessions"
   );
-  await prisma$1.session.deleteMany({
-    where: {
-      userId,
-      id: { not: sessionId }
-    }
-  });
   return json({ status: "success" });
 }
 async function deleteDataAction({ userId }) {
-  await prisma$1.user.delete({ where: { id: userId } });
   return redirectWithToast("/", {
     type: "success",
     title: "Data Deleted",
     description: "All of your data has been deleted"
   });
 }
-const route34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route30 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$9,
+  action: action$4,
   default: EditUserProfile,
-  handle: handle$6,
-  loader: loader$g
-}, Symbol.toStringTag, { value: "Module" }));
-const handle$5 = {
-  breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "dots-horizontal", children: "Password" }),
-  getSitemapEntries: () => null
-};
-const ChangePasswordForm = z.object({
-  currentPassword: PasswordSchema,
-  newPassword: PasswordSchema,
-  confirmNewPassword: PasswordSchema
-}).superRefine(({ confirmNewPassword, newPassword }, ctx) => {
-  if (confirmNewPassword !== newPassword) {
-    ctx.addIssue({
-      path: ["confirmNewPassword"],
-      code: z.ZodIssueCode.custom,
-      message: "The passwords must match"
-    });
-  }
-});
-async function requirePassword(userId) {
-  const password = await prisma$1.password.findUnique({
-    select: { userId: true },
-    where: { userId }
-  });
-  if (!password) {
-    throw redirect$1("/settings/profile/password/create");
-  }
-}
-async function loader$f({ request }) {
-  const userId = await requireUserId(request);
-  await requirePassword(userId);
-  return json({});
-}
-async function action$8({ request }) {
-  const userId = await requireUserId(request);
-  await requirePassword(userId);
-  const formData = await request.formData();
-  const submission = await parseWithZod(formData, {
-    async: true,
-    schema: ChangePasswordForm.superRefine(
-      async ({ currentPassword, newPassword: newPassword2 }, ctx) => {
-        if (currentPassword && newPassword2) {
-          const user = await verifyUserPassword({ id: userId }, currentPassword);
-          if (!user) {
-            ctx.addIssue({
-              path: ["currentPassword"],
-              code: z.ZodIssueCode.custom,
-              message: "Incorrect password."
-            });
-          }
-        }
-      }
-    )
-  });
-  if (submission.status !== "success") {
-    return json(
-      {
-        result: submission.reply({
-          hideFields: ["currentPassword", "newPassword", "confirmNewPassword"]
-        })
-      },
-      { status: submission.status === "error" ? 400 : 200 }
-    );
-  }
-  const { newPassword } = submission.value;
-  await prisma$1.user.update({
-    select: { username: true },
-    where: { id: userId },
-    data: {
-      password: {
-        update: {
-          hash: await getPasswordHash(newPassword)
-        }
-      }
-    }
-  });
-  return redirectWithToast(
-    `/settings/profile`,
-    {
-      type: "success",
-      title: "Password Changed",
-      description: "Your password has been changed."
-    },
-    { status: 302 }
-  );
-}
-function ChangePasswordRoute() {
-  const actionData = useActionData();
-  const isPending = useIsPending();
-  const [form, fields] = useForm({
-    id: "password-change-form",
-    constraint: getZodConstraint(ChangePasswordForm),
-    lastResult: actionData == null ? void 0 : actionData.result,
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema: ChangePasswordForm });
-    },
-    shouldRevalidate: "onBlur"
-  });
-  return /* @__PURE__ */ jsxs(Form, { method: "POST", ...getFormProps(form), className: "mx-auto max-w-md", children: [
-    /* @__PURE__ */ jsx(
-      Field,
-      {
-        labelProps: { children: "Current Password" },
-        inputProps: {
-          ...getInputProps(fields.currentPassword, { type: "password" }),
-          autoComplete: "current-password"
-        },
-        errors: fields.currentPassword.errors
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      Field,
-      {
-        labelProps: { children: "New Password" },
-        inputProps: {
-          ...getInputProps(fields.newPassword, { type: "password" }),
-          autoComplete: "new-password"
-        },
-        errors: fields.newPassword.errors
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      Field,
-      {
-        labelProps: { children: "Confirm New Password" },
-        inputProps: {
-          ...getInputProps(fields.confirmNewPassword, {
-            type: "password"
-          }),
-          autoComplete: "new-password"
-        },
-        errors: fields.confirmNewPassword.errors
-      }
-    ),
-    /* @__PURE__ */ jsx(ErrorList, { id: form.errorId, errors: form.errors }),
-    /* @__PURE__ */ jsxs("div", { className: "grid w-full grid-cols-2 gap-6", children: [
-      /* @__PURE__ */ jsx(Button, { variant: "secondary", asChild: true, children: /* @__PURE__ */ jsx(Link, { to: "..", children: "Cancel" }) }),
-      /* @__PURE__ */ jsx(
-        StatusButton,
-        {
-          type: "submit",
-          status: isPending ? "pending" : form.status ?? "idle",
-          children: "Change Password"
-        }
-      )
-    ] })
-  ] });
-}
-const route35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  action: action$8,
-  default: ChangePasswordRoute,
-  handle: handle$5,
-  loader: loader$f
-}, Symbol.toStringTag, { value: "Module" }));
-const handle$4 = {
-  breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "dots-horizontal", children: "Password" }),
-  getSitemapEntries: () => null
-};
-const CreatePasswordForm = PasswordAndConfirmPasswordSchema;
-async function requireNoPassword(userId) {
-  const password = await prisma$1.password.findUnique({
-    select: { userId: true },
-    where: { userId }
-  });
-  if (password) {
-    throw redirect$1("/settings/profile/password");
-  }
-}
-async function loader$e({ request }) {
-  const userId = await requireUserId(request);
-  await requireNoPassword(userId);
-  return json({});
-}
-async function action$7({ request }) {
-  const userId = await requireUserId(request);
-  await requireNoPassword(userId);
-  const formData = await request.formData();
-  const submission = await parseWithZod(formData, {
-    async: true,
-    schema: CreatePasswordForm
-  });
-  if (submission.status !== "success") {
-    return json(
-      {
-        result: submission.reply({
-          hideFields: ["password", "confirmPassword"]
-        })
-      },
-      { status: submission.status === "error" ? 400 : 200 }
-    );
-  }
-  const { password } = submission.value;
-  await prisma$1.user.update({
-    select: { username: true },
-    where: { id: userId },
-    data: {
-      password: {
-        create: {
-          hash: await getPasswordHash(password)
-        }
-      }
-    }
-  });
-  return redirect$1(`/settings/profile`, { status: 302 });
-}
-function CreatePasswordRoute() {
-  const actionData = useActionData();
-  const isPending = useIsPending();
-  const [form, fields] = useForm({
-    id: "password-create-form",
-    constraint: getZodConstraint(CreatePasswordForm),
-    lastResult: actionData == null ? void 0 : actionData.result,
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema: CreatePasswordForm });
-    },
-    shouldRevalidate: "onBlur"
-  });
-  return /* @__PURE__ */ jsxs(Form, { method: "POST", ...getFormProps(form), className: "mx-auto max-w-md", children: [
-    /* @__PURE__ */ jsx(
-      Field,
-      {
-        labelProps: { children: "New Password" },
-        inputProps: {
-          ...getInputProps(fields.password, { type: "password" }),
-          autoComplete: "new-password"
-        },
-        errors: fields.password.errors
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      Field,
-      {
-        labelProps: { children: "Confirm New Password" },
-        inputProps: {
-          ...getInputProps(fields.confirmPassword, {
-            type: "password"
-          }),
-          autoComplete: "new-password"
-        },
-        errors: fields.confirmPassword.errors
-      }
-    ),
-    /* @__PURE__ */ jsx(ErrorList, { id: form.errorId, errors: form.errors }),
-    /* @__PURE__ */ jsxs("div", { className: "grid w-full grid-cols-2 gap-6", children: [
-      /* @__PURE__ */ jsx(Button, { variant: "secondary", asChild: true, children: /* @__PURE__ */ jsx(Link, { to: "..", children: "Cancel" }) }),
-      /* @__PURE__ */ jsx(
-        StatusButton,
-        {
-          type: "submit",
-          status: isPending ? "pending" : form.status ?? "idle",
-          children: "Create Password"
-        }
-      )
-    ] })
-  ] });
-}
-const route36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  action: action$7,
-  default: CreatePasswordRoute,
-  handle: handle$4,
-  loader: loader$e
-}, Symbol.toStringTag, { value: "Module" }));
-const handle$3 = {
-  breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "avatar", children: "Photo" }),
-  getSitemapEntries: () => null
-};
-const MAX_SIZE = 1024 * 1024 * 3;
-const DeleteImageSchema = z.object({
-  intent: z.literal("delete")
-});
-const NewImageSchema = z.object({
-  intent: z.literal("submit"),
-  photoFile: z.instanceof(File).refine((file) => file.size > 0, "Image is required").refine(
-    (file) => file.size <= MAX_SIZE,
-    "Image size must be less than 3MB"
-  )
-});
-const PhotoFormSchema = z.discriminatedUnion("intent", [
-  DeleteImageSchema,
-  NewImageSchema
-]);
-async function loader$d({ request }) {
-  const userId = await requireUserId(request);
-  const user = await prisma$1.user.findUnique({
-    where: { id: userId },
-    select: {
-      id: true,
-      name: true,
-      username: true,
-      image: { select: { id: true } }
-    }
-  });
-  invariantResponse(user, "User not found", { status: 404 });
-  return json({ user });
-}
-async function action$6({ request }) {
-  const userId = await requireUserId(request);
-  const formData = await unstable_parseMultipartFormData(
-    request,
-    unstable_createMemoryUploadHandler({ maxPartSize: MAX_SIZE })
-  );
-  const submission = await parseWithZod(formData, {
-    schema: PhotoFormSchema.transform(async (data) => {
-      if (data.intent === "delete") return { intent: "delete" };
-      if (data.photoFile.size <= 0) return z.NEVER;
-      return {
-        intent: data.intent,
-        image: {
-          contentType: data.photoFile.type,
-          blob: Buffer.from(await data.photoFile.arrayBuffer())
-        }
-      };
-    }),
-    async: true
-  });
-  if (submission.status !== "success") {
-    return json(
-      { result: submission.reply() },
-      { status: submission.status === "error" ? 400 : 200 }
-    );
-  }
-  const { image, intent } = submission.value;
-  if (intent === "delete") {
-    await prisma$1.userImage.deleteMany({ where: { userId } });
-    return redirect$1("/settings/profile");
-  }
-  await prisma$1.$transaction(async ($prisma) => {
-    await $prisma.userImage.deleteMany({ where: { userId } });
-    await $prisma.user.update({
-      where: { id: userId },
-      data: { image: { create: image } }
-    });
-  });
-  return redirect$1("/settings/profile");
-}
-function PhotoRoute() {
-  var _a2, _b, _c, _d;
-  const data = useLoaderData();
-  const doubleCheckDeleteImage = useDoubleCheck();
-  const actionData = useActionData();
-  const navigation = useNavigation();
-  const [form, fields] = useForm({
-    id: "profile-photo",
-    constraint: getZodConstraint(PhotoFormSchema),
-    lastResult: actionData == null ? void 0 : actionData.result,
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema: PhotoFormSchema });
-    },
-    shouldRevalidate: "onBlur"
-  });
-  const isPending = useIsPending();
-  const pendingIntent = isPending ? (_a2 = navigation.formData) == null ? void 0 : _a2.get("intent") : null;
-  const lastSubmissionIntent = fields.intent.value;
-  const [newImageSrc, setNewImageSrc] = useState(null);
-  return /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs(
-    Form,
-    {
-      method: "POST",
-      encType: "multipart/form-data",
-      className: "flex flex-col items-center justify-center gap-10",
-      onReset: () => setNewImageSrc(null),
-      ...getFormProps(form),
-      children: [
-        /* @__PURE__ */ jsx(
-          "img",
-          {
-            src: newImageSrc ?? (data.user ? getUserImgSrc(data.user.imageUrl) : ""),
-            className: "h-52 w-52 rounded-full object-cover",
-            alt: ((_b = data.user) == null ? void 0 : _b.name) ?? ((_c = data.user) == null ? void 0 : _c.username)
-          }
-        ),
-        /* @__PURE__ */ jsx(ErrorList, { errors: fields.photoFile.errors, id: fields.photoFile.id }),
-        /* @__PURE__ */ jsxs("div", { className: "flex gap-4", children: [
-          /* @__PURE__ */ jsx(
-            "input",
-            {
-              ...getInputProps(fields.photoFile, { type: "file" }),
-              accept: "image/*",
-              className: "peer sr-only",
-              required: true,
-              tabIndex: newImageSrc ? -1 : 0,
-              onChange: (e) => {
-                var _a3;
-                const file = (_a3 = e.currentTarget.files) == null ? void 0 : _a3[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onload = (event) => {
-                    var _a4, _b2;
-                    setNewImageSrc(((_b2 = (_a4 = event.target) == null ? void 0 : _a4.result) == null ? void 0 : _b2.toString()) ?? null);
-                  };
-                  reader.readAsDataURL(file);
-                }
-              }
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Button,
-            {
-              asChild: true,
-              className: "cursor-pointer peer-valid:hidden peer-focus-within:ring-2 peer-focus-visible:ring-2",
-              children: /* @__PURE__ */ jsx("label", { htmlFor: fields.photoFile.id, children: /* @__PURE__ */ jsx(Icon, { name: "pencil-1", children: "Change" }) })
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            StatusButton,
-            {
-              name: "intent",
-              value: "submit",
-              type: "submit",
-              className: "peer-invalid:hidden",
-              status: pendingIntent === "submit" ? "pending" : lastSubmissionIntent === "submit" ? form.status ?? "idle" : "idle",
-              children: "Save Photo"
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            Button,
-            {
-              variant: "destructive",
-              className: "peer-invalid:hidden",
-              ...form.reset.getButtonProps(),
-              children: /* @__PURE__ */ jsx(Icon, { name: "trash", children: "Reset" })
-            }
-          ),
-          ((_d = data.user.image) == null ? void 0 : _d.id) ? /* @__PURE__ */ jsx(
-            StatusButton,
-            {
-              className: "peer-valid:hidden",
-              variant: "destructive",
-              ...doubleCheckDeleteImage.getButtonProps({
-                type: "submit",
-                name: "intent",
-                value: "delete"
-              }),
-              status: pendingIntent === "delete" ? "pending" : lastSubmissionIntent === "delete" ? form.status ?? "idle" : "idle",
-              children: /* @__PURE__ */ jsx(Icon, { name: "trash", children: doubleCheckDeleteImage.doubleCheck ? "Are you sure?" : "Delete" })
-            }
-          ) : null
-        ] }),
-        /* @__PURE__ */ jsx(ErrorList, { errors: form.errors })
-      ]
-    }
-  ) });
-}
-const route37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  action: action$6,
-  default: PhotoRoute,
   handle: handle$3,
-  loader: loader$d
+  loader: loader$9
 }, Symbol.toStringTag, { value: "Module" }));
+const prisma = remember("prisma", () => {
+  const logThreshold = 20;
+  const client = new PrismaClient({
+    log: [
+      { level: "query", emit: "event" },
+      { level: "error", emit: "stdout" },
+      { level: "warn", emit: "stdout" }
+    ]
+  });
+  client.$on("query", async (e) => {
+    if (e.duration < logThreshold) return;
+    const color = e.duration < logThreshold * 1.1 ? "green" : e.duration < logThreshold * 1.2 ? "blue" : e.duration < logThreshold * 1.3 ? "yellow" : e.duration < logThreshold * 1.4 ? "redBright" : "red";
+    const dur = chalk[color](`${e.duration}ms`);
+    console.info(`prisma:query - ${dur} - ${e.query}`);
+  });
+  void client.$connect();
+  return client;
+});
 const handle$2 = {
   breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "lock-open-1", children: "Disable" }),
   getSitemapEntries: () => null
 };
-async function loader$c({ request }) {
+async function loader$8({ request }) {
   await requireRecentVerification(request);
   return json({});
 }
-async function action$5({ request }) {
+async function action$3({ request }) {
   await requireRecentVerification(request);
   const userId = await requireUserId(request);
-  await prisma$1.verification.delete({
+  await prisma.verification.delete({
     where: { target_type: { target: userId, type: twoFAVerificationType } }
   });
   return redirectWithToast("/settings/profile/two-factor", {
@@ -6882,12 +5946,12 @@ function TwoFactorDisableRoute() {
     )
   ] }) });
 }
-const route39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route32 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$5,
+  action: action$3,
   default: TwoFactorDisableRoute,
   handle: handle$2,
-  loader: loader$c
+  loader: loader$8
 }, Symbol.toStringTag, { value: "Module" }));
 const handle$1 = {
   breadcrumb: /* @__PURE__ */ jsx(Icon, { name: "check", children: "Verify" }),
@@ -6903,9 +5967,9 @@ const ActionSchema = z.discriminatedUnion("intent", [
   VerifySchema
 ]);
 const twoFAVerifyVerificationType = "2fa-verify";
-async function loader$b({ request }) {
+async function loader$7({ request }) {
   const userId = await requireUserId(request);
-  const verification = await prisma$1.verification.findUnique({
+  const verification = await prisma.verification.findUnique({
     where: {
       target_type: { type: twoFAVerifyVerificationType, target: userId }
     },
@@ -6920,20 +5984,20 @@ async function loader$b({ request }) {
   if (!verification) {
     return redirect$1("/settings/profile/two-factor");
   }
-  const user = await prisma$1.user.findUniqueOrThrow({
+  const user2 = await prisma.user.findUniqueOrThrow({
     where: { id: userId },
     select: { email: true }
   });
   const issuer = new URL(getDomainUrl(request)).host;
   const otpUri = getTOTPAuthUri({
     ...verification,
-    accountName: user.email,
+    accountName: user2.email,
     issuer
   });
   const qrCode = await QRCode.toDataURL(otpUri);
   return json({ otpUri, qrCode });
 }
-async function action$4({ request }) {
+async function action$2({ request }) {
   const userId = await requireUserId(request);
   const formData = await request.formData();
   const submission = await parseWithZod(formData, {
@@ -6963,13 +6027,13 @@ async function action$4({ request }) {
   }
   switch (submission.value.intent) {
     case "cancel": {
-      await prisma$1.verification.deleteMany({
+      await prisma.verification.deleteMany({
         where: { type: twoFAVerifyVerificationType, target: userId }
       });
       return redirect$1("/settings/profile/two-factor");
     }
     case "verify": {
-      await prisma$1.verification.update({
+      await prisma.verification.update({
         where: {
           target_type: { type: twoFAVerifyVerificationType, target: userId }
         },
@@ -7058,26 +6122,26 @@ function TwoFactorRoute$1() {
     ] }) })
   ] }) });
 }
-const route41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route34 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$4,
+  action: action$2,
   default: TwoFactorRoute$1,
   handle: handle$1,
-  loader: loader$b,
+  loader: loader$7,
   twoFAVerifyVerificationType
 }, Symbol.toStringTag, { value: "Module" }));
 const handle = {
   getSitemapEntries: () => null
 };
-async function loader$a({ request }) {
+async function loader$6({ request }) {
   const userId = await requireUserId(request);
-  const verification = await prisma$1.verification.findUnique({
+  const verification = await prisma.verification.findUnique({
     where: { target_type: { type: twoFAVerificationType, target: userId } },
     select: { id: true }
   });
   return json({ is2FAEnabled: Boolean(verification) });
 }
-async function action$3({ request }) {
+async function action$1({ request }) {
   const userId = await requireUserId(request);
   const { otp: _otp, ...config } = generateTOTP();
   const verificationData = {
@@ -7085,7 +6149,7 @@ async function action$3({ request }) {
     type: twoFAVerifyVerificationType,
     target: userId
   };
-  await prisma$1.verification.upsert({
+  await prisma.verification.upsert({
     where: {
       target_type: { target: userId, type: twoFAVerifyVerificationType }
     },
@@ -7122,12 +6186,12 @@ function TwoFactorRoute() {
     ) })
   ] }) });
 }
-const route40 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route33 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$3,
+  action: action$1,
   default: TwoFactorRoute,
   handle,
-  loader: loader$a
+  loader: loader$6
 }, Symbol.toStringTag, { value: "Module" }));
 const transactionAPI = {
   buyStock: async function(businessId, amount, token) {
@@ -7266,7 +6330,7 @@ const options = {
   tension: 0.3
   // 2. Set the tension (curvature) of the line to your liking.  (You may want to lower this a smidge.)
 };
-const loader$9 = async ({ params, request }) => {
+const loader$5 = async ({ params, request }) => {
   const { id } = params;
   const business = await generalAPI.getPublicCompany(id);
   const authSession = await authSessionStorage.getSession(
@@ -7284,7 +6348,7 @@ const loader$9 = async ({ params, request }) => {
     return json({ business });
   }
 };
-const meta$2 = ({ data }) => {
+const meta = ({ data }) => {
   if (!data || !data.business) {
     return [];
   }
@@ -7538,11 +6602,11 @@ function BusinessDetails$1() {
     ] });
   }
 }
-const route42 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route35 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BusinessDetails$1,
-  loader: loader$9,
-  meta: meta$2,
+  loader: loader$5,
+  meta,
   options
 }, Symbol.toStringTag, { value: "Module" }));
 const defaultCoordinates$1 = { lat: 52.1505506, lng: -106.7468104 };
@@ -7617,12 +6681,12 @@ function Stocks() {
     ) });
   }
 }
-const route43 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route36 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Stocks,
   defaultCoordinates
 }, Symbol.toStringTag, { value: "Module" }));
-const loader$8 = async ({ request }) => {
+const loader$4 = async ({ request }) => {
   const url = new URL(request.url);
   const businessId = url.searchParams.get("businessId");
   const amount = url.searchParams.get("amount");
@@ -7752,12 +6816,12 @@ function DepositPage() {
     /* @__PURE__ */ jsx(Elements, { stripe: stripePromise, children: /* @__PURE__ */ jsx("div", { className: "p-4 w-3/4 mx-auto flex justify-center", children: /* @__PURE__ */ jsx(CheckoutForm, { amount: Number(amount), balance: Number(balance), token, redirectURL: redirect2, type }) }) })
   ] });
 }
-const route44 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route37 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: DepositPage,
-  loader: loader$8
+  loader: loader$4
 }, Symbol.toStringTag, { value: "Module" }));
-const loader$7 = async ({ request }) => {
+const loader$3 = async ({ request }) => {
   const url = new URL(request.url);
   const businessId = url.searchParams.get("businessId");
   const transactionType = url.searchParams.get("type");
@@ -8024,14 +7088,14 @@ function BusinessDetails() {
     orderTable()
   ] });
 }
-const route45 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route38 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: BusinessDetails,
-  loader: loader$7
+  loader: loader$3
 }, Symbol.toStringTag, { value: "Module" }));
 const storage$1 = new Storage();
 const bucketName$1 = "receipts_sk";
-const loader$6 = async ({ request }) => {
+const loader$2 = async ({ request }) => {
   const url = new URL(request.url);
   const businessName = url.searchParams.get("businessName");
   const logoUrl = url.searchParams.get("logoUrl");
@@ -8046,7 +7110,7 @@ const loader$6 = async ({ request }) => {
     return { businessName, logoUrl, businessId };
   }
 };
-const action$2 = async ({ request }) => {
+const action = async ({ request }) => {
   const formData = await request.formData();
   const file = formData.get("image");
   const id = formData.get("id");
@@ -8121,22 +7185,22 @@ function Upload() {
     (actionData == null ? void 0 : actionData.error) && /* @__PURE__ */ jsx("p", { className: "mt-4 text-red-500 text-sm text-center", children: actionData.error })
   ] }) });
 }
-const route46 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route39 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$2,
+  action,
   default: Upload,
-  loader: loader$6
+  loader: loader$2
 }, Symbol.toStringTag, { value: "Module" }));
 const storage = new Storage();
 const bucketName = "receipts_sk";
-const loader$5 = async ({ request }) => {
+const loader$1 = async ({ request }) => {
   const authSession = await authSessionStorage.getSession(
     request.headers.get("cookie")
   );
   const session = authSession.get(sessionKey);
   if (session) {
-    const user = await userAPI.checklogintoken(session);
-    if (user && user.role === "admin") {
+    const user2 = await userAPI.checklogintoken(session);
+    if (user2 && user2.role === "admin") {
       try {
         const receipts = await transactionAPI.getReceipts();
         const signedReceipts = await Promise.all(
@@ -8221,686 +7285,9 @@ function Receipts() {
     ] }) })
   ] });
 }
-const route47 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route40 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Receipts,
-  loader: loader$5
-}, Symbol.toStringTag, { value: "Module" }));
-async function loader$4({ params }) {
-  const owner = await prisma$1.user.findFirst({
-    select: {
-      id: true,
-      name: true,
-      username: true,
-      image: { select: { id: true } },
-      notes: { select: { id: true, title: true } }
-    },
-    where: { username: params.username }
-  });
-  invariantResponse(owner, "Owner not found", { status: 404 });
-  return json({ owner });
-}
-function NotesRoute() {
-  const data = useLoaderData();
-  const user = useOptionalUser();
-  const isOwner = (user == null ? void 0 : user.id) === data.owner.id;
-  const ownerDisplayName = data.owner.name ?? data.owner.username;
-  const navLinkDefaultClassName = "line-clamp-2 block rounded-l-full py-2 pl-8 pr-6 text-base lg:text-xl";
-  return /* @__PURE__ */ jsx("main", { className: "container flex h-full min-h-[400px] px-0 pb-12 md:px-8", children: /* @__PURE__ */ jsxs("div", { className: "grid w-full grid-cols-4 bg-muted pl-2 md:container md:rounded-3xl md:pr-0", children: [
-    /* @__PURE__ */ jsx("div", { className: "relative col-span-1", children: /* @__PURE__ */ jsxs("div", { className: "absolute inset-0 flex flex-col", children: [
-      /* @__PURE__ */ jsxs(
-        Link,
-        {
-          to: `/users/${data.owner.username}`,
-          className: "flex flex-col items-center justify-center gap-2 bg-muted pb-4 pl-8 pr-4 pt-12 lg:flex-row lg:justify-start lg:gap-4",
-          children: [
-            /* @__PURE__ */ jsx(
-              "img",
-              {
-                src: getUserImgSrc(data.owner.imageUrl),
-                alt: ownerDisplayName,
-                className: "h-16 w-16 rounded-full object-cover lg:h-24 lg:w-24"
-              }
-            ),
-            /* @__PURE__ */ jsxs("h1", { className: "text-center text-base font-bold md:text-lg lg:text-left lg:text-2xl", children: [
-              ownerDisplayName,
-              "'s Notes"
-            ] })
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxs("ul", { className: "overflow-y-auto overflow-x-hidden pb-12", children: [
-        isOwner ? /* @__PURE__ */ jsx("li", { className: "p-1 pr-0", children: /* @__PURE__ */ jsx(
-          NavLink,
-          {
-            to: "new",
-            className: ({ isActive }) => cn(navLinkDefaultClassName, isActive && "bg-accent"),
-            children: /* @__PURE__ */ jsx(Icon, { name: "plus", children: "New Note" })
-          }
-        ) }) : null,
-        data.owner.notes.map((note) => /* @__PURE__ */ jsx("li", { className: "p-1 pr-0", children: /* @__PURE__ */ jsx(
-          NavLink,
-          {
-            to: note.id,
-            preventScrollReset: true,
-            prefetch: "intent",
-            className: ({ isActive }) => cn(navLinkDefaultClassName, isActive && "bg-accent"),
-            children: note.title
-          }
-        ) }, note.id))
-      ] })
-    ] }) }),
-    /* @__PURE__ */ jsx("div", { className: "relative col-span-3 bg-accent md:rounded-r-3xl", children: /* @__PURE__ */ jsx(Outlet, {}) })
-  ] }) });
-}
-function ErrorBoundary$3() {
-  return /* @__PURE__ */ jsx(
-    GeneralErrorBoundary,
-    {
-      statusHandlers: {
-        404: ({ params }) => /* @__PURE__ */ jsxs("p", { children: [
-          'No user with the username "',
-          params.username,
-          '" exists'
-        ] })
-      }
-    }
-  );
-}
-const route48 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  ErrorBoundary: ErrorBoundary$3,
-  default: NotesRoute,
-  loader: loader$4
-}, Symbol.toStringTag, { value: "Module" }));
-const floatingToolbarClassName = "absolute bottom-3 left-3 right-3 flex items-center gap-2 rounded-lg bg-muted/80 p-4 pl-5 shadow-xl shadow-accent backdrop-blur-sm md:gap-4 md:pl-7 justify-end";
-async function requireUserWithPermission(request, permission) {
-  const userId = await requireUserId(request);
-  const permissionData = parsePermissionString(permission);
-  const user = await prisma$1.user.findFirst({
-    select: { id: true },
-    where: {
-      id: userId,
-      roles: {
-        some: {
-          permissions: {
-            some: {
-              ...permissionData,
-              access: permissionData.access ? { in: permissionData.access } : void 0
-            }
-          }
-        }
-      }
-    }
-  });
-  if (!user) {
-    throw json(
-      {
-        error: "Unauthorized",
-        requiredPermission: permissionData,
-        message: `Unauthorized: required permissions: ${permission}`
-      },
-      { status: 403 }
-    );
-  }
-  return user.id;
-}
-async function loader$3({ params }) {
-  const note = await prisma$1.note.findUnique({
-    where: { id: params.noteId },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      ownerId: true,
-      updatedAt: true,
-      images: {
-        select: {
-          id: true,
-          altText: true
-        }
-      }
-    }
-  });
-  invariantResponse(note, "Not found", { status: 404 });
-  const date = new Date(note.updatedAt);
-  const timeAgo = formatDistanceToNow(date);
-  return json({
-    note,
-    timeAgo
-  });
-}
-const DeleteFormSchema = z.object({
-  intent: z.literal("delete-note"),
-  noteId: z.string()
-});
-async function action$1({ request }) {
-  const userId = await requireUserId(request);
-  const formData = await request.formData();
-  const submission = parseWithZod(formData, {
-    schema: DeleteFormSchema
-  });
-  if (submission.status !== "success") {
-    return json(
-      { result: submission.reply() },
-      { status: submission.status === "error" ? 400 : 200 }
-    );
-  }
-  const { noteId } = submission.value;
-  const note = await prisma$1.note.findFirst({
-    select: { id: true, ownerId: true, owner: { select: { username: true } } },
-    where: { id: noteId }
-  });
-  invariantResponse(note, "Not found", { status: 404 });
-  const isOwner = note.ownerId === userId;
-  await requireUserWithPermission(
-    request,
-    isOwner ? `delete:note:own` : `delete:note:any`
-  );
-  await prisma$1.note.delete({ where: { id: note.id } });
-  return redirectWithToast(`/users/${note.owner.username}/notes`, {
-    type: "success",
-    title: "Success",
-    description: "Your note has been deleted."
-  });
-}
-function NoteRoute() {
-  const data = useLoaderData();
-  const user = useOptionalUser();
-  const isOwner = (user == null ? void 0 : user.id) === data.note.ownerId;
-  const canDelete = userHasPermission(
-    user,
-    isOwner ? `delete:note:own` : `delete:note:any`
-  );
-  const displayBar = canDelete || isOwner;
-  return /* @__PURE__ */ jsxs("div", { className: "absolute inset-0 flex flex-col px-10", children: [
-    /* @__PURE__ */ jsx("h2", { className: "mb-2 pt-12 text-h2 lg:mb-6", children: data.note.title }),
-    /* @__PURE__ */ jsxs("div", { className: `${displayBar ? "pb-24" : "pb-12"} overflow-y-auto`, children: [
-      /* @__PURE__ */ jsx("ul", { className: "flex flex-wrap gap-5 py-5", children: data.note.images.map((image) => /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx("a", { href: getNoteImgSrc(image.id), children: /* @__PURE__ */ jsx(
-        "img",
-        {
-          src: getNoteImgSrc(image.id),
-          alt: image.altText ?? "",
-          className: "h-32 w-32 rounded-lg object-cover"
-        }
-      ) }) }, image.id)) }),
-      /* @__PURE__ */ jsx("p", { className: "whitespace-break-spaces text-sm md:text-lg", children: data.note.content })
-    ] }),
-    displayBar ? /* @__PURE__ */ jsxs("div", { className: floatingToolbarClassName, children: [
-      /* @__PURE__ */ jsx("span", { className: "text-sm text-foreground/90 max-[524px]:hidden", children: /* @__PURE__ */ jsxs(Icon, { name: "clock", className: "scale-125", children: [
-        data.timeAgo,
-        " ago"
-      ] }) }),
-      /* @__PURE__ */ jsxs("div", { className: "grid flex-1 grid-cols-2 justify-end gap-2 min-[525px]:flex md:gap-4", children: [
-        canDelete ? /* @__PURE__ */ jsx(DeleteNote, { id: data.note.id }) : null,
-        /* @__PURE__ */ jsx(
-          Button,
-          {
-            asChild: true,
-            className: "min-[525px]:max-md:aspect-square min-[525px]:max-md:px-0",
-            children: /* @__PURE__ */ jsx(Link, { to: "edit", children: /* @__PURE__ */ jsx(Icon, { name: "pencil-1", className: "scale-125 max-md:scale-150", children: /* @__PURE__ */ jsx("span", { className: "max-md:hidden", children: "Edit" }) }) })
-          }
-        )
-      ] })
-    ] }) : null
-  ] });
-}
-function DeleteNote({ id }) {
-  const actionData = useActionData();
-  const isPending = useIsPending();
-  const [form] = useForm({
-    id: "delete-note",
-    lastResult: actionData == null ? void 0 : actionData.result
-  });
-  return /* @__PURE__ */ jsxs(Form, { method: "POST", ...getFormProps(form), children: [
-    /* @__PURE__ */ jsx("input", { type: "hidden", name: "noteId", value: id }),
-    /* @__PURE__ */ jsx(
-      StatusButton,
-      {
-        type: "submit",
-        name: "intent",
-        value: "delete-note",
-        variant: "destructive",
-        status: isPending ? "pending" : form.status ?? "idle",
-        disabled: isPending,
-        className: "w-full max-md:aspect-square max-md:px-0",
-        children: /* @__PURE__ */ jsx(Icon, { name: "trash", className: "scale-125 max-md:scale-150", children: /* @__PURE__ */ jsx("span", { className: "max-md:hidden", children: "Delete" }) })
-      }
-    ),
-    /* @__PURE__ */ jsx(ErrorList, { errors: form.errors, id: form.errorId })
-  ] });
-}
-const meta$1 = ({ data, params, matches }) => {
-  var _a2;
-  const notesMatch = matches.find(
-    (m) => m.id === "routes/users+/$username_+/notes"
-  );
-  const displayName = ((_a2 = notesMatch == null ? void 0 : notesMatch.data) == null ? void 0 : _a2.owner.name) ?? params.username;
-  const noteTitle = (data == null ? void 0 : data.note.title) ?? "Note";
-  const noteContentsSummary = data && data.note.content.length > 100 ? (data == null ? void 0 : data.note.content.slice(0, 97)) + "..." : "No content";
-  return [
-    { title: `${noteTitle} | ${displayName}'s Notes | Epic Notes` },
-    {
-      name: "description",
-      content: noteContentsSummary
-    }
-  ];
-};
-function ErrorBoundary$2() {
-  return /* @__PURE__ */ jsx(
-    GeneralErrorBoundary,
-    {
-      statusHandlers: {
-        403: () => /* @__PURE__ */ jsx("p", { children: "You are not allowed to do that" }),
-        404: ({ params }) => /* @__PURE__ */ jsxs("p", { children: [
-          'No note with the id "',
-          params.noteId,
-          '" exists'
-        ] })
-      }
-    }
-  );
-}
-const route49 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  DeleteNote,
-  ErrorBoundary: ErrorBoundary$2,
-  action: action$1,
-  default: NoteRoute,
-  loader: loader$3,
-  meta: meta$1
-}, Symbol.toStringTag, { value: "Module" }));
-const titleMinLength = 1;
-const titleMaxLength = 100;
-const contentMinLength = 1;
-const contentMaxLength = 1e4;
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 3;
-const ImageFieldsetSchema = z.object({
-  id: z.string().optional(),
-  file: z.instanceof(File).optional().refine((file) => {
-    return !file || file.size <= MAX_UPLOAD_SIZE;
-  }, "File size must be less than 3MB"),
-  altText: z.string().optional()
-});
-const NoteEditorSchema = z.object({
-  id: z.string().optional(),
-  title: z.string().min(titleMinLength).max(titleMaxLength),
-  content: z.string().min(contentMinLength).max(contentMaxLength),
-  images: z.array(ImageFieldsetSchema).max(5).optional()
-});
-function NoteEditor({
-  note
-}) {
-  const actionData = useActionData();
-  const isPending = useIsPending();
-  const [form, fields] = useForm({
-    id: "note-editor",
-    constraint: getZodConstraint(NoteEditorSchema),
-    lastResult: actionData == null ? void 0 : actionData.result,
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema: NoteEditorSchema });
-    },
-    defaultValue: {
-      ...note,
-      images: (note == null ? void 0 : note.images) ?? [{}]
-    },
-    shouldRevalidate: "onBlur"
-  });
-  const imageList = fields.images.getFieldList();
-  return /* @__PURE__ */ jsx("div", { className: "absolute inset-0", children: /* @__PURE__ */ jsxs(FormProvider, { context: form.context, children: [
-    /* @__PURE__ */ jsxs(
-      Form,
-      {
-        method: "POST",
-        className: "flex h-full flex-col gap-y-4 overflow-y-auto overflow-x-hidden px-10 pb-28 pt-12",
-        ...getFormProps(form),
-        encType: "multipart/form-data",
-        children: [
-          /* @__PURE__ */ jsx("button", { type: "submit", className: "hidden" }),
-          note ? /* @__PURE__ */ jsx("input", { type: "hidden", name: "id", value: note.id }) : null,
-          /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-1", children: [
-            /* @__PURE__ */ jsx(
-              Field,
-              {
-                labelProps: { children: "Title" },
-                inputProps: {
-                  autoFocus: true,
-                  ...getInputProps(fields.title, { type: "text" })
-                },
-                errors: fields.title.errors
-              }
-            ),
-            /* @__PURE__ */ jsx(
-              TextareaField,
-              {
-                labelProps: { children: "Content" },
-                textareaProps: {
-                  ...getTextareaProps(fields.content)
-                },
-                errors: fields.content.errors
-              }
-            ),
-            /* @__PURE__ */ jsxs("div", { children: [
-              /* @__PURE__ */ jsx(Label, { children: "Images" }),
-              /* @__PURE__ */ jsx("ul", { className: "flex flex-col gap-4", children: imageList.map((image, index) => {
-                return /* @__PURE__ */ jsxs(
-                  "li",
-                  {
-                    className: "relative border-b-2 border-muted-foreground",
-                    children: [
-                      /* @__PURE__ */ jsxs(
-                        "button",
-                        {
-                          className: "absolute right-0 top-0 text-foreground-destructive",
-                          ...form.remove.getButtonProps({
-                            name: fields.images.name,
-                            index
-                          }),
-                          children: [
-                            /* @__PURE__ */ jsx("span", { "aria-hidden": true, children: /* @__PURE__ */ jsx(Icon, { name: "cross-1" }) }),
-                            " ",
-                            /* @__PURE__ */ jsxs("span", { className: "sr-only", children: [
-                              "Remove image ",
-                              index + 1
-                            ] })
-                          ]
-                        }
-                      ),
-                      /* @__PURE__ */ jsx(ImageChooser, { meta: image })
-                    ]
-                  },
-                  image.key
-                );
-              }) })
-            ] }),
-            /* @__PURE__ */ jsxs(
-              Button,
-              {
-                className: "mt-3",
-                ...form.insert.getButtonProps({ name: fields.images.name }),
-                children: [
-                  /* @__PURE__ */ jsx("span", { "aria-hidden": true, children: /* @__PURE__ */ jsx(Icon, { name: "plus", children: "Image" }) }),
-                  " ",
-                  /* @__PURE__ */ jsx("span", { className: "sr-only", children: "Add image" })
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsx(ErrorList, { id: form.errorId, errors: form.errors })
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxs("div", { className: floatingToolbarClassName, children: [
-      /* @__PURE__ */ jsx(Button, { variant: "destructive", ...form.reset.getButtonProps(), children: "Reset" }),
-      /* @__PURE__ */ jsx(
-        StatusButton,
-        {
-          form: form.id,
-          type: "submit",
-          disabled: isPending,
-          status: isPending ? "pending" : "idle",
-          children: "Submit"
-        }
-      )
-    ] })
-  ] }) });
-}
-function ImageChooser({ meta: meta2 }) {
-  const fields = meta2.getFieldset();
-  const existingImage = Boolean(fields.id.initialValue);
-  const [previewImage, setPreviewImage] = useState(
-    fields.id.initialValue ? getNoteImgSrc(fields.id.initialValue) : null
-  );
-  const [altText, setAltText] = useState(fields.altText.initialValue ?? "");
-  return /* @__PURE__ */ jsxs("fieldset", { ...getFieldsetProps(meta2), children: [
-    /* @__PURE__ */ jsxs("div", { className: "flex gap-3", children: [
-      /* @__PURE__ */ jsxs("div", { className: "w-32", children: [
-        /* @__PURE__ */ jsx("div", { className: "relative h-32 w-32", children: /* @__PURE__ */ jsxs(
-          "label",
-          {
-            htmlFor: fields.file.id,
-            className: cn("group absolute h-32 w-32 rounded-lg", {
-              "bg-accent opacity-40 focus-within:opacity-100 hover:opacity-100": !previewImage,
-              "cursor-pointer focus-within:ring-2": !existingImage
-            }),
-            children: [
-              previewImage ? /* @__PURE__ */ jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsx(
-                  "img",
-                  {
-                    src: previewImage,
-                    alt: altText ?? "",
-                    className: "h-32 w-32 rounded-lg object-cover"
-                  }
-                ),
-                existingImage ? null : /* @__PURE__ */ jsx("div", { className: "pointer-events-none absolute -right-0.5 -top-0.5 rotate-12 rounded-sm bg-secondary px-2 py-1 text-xs text-secondary-foreground shadow-md", children: "new" })
-              ] }) : /* @__PURE__ */ jsx("div", { className: "flex h-32 w-32 items-center justify-center rounded-lg border border-muted-foreground text-4xl text-muted-foreground", children: /* @__PURE__ */ jsx(Icon, { name: "plus" }) }),
-              existingImage ? /* @__PURE__ */ jsx("input", { ...getInputProps(fields.id, { type: "hidden" }) }) : null,
-              /* @__PURE__ */ jsx(
-                "input",
-                {
-                  "aria-label": "Image",
-                  className: "absolute left-0 top-0 z-0 h-32 w-32 cursor-pointer opacity-0",
-                  onChange: (event) => {
-                    var _a2;
-                    const file = (_a2 = event.target.files) == null ? void 0 : _a2[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        setPreviewImage(reader.result);
-                      };
-                      reader.readAsDataURL(file);
-                    } else {
-                      setPreviewImage(null);
-                    }
-                  },
-                  accept: "image/*",
-                  ...getInputProps(fields.file, { type: "file" })
-                }
-              )
-            ]
-          }
-        ) }),
-        /* @__PURE__ */ jsx("div", { className: "min-h-[32px] px-4 pb-3 pt-1", children: /* @__PURE__ */ jsx(ErrorList, { id: fields.file.errorId, errors: fields.file.errors }) })
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex-1", children: [
-        /* @__PURE__ */ jsx(Label, { htmlFor: fields.altText.id, children: "Alt Text" }),
-        /* @__PURE__ */ jsx(
-          Textarea,
-          {
-            onChange: (e) => setAltText(e.currentTarget.value),
-            ...getTextareaProps(fields.altText)
-          }
-        ),
-        /* @__PURE__ */ jsx("div", { className: "min-h-[32px] px-4 pb-3 pt-1", children: /* @__PURE__ */ jsx(
-          ErrorList,
-          {
-            id: fields.altText.errorId,
-            errors: fields.altText.errors
-          }
-        ) })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsx("div", { className: "min-h-[32px] px-4 pb-3 pt-1", children: /* @__PURE__ */ jsx(ErrorList, { id: meta2.errorId, errors: meta2.errors }) })
-  ] });
-}
-function imageHasFile(image) {
-  var _a2, _b;
-  return Boolean(((_a2 = image.file) == null ? void 0 : _a2.size) && ((_b = image.file) == null ? void 0 : _b.size) > 0);
-}
-function imageHasId(image) {
-  return image.id != null;
-}
-async function action({ request }) {
-  const userId = await requireUserId(request);
-  const formData = await unstable_parseMultipartFormData(
-    request,
-    unstable_createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE })
-  );
-  const submission = await parseWithZod(formData, {
-    schema: NoteEditorSchema.superRefine(async (data, ctx) => {
-      if (!data.id) return;
-      const note = await prisma$1.note.findUnique({
-        select: { id: true },
-        where: { id: data.id, ownerId: userId }
-      });
-      if (!note) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Note not found"
-        });
-      }
-    }).transform(async ({ images = [], ...data }) => {
-      return {
-        ...data,
-        imageUpdates: await Promise.all(
-          images.filter(imageHasId).map(async (i) => {
-            if (imageHasFile(i)) {
-              return {
-                id: i.id,
-                altText: i.altText,
-                contentType: i.file.type,
-                blob: Buffer.from(await i.file.arrayBuffer())
-              };
-            } else {
-              return {
-                id: i.id,
-                altText: i.altText
-              };
-            }
-          })
-        ),
-        newImages: await Promise.all(
-          images.filter(imageHasFile).filter((i) => !i.id).map(async (image) => {
-            return {
-              altText: image.altText,
-              contentType: image.file.type,
-              blob: Buffer.from(await image.file.arrayBuffer())
-            };
-          })
-        )
-      };
-    }),
-    async: true
-  });
-  if (submission.status !== "success") {
-    return json(
-      { result: submission.reply() },
-      { status: submission.status === "error" ? 400 : 200 }
-    );
-  }
-  const {
-    id: noteId,
-    title,
-    content,
-    imageUpdates = [],
-    newImages = []
-  } = submission.value;
-  const updatedNote = await prisma$1.note.upsert({
-    select: { id: true, owner: { select: { username: true } } },
-    where: { id: noteId ?? "__new_note__" },
-    create: {
-      ownerId: userId,
-      title,
-      content,
-      images: { create: newImages }
-    },
-    update: {
-      title,
-      content,
-      images: {
-        deleteMany: { id: { notIn: imageUpdates.map((i) => i.id) } },
-        updateMany: imageUpdates.map((updates) => ({
-          where: { id: updates.id },
-          data: { ...updates, id: updates.blob ? createId() : updates.id }
-        })),
-        create: newImages
-      }
-    }
-  });
-  return redirect$1(
-    `/users/${updatedNote.owner.username}/notes/${updatedNote.id}`
-  );
-}
-async function loader$2({ params, request }) {
-  const userId = await requireUserId(request);
-  const note = await prisma$1.note.findFirst({
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      images: {
-        select: {
-          id: true,
-          altText: true
-        }
-      }
-    },
-    where: {
-      id: params.noteId,
-      ownerId: userId
-    }
-  });
-  invariantResponse(note, "Not found", { status: 404 });
-  return json({ note });
-}
-function NoteEdit() {
-  const data = useLoaderData();
-  return /* @__PURE__ */ jsx(NoteEditor, { note: data.note });
-}
-function ErrorBoundary$1() {
-  return /* @__PURE__ */ jsx(
-    GeneralErrorBoundary,
-    {
-      statusHandlers: {
-        404: ({ params }) => /* @__PURE__ */ jsxs("p", { children: [
-          'No note with the id "',
-          params.noteId,
-          '" exists'
-        ] })
-      }
-    }
-  );
-}
-const route50 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  ErrorBoundary: ErrorBoundary$1,
-  action,
-  default: NoteEdit,
-  loader: loader$2
-}, Symbol.toStringTag, { value: "Module" }));
-function NotesIndexRoute() {
-  return /* @__PURE__ */ jsx("div", { className: "container pt-12", children: /* @__PURE__ */ jsx("p", { className: "text-body-md", children: "Select a note" }) });
-}
-const meta = ({ params, matches }) => {
-  var _a2, _b;
-  const notesMatch = matches.find(
-    (m) => m.id === "routes/users+/$username_+/notes"
-  );
-  const displayName = ((_a2 = notesMatch == null ? void 0 : notesMatch.data) == null ? void 0 : _a2.owner.name) ?? params.username;
-  const noteCount = ((_b = notesMatch == null ? void 0 : notesMatch.data) == null ? void 0 : _b.owner.notes.length) ?? 0;
-  const notesText = noteCount === 1 ? "note" : "notes";
-  return [
-    { title: `${displayName}'s Notes | Epic Notes` },
-    {
-      name: "description",
-      content: `Checkout ${displayName}'s ${noteCount} ${notesText} on Epic Notes`
-    }
-  ];
-};
-const route51 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: NotesIndexRoute,
-  meta
-}, Symbol.toStringTag, { value: "Module" }));
-async function loader$1({ request }) {
-  await requireUserId(request);
-  return json({});
-}
-const route52 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  action,
-  default: NoteEditor,
   loader: loader$1
 }, Symbol.toStringTag, { value: "Module" }));
 const loader = async ({ params, request }) => {
@@ -8909,9 +7296,9 @@ const loader = async ({ params, request }) => {
   );
   const session = authSession.get(sessionKey);
   if (session) {
-    const user = await userAPI.checklogintoken(session);
-    if (user) {
-      return json({ user, userJoinedDisplay: new Date(user.createdAt).toLocaleDateString() });
+    const user2 = await userAPI.checklogintoken(session);
+    if (user2) {
+      return json({ user: user2, userJoinedDisplay: new Date(user2.createdAt).toLocaleDateString() });
     } else {
       return redirect$1("/");
     }
@@ -8920,15 +7307,15 @@ const loader = async ({ params, request }) => {
   }
 };
 function ProfileRoute() {
-  const { user, userJoinedDisplay } = useLoaderData();
+  const { user: user2, userJoinedDisplay } = useLoaderData();
   const loggedInUser = useOptionalUser();
-  const isLoggedInUser = user._id === (loggedInUser == null ? void 0 : loggedInUser._id);
+  const isLoggedInUser = user2._id === (loggedInUser == null ? void 0 : loggedInUser._id);
   return /* @__PURE__ */ jsxs("div", { className: "container mb-48 mt-36 flex flex-col items-center justify-center", children: [
     /* @__PURE__ */ jsx(Spacer, { size: "4xs" }),
     /* @__PURE__ */ jsxs("div", { className: "container flex flex-col items-center rounded-3xl bg-muted p-12", children: [
       /* @__PURE__ */ jsx(Spacer, { size: "sm" }),
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col items-center", children: [
-        /* @__PURE__ */ jsx("div", { className: "flex flex-wrap items-center justify-center gap-4", children: /* @__PURE__ */ jsx("h1", { className: "text-center text-h2", children: user.name }) }),
+        /* @__PURE__ */ jsx("div", { className: "flex flex-wrap items-center justify-center gap-4", children: /* @__PURE__ */ jsx("h1", { className: "text-center text-h2", children: user2.name }) }),
         /* @__PURE__ */ jsxs("p", { className: "mt-2 text-center text-muted-foreground", children: [
           "Joined: ",
           userJoinedDisplay
@@ -8937,11 +7324,11 @@ function ProfileRoute() {
           /* @__PURE__ */ jsx("h2", { className: "text-2xl text-center font-bold mb-4", children: "User Statistics" }),
           /* @__PURE__ */ jsxs("div", { className: "flex flex-row justify-between gap-4", children: [
             /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between", children: [
-              /* @__PURE__ */ jsx("span", { className: "text-center text-lg", children: user.history.length }),
+              /* @__PURE__ */ jsx("span", { className: "text-center text-lg", children: user2.history.length }),
               /* @__PURE__ */ jsx("span", { className: "text-sm", children: " Trades Lifetime" })
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "flex flex-col justify-between", children: [
-              /* @__PURE__ */ jsx("span", { className: "text-center text-lg", children: user.investments.length }),
+              /* @__PURE__ */ jsx("span", { className: "text-center text-lg", children: user2.investments.length }),
               /* @__PURE__ */ jsx("span", { className: "text-sm", children: " Investments Lifetime" })
             ] })
           ] })
@@ -8954,7 +7341,7 @@ function ProfileRoute() {
             {
               to: {
                 pathname: "/settings/profile",
-                search: `?id=${user._id}&username=${user.username}&name=${user.name}&email=${user.email}`
+                search: `?id=${user2._id}&username=${user2.username}&name=${user2.name}&email=${user2.email}`
               },
               prefetch: "intent",
               children: "Edit profile"
@@ -8979,13 +7366,13 @@ function ErrorBoundary() {
     }
   );
 }
-const route53 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route41 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   ErrorBoundary,
   default: ProfileRoute,
   loader
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-DbgnsMTe.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/root-0znB0m2h.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-7CkHrf4S.js", "/assets/clsx-B-dksMZM.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/index-BeXw7Xwl.js", "/assets/submission-BBd9SSur.js", "/assets/hoist-non-react-statics.cjs-Bt47ycYn.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/icon-CldSu2rP.js", "/assets/MantineThemeProvider-Bs4ALb5h.js", "/assets/button-BTFmWHin.js", "/assets/index-4Ns2fbOC.js", "/assets/parse-C-ev3aC7.js", "/assets/user-BEA_DXvQ.js", "/assets/performance-DXAzA4Eb.js"], "css": [] }, "routes/$": { "id": "routes/$", "parentId": "root", "path": "*", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/_-BZ2HFJNq.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/icon-CldSu2rP.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes/_auth+/auth.$provider": { "id": "routes/_auth+/auth.$provider", "parentId": "root", "path": "auth/:provider", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/auth._provider-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_auth+/auth.$provider.callback": { "id": "routes/_auth+/auth.$provider.callback", "parentId": "routes/_auth+/auth.$provider", "path": "callback", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/auth._provider.callback-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_auth+/forgot-password": { "id": "routes/_auth+/forgot-password", "parentId": "root", "path": "forgot-password", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/forgot-password-B_bhBRcI.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/_auth+/login": { "id": "routes/_auth+/login", "parentId": "root", "path": "login", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/login-D5J8TEnO.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/parse-C-ev3aC7.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/forms-pZ2rD6vG.js", "/assets/spacer-ByPtYu5l.js", "/assets/connections-BTFa11bu.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/_auth+/logout": { "id": "routes/_auth+/logout", "parentId": "root", "path": "logout", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/logout-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_auth+/onboarding": { "id": "routes/_auth+/onboarding", "parentId": "root", "path": "onboarding", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/onboarding-YoMb5wfp.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/honeypot-4ssNBlKD.js", "/assets/forms-pZ2rD6vG.js", "/assets/spacer-ByPtYu5l.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/_auth+/onboarding_.$provider": { "id": "routes/_auth+/onboarding_.$provider", "parentId": "root", "path": "onboarding/:provider", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/onboarding_._provider-DAYYTtgd.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/forms-pZ2rD6vG.js", "/assets/spacer-ByPtYu5l.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/_auth+/reset-password": { "id": "routes/_auth+/reset-password", "parentId": "root", "path": "reset-password", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/reset-password-DRVndaSa.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/_auth+/signup": { "id": "routes/_auth+/signup", "parentId": "root", "path": "signup", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/signup-DIoFyJNw.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/parse-C-ev3aC7.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/forms-pZ2rD6vG.js", "/assets/connections-BTFa11bu.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/_auth+/verify": { "id": "routes/_auth+/verify", "parentId": "root", "path": "verify", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/verify-BgUGjlc7.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/forms-pZ2rD6vG.js", "/assets/spacer-ByPtYu5l.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/_marketing+/about": { "id": "routes/_marketing+/about", "parentId": "root", "path": "about", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/about-CpAkKc7a.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/_marketing+/index": { "id": "routes/_marketing+/index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-BepvbpwI.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/index-4Ns2fbOC.js", "/assets/misc-D_OAexT3.js", "/assets/tooltip-DXoIDLmn.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes/_marketing+/privacy": { "id": "routes/_marketing+/privacy", "parentId": "root", "path": "privacy", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/privacy-DwYth3gC.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/_marketing+/support": { "id": "routes/_marketing+/support", "parentId": "root", "path": "support", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/support-BatEqENl.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/_marketing+/tailwind-preset": { "id": "routes/_marketing+/tailwind-preset", "parentId": "root", "path": "tailwind-preset", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/tailwind-preset-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_marketing+/tos": { "id": "routes/_marketing+/tos", "parentId": "root", "path": "tos", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/tos-Od7hh2yD.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/admin+/createcompany": { "id": "routes/admin+/createcompany", "parentId": "root", "path": "admin/createcompany", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/createcompany-SsOSo9PT.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/MantineThemeProvider-Bs4ALb5h.js", "/assets/axiosConfig-D8aEX1dT.js", "/assets/components-7CkHrf4S.js", "/assets/clsx-B-dksMZM.js", "/assets/objectWithoutPropertiesLoose-BjXSgPXB.js"], "css": [] }, "routes/dashboard+/index": { "id": "routes/dashboard+/index", "parentId": "root", "path": "dashboard/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-Bxwuj0-j.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-7CkHrf4S.js", "/assets/lib-Le9o1phv.js", "/assets/iconBase-Bmdj62hD.js", "/assets/index-Db_Hr1iE.js"], "css": [] }, "routes/history+/index": { "id": "routes/history+/index", "parentId": "root", "path": "history/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-ciwHZdmP.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-7CkHrf4S.js", "/assets/lib-Le9o1phv.js", "/assets/clsx-B-dksMZM.js", "/assets/hoist-non-react-statics.cjs-Bt47ycYn.js", "/assets/objectWithoutPropertiesLoose-BjXSgPXB.js", "/assets/iconBase-Bmdj62hD.js", "/assets/index-BDrv6p2D.js"], "css": [] }, "routes/leaderboard+/index": { "id": "routes/leaderboard+/index", "parentId": "root", "path": "leaderboard/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-BD2fZKTs.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-7CkHrf4S.js", "/assets/lib-Le9o1phv.js", "/assets/clsx-B-dksMZM.js", "/assets/hoist-non-react-statics.cjs-Bt47ycYn.js", "/assets/objectWithoutPropertiesLoose-BjXSgPXB.js", "/assets/iconBase-Bmdj62hD.js", "/assets/index-BDrv6p2D.js"], "css": [] }, "routes/me": { "id": "routes/me", "parentId": "root", "path": "me", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/me-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/_seo+/robots[.]txt": { "id": "routes/resources+/_seo+/robots[.]txt", "parentId": "root", "path": "resources/robots.txt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/robots_._txt-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/_seo+/sitemap[.]xml": { "id": "routes/resources+/_seo+/sitemap[.]xml", "parentId": "root", "path": "resources/sitemap.xml", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/sitemap_._xml-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/download-user-data": { "id": "routes/resources+/download-user-data", "parentId": "root", "path": "resources/download-user-data", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/download-user-data-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/healthcheck": { "id": "routes/resources+/healthcheck", "parentId": "root", "path": "resources/healthcheck", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/healthcheck-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/note-images.$imageId": { "id": "routes/resources+/note-images.$imageId", "parentId": "root", "path": "resources/note-images/:imageId", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/note-images._imageId-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/theme-switch": { "id": "routes/resources+/theme-switch", "parentId": "root", "path": "resources/theme-switch", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/theme-switch-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/user-images.$imageId": { "id": "routes/resources+/user-images.$imageId", "parentId": "root", "path": "resources/user-images/:imageId", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/user-images._imageId-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/send": { "id": "routes/send", "parentId": "root", "path": "send", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/send-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/settings+/profile": { "id": "routes/settings+/profile", "parentId": "root", "path": "settings/profile", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile-DRYvpP_m.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/index-BeXw7Xwl.js", "/assets/spacer-ByPtYu5l.js", "/assets/icon-CldSu2rP.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes/settings+/profile.change-email": { "id": "routes/settings+/profile.change-email", "parentId": "routes/settings+/profile", "path": "change-email", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.change-email-BSzDL99P.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/settings+/profile.connections": { "id": "routes/settings+/profile.connections", "parentId": "routes/settings+/profile", "path": "connections", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.connections-D_pMg4KH.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/index-tx3aR2qd.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/connections-BTFa11bu.js"], "css": [] }, "routes/settings+/profile.index": { "id": "routes/settings+/profile.index", "parentId": "routes/settings+/profile", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.index-CzsioT8P.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/settings+/profile.password": { "id": "routes/settings+/profile.password", "parentId": "routes/settings+/profile", "path": "password", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.password-7xm7F2DX.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/settings+/profile.password_.create": { "id": "routes/settings+/profile.password_.create", "parentId": "routes/settings+/profile", "path": "password/create", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.password_.create-D9whIFuv.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/settings+/profile.photo": { "id": "routes/settings+/profile.photo", "parentId": "routes/settings+/profile", "path": "photo", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.photo-MlkfTEEi.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/settings+/profile.two-factor": { "id": "routes/settings+/profile.two-factor", "parentId": "routes/settings+/profile", "path": "two-factor", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor-rn66V8Ov.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/icon-CldSu2rP.js"], "css": [] }, "routes/settings+/profile.two-factor.disable": { "id": "routes/settings+/profile.two-factor.disable", "parentId": "routes/settings+/profile.two-factor", "path": "disable", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor.disable-dYgQuMMw.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/index-tx3aR2qd.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes/settings+/profile.two-factor.index": { "id": "routes/settings+/profile.two-factor.index", "parentId": "routes/settings+/profile.two-factor", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor.index-C00mHC3I.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/index-tx3aR2qd.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes/settings+/profile.two-factor.verify": { "id": "routes/settings+/profile.two-factor.verify", "parentId": "routes/settings+/profile.two-factor", "path": "verify", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor.verify-DUwtJQXL.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/stocks+/$id": { "id": "routes/stocks+/$id", "parentId": "root", "path": "stocks/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_id-TyrjtLEp.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/axiosConfig-D8aEX1dT.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/esm-CLJVFegd.js", "/assets/index-Db_Hr1iE.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/lib-Le9o1phv.js", "/assets/components-7CkHrf4S.js"], "css": ["/assets/_id-bOnKuTre.css", "/assets/ReactToastify-BTGsrsBX.css"] }, "routes/stocks+/index": { "id": "routes/stocks+/index", "parentId": "root", "path": "stocks/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-DHlrGwop.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/esm-CLJVFegd.js", "/assets/axiosConfig-D8aEX1dT.js"], "css": [] }, "routes/stripe+/index": { "id": "routes/stripe+/index", "parentId": "root", "path": "stripe/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-CZU1NGQ9.js", "imports": ["/assets/axiosConfig-D8aEX1dT.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/clsx-B-dksMZM.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/components-7CkHrf4S.js"], "css": ["/assets/ReactToastify-BTGsrsBX.css"] }, "routes/transact+/index": { "id": "routes/transact+/index", "parentId": "root", "path": "transact/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-D43cpsAF.js", "imports": ["/assets/axiosConfig-D8aEX1dT.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/clsx-B-dksMZM.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/lib-Le9o1phv.js", "/assets/components-7CkHrf4S.js"], "css": ["/assets/ReactToastify-BTGsrsBX.css"] }, "routes/upload+/index": { "id": "routes/upload+/index", "parentId": "root", "path": "upload/", "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-8pIoqKmH.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes/upload+/receipt": { "id": "routes/upload+/receipt", "parentId": "root", "path": "upload/receipt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/receipt-QWix7P_p.js", "imports": ["/assets/axiosConfig-D8aEX1dT.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/clsx-B-dksMZM.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/components-7CkHrf4S.js"], "css": [] }, "routes/user+/$username_+/notes": { "id": "routes/user+/$username_+/notes", "parentId": "root", "path": "user/:username/notes", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/notes-CckWSeNU.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/components-7CkHrf4S.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/icon-CldSu2rP.js", "/assets/user-BEA_DXvQ.js"], "css": [] }, "routes/user+/$username_+/notes.$noteId": { "id": "routes/user+/$username_+/notes.$noteId", "parentId": "routes/user+/$username_+/notes", "path": ":noteId", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/notes._noteId-kKeMS5mq.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/components-7CkHrf4S.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/floating-toolbar-B1U7BWws.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/user-BEA_DXvQ.js"], "css": [] }, "routes/user+/$username_+/notes.$noteId_.edit": { "id": "routes/user+/$username_+/notes.$noteId_.edit", "parentId": "routes/user+/$username_+/notes", "path": ":noteId/edit", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/notes._noteId_.edit-CgkHExBT.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/floating-toolbar-B1U7BWws.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/notes.new-Dgvq8P0o.js"], "css": [] }, "routes/user+/$username_+/notes.index": { "id": "routes/user+/$username_+/notes.index", "parentId": "routes/user+/$username_+/notes", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/notes.index-x3jVBR3z.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/user+/$username_+/notes.new": { "id": "routes/user+/$username_+/notes.new", "parentId": "routes/user+/$username_+/notes", "path": "new", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/notes.new-Dgvq8P0o.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/submission-BBd9SSur.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/tooltip-DXoIDLmn.js", "/assets/index-BeXw7Xwl.js", "/assets/parse-C-ev3aC7.js", "/assets/floating-toolbar-B1U7BWws.js", "/assets/forms-pZ2rD6vG.js", "/assets/status-button-jM1d2HtI.js", "/assets/components-7CkHrf4S.js", "/assets/constraint-Bik5U1QS.js"], "css": [] }, "routes/user+/index": { "id": "routes/user+/index", "parentId": "root", "path": "user/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/index-C84ZGANU.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-D_OAexT3.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/components-7CkHrf4S.js", "/assets/error-boundary-BSGQcXDS.js", "/assets/spacer-ByPtYu5l.js", "/assets/button-BTFmWHin.js", "/assets/icon-CldSu2rP.js", "/assets/user-BEA_DXvQ.js"], "css": [] } }, "url": "/assets/manifest-cdf5198f.js", "version": "cdf5198f" };
+const serverManifest = { "entry": { "module": "/assets/entry.client-CPcp5uTP.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/root-Dzgre5KE.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-BulwabtP.js", "/assets/clsx-B-dksMZM.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/index-BeXw7Xwl.js", "/assets/hoist-non-react-statics.cjs-Bt47ycYn.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-r2anonTu.js", "/assets/icon-DNfY9fbA.js", "/assets/MantineThemeProvider-Bs4ALb5h.js", "/assets/button-BOdK6DJc.js", "/assets/index-4Ns2fbOC.js", "/assets/parse-DONhxXj2.js", "/assets/user-DTujC4T9.js", "/assets/performance-DXAzA4Eb.js"], "css": [] }, "routes/$": { "id": "routes/$", "parentId": "root", "path": "*", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/_-BQxCf8wr.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/error-boundary-r2anonTu.js", "/assets/icon-DNfY9fbA.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/_auth+/auth.$provider": { "id": "routes/_auth+/auth.$provider", "parentId": "root", "path": "auth/:provider", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/auth._provider-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_auth+/auth.$provider.callback": { "id": "routes/_auth+/auth.$provider.callback", "parentId": "routes/_auth+/auth.$provider", "path": "callback", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/auth._provider.callback-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_auth+/forgot-password": { "id": "routes/_auth+/forgot-password", "parentId": "root", "path": "forgot-password", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/forgot-password-DWppvyQ9.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/index-BeXw7Xwl.js", "/assets/index-tx3aR2qd.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-r2anonTu.js", "/assets/forms-Dd4gJQEl.js", "/assets/status-button-trRbWWOl.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/_auth+/login": { "id": "routes/_auth+/login", "parentId": "root", "path": "login", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/login-CfJPtQK6.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/index-BeXw7Xwl.js", "/assets/index-tx3aR2qd.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/status-button-trRbWWOl.js", "/assets/components-BulwabtP.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-r2anonTu.js", "/assets/forms-Dd4gJQEl.js", "/assets/spacer-ByPtYu5l.js", "/assets/connections-ChdVp00A.js", "/assets/user-validation-Bfp_zbB5.js"], "css": [] }, "routes/_auth+/logout": { "id": "routes/_auth+/logout", "parentId": "root", "path": "logout", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/logout-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_auth+/onboarding": { "id": "routes/_auth+/onboarding", "parentId": "root", "path": "onboarding", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/onboarding-BVxn9TRp.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-BeXw7Xwl.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/honeypot-4ssNBlKD.js", "/assets/forms-Dd4gJQEl.js", "/assets/spacer-ByPtYu5l.js", "/assets/status-button-trRbWWOl.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/_auth+/onboarding_.$provider": { "id": "routes/_auth+/onboarding_.$provider", "parentId": "root", "path": "onboarding/:provider", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/onboarding_._provider-CwNUcQa8.js", "imports": ["/assets/index-BeXw7Xwl.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/forms-Dd4gJQEl.js", "/assets/spacer-ByPtYu5l.js", "/assets/status-button-trRbWWOl.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/_auth+/reset-password": { "id": "routes/_auth+/reset-password", "parentId": "root", "path": "reset-password", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/reset-password-CR2TKyxR.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/index-BeXw7Xwl.js", "/assets/index-tx3aR2qd.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/error-boundary-r2anonTu.js", "/assets/forms-Dd4gJQEl.js", "/assets/status-button-trRbWWOl.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/_auth+/signup": { "id": "routes/_auth+/signup", "parentId": "root", "path": "signup", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/signup-BxlTwfqC.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/index-BeXw7Xwl.js", "/assets/index-tx3aR2qd.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/status-button-trRbWWOl.js", "/assets/components-BulwabtP.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-r2anonTu.js", "/assets/forms-Dd4gJQEl.js", "/assets/connections-ChdVp00A.js", "/assets/user-validation-Bfp_zbB5.js"], "css": [] }, "routes/_auth+/verify": { "id": "routes/_auth+/verify", "parentId": "root", "path": "verify", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/verify-5nlsL-2-.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/index-BeXw7Xwl.js", "/assets/index-tx3aR2qd.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/honeypot-4ssNBlKD.js", "/assets/error-boundary-r2anonTu.js", "/assets/forms-Dd4gJQEl.js", "/assets/spacer-ByPtYu5l.js", "/assets/status-button-trRbWWOl.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/_marketing+/about": { "id": "routes/_marketing+/about", "parentId": "root", "path": "about", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/about-CpAkKc7a.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/_marketing+/index": { "id": "routes/_marketing+/index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-CoB_AXH1.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/index-4Ns2fbOC.js", "/assets/misc-BxwGVpjn.js", "/assets/tooltip-eZifkrgt.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/_marketing+/privacy": { "id": "routes/_marketing+/privacy", "parentId": "root", "path": "privacy", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/privacy-DwYth3gC.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/_marketing+/support": { "id": "routes/_marketing+/support", "parentId": "root", "path": "support", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/support-BatEqENl.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/_marketing+/tailwind-preset": { "id": "routes/_marketing+/tailwind-preset", "parentId": "root", "path": "tailwind-preset", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/tailwind-preset-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/_marketing+/tos": { "id": "routes/_marketing+/tos", "parentId": "root", "path": "tos", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/tos-Od7hh2yD.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js"], "css": [] }, "routes/admin+/createcompany": { "id": "routes/admin+/createcompany", "parentId": "root", "path": "admin/createcompany", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/createcompany-DJNi4Lbc.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/MantineThemeProvider-Bs4ALb5h.js", "/assets/axiosConfig-D8aEX1dT.js", "/assets/components-BulwabtP.js", "/assets/clsx-B-dksMZM.js", "/assets/objectWithoutPropertiesLoose-BjXSgPXB.js"], "css": [] }, "routes/dashboard+/index": { "id": "routes/dashboard+/index", "parentId": "root", "path": "dashboard/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-DSJdouNv.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-BulwabtP.js", "/assets/lib-Le9o1phv.js", "/assets/iconBase-wPjKOFaK.js", "/assets/index-Db_Hr1iE.js"], "css": [] }, "routes/history+/index": { "id": "routes/history+/index", "parentId": "root", "path": "history/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-CDDJLHni.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-BulwabtP.js", "/assets/lib-Le9o1phv.js", "/assets/clsx-B-dksMZM.js", "/assets/hoist-non-react-statics.cjs-Bt47ycYn.js", "/assets/objectWithoutPropertiesLoose-BjXSgPXB.js", "/assets/iconBase-wPjKOFaK.js", "/assets/index-z6ljlrnP.js"], "css": [] }, "routes/leaderboard+/index": { "id": "routes/leaderboard+/index", "parentId": "root", "path": "leaderboard/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-Cz46xLTP.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-BulwabtP.js", "/assets/lib-Le9o1phv.js", "/assets/clsx-B-dksMZM.js", "/assets/hoist-non-react-statics.cjs-Bt47ycYn.js", "/assets/objectWithoutPropertiesLoose-BjXSgPXB.js", "/assets/iconBase-wPjKOFaK.js", "/assets/index-z6ljlrnP.js"], "css": [] }, "routes/me": { "id": "routes/me", "parentId": "root", "path": "me", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/me-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/_seo+/robots[.]txt": { "id": "routes/resources+/_seo+/robots[.]txt", "parentId": "root", "path": "resources/robots.txt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/robots_._txt-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/_seo+/sitemap[.]xml": { "id": "routes/resources+/_seo+/sitemap[.]xml", "parentId": "root", "path": "resources/sitemap.xml", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/sitemap_._xml-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/download-user-data": { "id": "routes/resources+/download-user-data", "parentId": "root", "path": "resources/download-user-data", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/download-user-data-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/resources+/theme-switch": { "id": "routes/resources+/theme-switch", "parentId": "root", "path": "resources/theme-switch", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/theme-switch-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/send": { "id": "routes/send", "parentId": "root", "path": "send", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/send-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/settings+/profile": { "id": "routes/settings+/profile", "parentId": "root", "path": "settings/profile", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile-BCUEDV2r.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/index-BeXw7Xwl.js", "/assets/spacer-ByPtYu5l.js", "/assets/icon-DNfY9fbA.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/settings+/profile.change-email": { "id": "routes/settings+/profile.change-email", "parentId": "routes/settings+/profile", "path": "change-email", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.change-email-Dr3-mRqY.js", "imports": ["/assets/index-BeXw7Xwl.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/forms-Dd4gJQEl.js", "/assets/status-button-trRbWWOl.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/settings+/profile.index": { "id": "routes/settings+/profile.index", "parentId": "routes/settings+/profile", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.index-DR5a-C_4.js", "imports": ["/assets/index-BeXw7Xwl.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/forms-Dd4gJQEl.js", "/assets/status-button-trRbWWOl.js", "/assets/user-validation-Bfp_zbB5.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/settings+/profile.two-factor": { "id": "routes/settings+/profile.two-factor", "parentId": "routes/settings+/profile", "path": "two-factor", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor-EbEypPl0.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/icon-DNfY9fbA.js"], "css": [] }, "routes/settings+/profile.two-factor.disable": { "id": "routes/settings+/profile.two-factor.disable", "parentId": "routes/settings+/profile.two-factor", "path": "disable", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor.disable-T0QqDVCq.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/index-tx3aR2qd.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/status-button-trRbWWOl.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/settings+/profile.two-factor.index": { "id": "routes/settings+/profile.two-factor.index", "parentId": "routes/settings+/profile.two-factor", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor.index-CYaJVWwT.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/index-tx3aR2qd.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/status-button-trRbWWOl.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/settings+/profile.two-factor.verify": { "id": "routes/settings+/profile.two-factor.verify", "parentId": "routes/settings+/profile.two-factor", "path": "verify", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/profile.two-factor.verify-D5caUdz5.js", "imports": ["/assets/index-BeXw7Xwl.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-tx3aR2qd.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/parse-DONhxXj2.js", "/assets/index-4Ns2fbOC.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/tooltip-eZifkrgt.js", "/assets/forms-Dd4gJQEl.js", "/assets/status-button-trRbWWOl.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/stocks+/$id": { "id": "routes/stocks+/$id", "parentId": "root", "path": "stocks/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_id-qOYOMbr2.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/axiosConfig-D8aEX1dT.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/esm-CLJVFegd.js", "/assets/index-Db_Hr1iE.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/lib-Le9o1phv.js", "/assets/components-BulwabtP.js"], "css": ["/assets/_id-bOnKuTre.css", "/assets/ReactToastify-BTGsrsBX.css"] }, "routes/stocks+/index": { "id": "routes/stocks+/index", "parentId": "root", "path": "stocks/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-DHlrGwop.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/esm-CLJVFegd.js", "/assets/axiosConfig-D8aEX1dT.js"], "css": [] }, "routes/stripe+/index": { "id": "routes/stripe+/index", "parentId": "root", "path": "stripe/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-CoS_m26I.js", "imports": ["/assets/axiosConfig-D8aEX1dT.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/clsx-B-dksMZM.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/components-BulwabtP.js"], "css": ["/assets/ReactToastify-BTGsrsBX.css"] }, "routes/transact+/index": { "id": "routes/transact+/index", "parentId": "root", "path": "transact/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-BA_PYQ8o.js", "imports": ["/assets/axiosConfig-D8aEX1dT.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/clsx-B-dksMZM.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/lib-Le9o1phv.js", "/assets/components-BulwabtP.js"], "css": ["/assets/ReactToastify-BTGsrsBX.css"] }, "routes/upload+/index": { "id": "routes/upload+/index", "parentId": "root", "path": "upload/", "index": true, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/index-CX1BUvFA.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/upload+/receipt": { "id": "routes/upload+/receipt", "parentId": "root", "path": "upload/receipt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/receipt-o1H_YFNg.js", "imports": ["/assets/axiosConfig-D8aEX1dT.js", "/assets/jsx-runtime-D2HyDbKh.js", "/assets/clsx-B-dksMZM.js", "/assets/index-PxjvPj8E.js", "/assets/index-Cd_vq22D.js", "/assets/transactionAPI-BMleeZxG.js", "/assets/components-BulwabtP.js"], "css": [] }, "routes/user+/index": { "id": "routes/user+/index", "parentId": "root", "path": "user/", "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": true, "module": "/assets/index-CxnV7UxR.js", "imports": ["/assets/jsx-runtime-D2HyDbKh.js", "/assets/index-PxjvPj8E.js", "/assets/clsx-B-dksMZM.js", "/assets/index-Cd_vq22D.js", "/assets/misc-BxwGVpjn.js", "/assets/exports-BPTENwJi.js", "/assets/index-tx3aR2qd.js", "/assets/components-BulwabtP.js", "/assets/error-boundary-r2anonTu.js", "/assets/spacer-ByPtYu5l.js", "/assets/button-BOdK6DJc.js", "/assets/icon-DNfY9fbA.js", "/assets/user-DTujC4T9.js"], "css": [] } }, "url": "/assets/manifest-be5d49c3.js", "version": "be5d49c3" };
 const mode = "production";
 const assetsBuildDirectory = "build/client";
 const basename = "/";
@@ -9202,37 +7589,13 @@ const routes = {
     caseSensitive: void 0,
     module: route25
   },
-  "routes/resources+/healthcheck": {
-    id: "routes/resources+/healthcheck",
-    parentId: "root",
-    path: "resources/healthcheck",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route26
-  },
-  "routes/resources+/note-images.$imageId": {
-    id: "routes/resources+/note-images.$imageId",
-    parentId: "root",
-    path: "resources/note-images/:imageId",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route27
-  },
   "routes/resources+/theme-switch": {
     id: "routes/resources+/theme-switch",
     parentId: "root",
     path: "resources/theme-switch",
     index: void 0,
     caseSensitive: void 0,
-    module: route28
-  },
-  "routes/resources+/user-images.$imageId": {
-    id: "routes/resources+/user-images.$imageId",
-    parentId: "root",
-    path: "resources/user-images/:imageId",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route29
+    module: route26
   },
   "routes/send": {
     id: "routes/send",
@@ -9240,7 +7603,7 @@ const routes = {
     path: "send",
     index: void 0,
     caseSensitive: void 0,
-    module: route30
+    module: route27
   },
   "routes/settings+/profile": {
     id: "routes/settings+/profile",
@@ -9248,7 +7611,7 @@ const routes = {
     path: "settings/profile",
     index: void 0,
     caseSensitive: void 0,
-    module: route31
+    module: route28
   },
   "routes/settings+/profile.change-email": {
     id: "routes/settings+/profile.change-email",
@@ -9256,15 +7619,7 @@ const routes = {
     path: "change-email",
     index: void 0,
     caseSensitive: void 0,
-    module: route32
-  },
-  "routes/settings+/profile.connections": {
-    id: "routes/settings+/profile.connections",
-    parentId: "routes/settings+/profile",
-    path: "connections",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route33
+    module: route29
   },
   "routes/settings+/profile.index": {
     id: "routes/settings+/profile.index",
@@ -9272,31 +7627,7 @@ const routes = {
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route34
-  },
-  "routes/settings+/profile.password": {
-    id: "routes/settings+/profile.password",
-    parentId: "routes/settings+/profile",
-    path: "password",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route35
-  },
-  "routes/settings+/profile.password_.create": {
-    id: "routes/settings+/profile.password_.create",
-    parentId: "routes/settings+/profile",
-    path: "password/create",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route36
-  },
-  "routes/settings+/profile.photo": {
-    id: "routes/settings+/profile.photo",
-    parentId: "routes/settings+/profile",
-    path: "photo",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route37
+    module: route30
   },
   "routes/settings+/profile.two-factor": {
     id: "routes/settings+/profile.two-factor",
@@ -9304,7 +7635,7 @@ const routes = {
     path: "two-factor",
     index: void 0,
     caseSensitive: void 0,
-    module: route38
+    module: route31
   },
   "routes/settings+/profile.two-factor.disable": {
     id: "routes/settings+/profile.two-factor.disable",
@@ -9312,7 +7643,7 @@ const routes = {
     path: "disable",
     index: void 0,
     caseSensitive: void 0,
-    module: route39
+    module: route32
   },
   "routes/settings+/profile.two-factor.index": {
     id: "routes/settings+/profile.two-factor.index",
@@ -9320,7 +7651,7 @@ const routes = {
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route40
+    module: route33
   },
   "routes/settings+/profile.two-factor.verify": {
     id: "routes/settings+/profile.two-factor.verify",
@@ -9328,7 +7659,7 @@ const routes = {
     path: "verify",
     index: void 0,
     caseSensitive: void 0,
-    module: route41
+    module: route34
   },
   "routes/stocks+/$id": {
     id: "routes/stocks+/$id",
@@ -9336,7 +7667,7 @@ const routes = {
     path: "stocks/:id",
     index: void 0,
     caseSensitive: void 0,
-    module: route42
+    module: route35
   },
   "routes/stocks+/index": {
     id: "routes/stocks+/index",
@@ -9344,7 +7675,7 @@ const routes = {
     path: "stocks/",
     index: true,
     caseSensitive: void 0,
-    module: route43
+    module: route36
   },
   "routes/stripe+/index": {
     id: "routes/stripe+/index",
@@ -9352,7 +7683,7 @@ const routes = {
     path: "stripe/",
     index: true,
     caseSensitive: void 0,
-    module: route44
+    module: route37
   },
   "routes/transact+/index": {
     id: "routes/transact+/index",
@@ -9360,7 +7691,7 @@ const routes = {
     path: "transact/",
     index: true,
     caseSensitive: void 0,
-    module: route45
+    module: route38
   },
   "routes/upload+/index": {
     id: "routes/upload+/index",
@@ -9368,7 +7699,7 @@ const routes = {
     path: "upload/",
     index: true,
     caseSensitive: void 0,
-    module: route46
+    module: route39
   },
   "routes/upload+/receipt": {
     id: "routes/upload+/receipt",
@@ -9376,47 +7707,7 @@ const routes = {
     path: "upload/receipt",
     index: void 0,
     caseSensitive: void 0,
-    module: route47
-  },
-  "routes/user+/$username_+/notes": {
-    id: "routes/user+/$username_+/notes",
-    parentId: "root",
-    path: "user/:username/notes",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route48
-  },
-  "routes/user+/$username_+/notes.$noteId": {
-    id: "routes/user+/$username_+/notes.$noteId",
-    parentId: "routes/user+/$username_+/notes",
-    path: ":noteId",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route49
-  },
-  "routes/user+/$username_+/notes.$noteId_.edit": {
-    id: "routes/user+/$username_+/notes.$noteId_.edit",
-    parentId: "routes/user+/$username_+/notes",
-    path: ":noteId/edit",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route50
-  },
-  "routes/user+/$username_+/notes.index": {
-    id: "routes/user+/$username_+/notes.index",
-    parentId: "routes/user+/$username_+/notes",
-    path: void 0,
-    index: true,
-    caseSensitive: void 0,
-    module: route51
-  },
-  "routes/user+/$username_+/notes.new": {
-    id: "routes/user+/$username_+/notes.new",
-    parentId: "routes/user+/$username_+/notes",
-    path: "new",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route52
+    module: route40
   },
   "routes/user+/index": {
     id: "routes/user+/index",
@@ -9424,7 +7715,7 @@ const routes = {
     path: "user/",
     index: true,
     caseSensitive: void 0,
-    module: route53
+    module: route41
   }
 };
 export {

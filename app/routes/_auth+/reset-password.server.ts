@@ -1,6 +1,5 @@
 import { invariant } from '@epic-web/invariant'
 import { json, redirect } from '@remix-run/node'
-import { prisma } from '#app/utils/db.server.ts'
 import { verifySessionStorage } from '#app/utils/verification.server.ts'
 import { resetPasswordUsernameSessionKey } from './reset-password.tsx'
 import { type VerifyFunctionArgs } from './verify.server.ts'
@@ -15,11 +14,7 @@ export async function handleVerification({ submission }: VerifyFunctionArgs) {
 		'Submission should be successful by now',
 	)
 	const target = submission.value.target
-	/*const user = await prisma.user.findFirst({
-		where: { OR: [{ email: target }, { username: target }] },
-		select: { email: true, username: true },
-	})*/
-
+	
 	const { user, token, expirationDate } = await userAPI.checkExistingEmail(target);
 
 	// we don't want to say the user is not found if the email is not found

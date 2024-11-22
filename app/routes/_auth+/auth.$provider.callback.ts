@@ -5,7 +5,6 @@ import {
 	getUserId,
 } from '#app/utils/auth.server.ts'
 import { ProviderNameSchema, providerLabels } from '#app/utils/connections.tsx'
-import { prisma } from '#app/utils/db.server.ts'
 import { ensurePrimary } from '#app/utils/litefs.server.ts'
 import { combineHeaders } from '#app/utils/misc.tsx'
 import {
@@ -65,77 +64,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 	// Check if the account is already connected
 	const { user, token, expirationDate } = await userAPI.checkExistingEmail(profile.email);
 
-	/*const existingConnection = await prisma.connection.findUnique({
-		select: { userId: true },
-		where: {
-			providerName_providerId: { providerName, providerId: profile.id },
-		},
-	})*/
-
-	/*const userId = await getUserId(request)
-
-	if (existingConnection && userId) {
-		if (existingConnection.userId === userId) {
-			return redirectWithToast(
-				'/settings/profile/connections',
-				{
-					title: 'Already Connected',
-					description: `Your "${profile.username}" ${label} account is already connected.`,
-				},
-				{ headers: destroyRedirectTo },
-			)
-		} else {
-			return redirectWithToast(
-				'/settings/profile/connections',
-				{
-					title: 'Already Connected',
-					description: `The "${profile.username}" ${label} account is already connected to another account.`,
-				},
-				{ headers: destroyRedirectTo },
-			)
-		}
-	}*/
-
-	// If we're already logged in, then link the account
-	/*
 	if (user) {
-		await prisma.connection.create({
-			data: {
-				providerName,
-				providerId: profile.id,
-				userId,
-			},
-		})
-		return redirectWithToast(
-			'/settings/profile/connections',
-			{
-				title: 'Connected',
-				type: 'success',
-				description: `Your "${profile.username}" ${label} account has been connected.`,
-			},
-			{ headers: destroyRedirectTo },
-		)
-	}
-
-	// Connection exists already? Make a new session
-	if (user) {
-		return makeSession({ request, userId: user.id })
-	}*/
-
-	// if the email matches a user in the db, then link the account and
-	// make a new session
-	/*const user = await prisma.user.findUnique({
-		select: { id: true },
-		where: { email: profile.email.toLowerCase() },
-	})*/
-	if (user) {
-		/*await prisma.connection.create({
-			data: {
-				providerName,
-				providerId: profile.id,
-				userId: user.id,
-			},
-		})*/
+		
 		return makeSession(
 			{ request, userId: user.id, token, expirationDate },
 			{
@@ -184,13 +114,7 @@ async function makeSession(
 	responseInit?: ResponseInit,
 ) {
 	redirectTo ??= '/'
-	/*const session = await prisma.session.create({
-		select: { id: true, expirationDate: true, userId: true },
-		data: {
-			expirationDate: getSessionExpirationDate(),
-			userId,
-		},
-	})*/
+	
 	const session = { id: token, expirationDate, userId }
 	return handleNewSession(
 		{ request, session, redirectTo, remember: true },

@@ -5,7 +5,6 @@ import { z } from 'zod'
 import { handleVerification as handleChangeEmailVerification } from '#app/routes/settings+/profile.change-email.server.tsx'
 import { twoFAVerificationType } from '#app/routes/settings+/profile.two-factor.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
-import { prisma } from '#app/utils/db.server.ts'
 import { getDomainUrl } from '#app/utils/misc.tsx'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
 import { generateTOTP, verifyTOTP } from '#app/utils/totp.server.ts'
@@ -102,11 +101,6 @@ export async function prepareVerification({
 		...verificationConfig,
 		expiresAt: new Date(Date.now() + verificationConfig.period * 1000),
 	}
-	/*await prisma.verification.upsert({
-		where: { target_type: { target, type } },
-		create: verificationData,
-		update: verificationData,
-	})*/
 
 	// add the otp to the url we'll email the user.
 	verifyUrl.searchParams.set(codeQueryParam, otp)
@@ -124,19 +118,6 @@ export async function isCodeValid({
 	target: string
 }) {
 
-	/*const verification = await prisma.verification.findUnique({
-		where: {
-			target_type: { target, type },
-			OR: [{ expiresAt: { gt: new Date() } }, { expiresAt: null }],
-		},
-		select: { algorithm: true, secret: true, period: true, charSet: true },
-	})
-
-	if (!verification) return false
-	const result = verifyTOTP({
-		otp: code,
-		...verification,
-	})*/
 	const result = await userAPI.verifyEmailCode(target, code);
 
 	if (!result) return false
@@ -175,17 +156,6 @@ export async function validateRequest(
 	}
 
 	const { value: submissionValue } = submission
-
-	async function deleteVerification() {
-		await prisma.verification.delete({
-			where: {
-				target_type: {
-					type: submissionValue[typeQueryParam],
-					target: submissionValue[targetQueryParam],
-				},
-			},
-		})
-	}
 
 	switch (submissionValue[typeQueryParam]) {
 		case 'reset-password': {

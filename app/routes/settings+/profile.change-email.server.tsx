@@ -37,21 +37,6 @@ export async function handleVerification({
 			{ status: 400 },
 		)
 	}
-	const preUpdateUser = await prisma.user.findFirstOrThrow({
-		select: { email: true },
-		where: { id: submission.value.target },
-	})
-	const user = await prisma.user.update({
-		where: { id: submission.value.target },
-		select: { id: true, email: true, username: true },
-		data: { email: newEmail },
-	})
-
-	void sendEmail({
-		to: preUpdateUser.email,
-		subject: 'Epic Stack email changed',
-		react: <EmailChangeNoticeEmail userId={user.id} />,
-	})
 
 	return redirectWithToast(
 		'/settings/profile',
