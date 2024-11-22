@@ -28,6 +28,7 @@ import { prefilledProfileKey, providerIdKey } from './onboarding_.$provider.tsx'
 const destroyRedirectTo = { 'set-cookie': destroyRedirectToHeader }
 
 //API
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

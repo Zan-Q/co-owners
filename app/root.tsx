@@ -238,7 +238,7 @@ function Logo({ navigationType, navigate, type}: { navigationType: ReturnType<ty
 			</Link>
 				{type === "header" && navigationType !== NavigationType.Pop && (
 					<button
-						onClick={() => navigate(-1)}
+						onClick={() => navigate?.(-1)}
 						className="ml-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
 					>
 						<svg

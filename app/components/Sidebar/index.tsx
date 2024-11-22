@@ -198,9 +198,9 @@ const menuGroups = [
 const Sidebar = ({ sidebarOpen, setSidebarOpen, userRole }: SidebarProps) => {
 
   const [pageName, setPageName] = useState("Overview");
+  const [isOpen, setIsOpen] = useState(false);
   
   if (isMobile) {
-    const [isOpen, setIsOpen] = useState(false);
 
     const adminItem = [
       { name: 'Create Company', path: '/admin/createcompany' },

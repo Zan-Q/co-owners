@@ -25,6 +25,7 @@ import {
 	type VerificationTypes,
 } from './verify.tsx'
 
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 export type VerifyFunctionArgs = {

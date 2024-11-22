@@ -6,6 +6,7 @@ import { resetPasswordUsernameSessionKey } from './reset-password.tsx'
 import { type VerifyFunctionArgs } from './verify.server.ts'
 
 //API
+// @ts-ignore
 import { userAPI } from '../../api/userAPI'
 
 export async function handleVerification({ submission }: VerifyFunctionArgs) {

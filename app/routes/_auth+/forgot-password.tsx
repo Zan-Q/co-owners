@@ -21,6 +21,7 @@ import { EmailSchema, UsernameSchema } from '#app/utils/user-validation.ts'
 import { prepareVerification } from './verify.server.ts'
 
 //API
+// @ts-ignore
 import { userAPI } from '../../api/userAPI'
 
 export const handle: SEOHandle = {

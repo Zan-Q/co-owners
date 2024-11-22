@@ -113,7 +113,7 @@ export const loader: LoaderFunction = async ({request}) => {
 		else {
 
 			// Fetch data here
-			const announcements = await generalAPI.getAnnoucements();
+			const announcements = await generalAPI.getAnnouncements();
 
 			// Fetch trending businesses
 			const trendingBusinesses = await generalAPI.getTrendingBusinesses();
@@ -130,7 +130,7 @@ export const loader: LoaderFunction = async ({request}) => {
 	}
 	else {	
 		// Fetch data here
-		const announcements = await generalAPI.getAnnoucements();
+		const announcements = await generalAPI.getAnnouncements();
 
 		// Fetch trending businesses
 		const trendingBusinesses = await generalAPI.getTrendingBusinesses();

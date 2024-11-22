@@ -155,7 +155,7 @@ export default function PhotoRoute() {
 			>
 				<img
 					src={
-						newImageSrc ?? (data.user ? getUserImgSrc(data.user.imageUrl) : '')
+						newImageSrc ?? (data.user ? getUserImgSrc(data.user.image?.id) : '')
 					}
 					className="h-52 w-52 rounded-full object-cover"
 					alt={data.user?.name ?? data.user?.username}
