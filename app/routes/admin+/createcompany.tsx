@@ -13,7 +13,9 @@ import { useLoaderData } from '@remix-run/react';
 import { toast as showToast, toast } from 'sonner'
 
 //API
+// @ts-ignore
 import { businessAPI } from '../../api/businessAPI';
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 const KeyCodes = {
@@ -68,7 +70,7 @@ function CreateCompany() {
     const [loading, setLoading] = useState(false);
 
     //Profile pic
-    const [image, setImage] = React.useState('');
+    const [image, setImage] = React.useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
 
     //Google Places API
@@ -95,7 +97,8 @@ function CreateCompany() {
       };
   
       loadScript(`https://maps.googleapis.com/maps/api/js?key=AIzaSyCn_0w1J9f-e1m7YKb59DhsRIftV05XU7A&libraries=places`, () => {
-        autoCompleteRef.current = new window.google.maps.places.Autocomplete(document.getElementById('address'), options);
+        const addressInput = document.getElementById('address') as HTMLInputElement;
+        autoCompleteRef.current = new window.google.maps.places.Autocomplete(addressInput, options);
         autoCompleteRef.current.addListener('place_changed', handlePlaceSelect);
       });
     }, []);
@@ -162,9 +165,17 @@ function CreateCompany() {
     }
 
     //Handle the logo image change
-    const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
-        setPreview(URL.createObjectURL(e.target.files[0]));
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+      const file = e.target.files?.[0];
+    
+      if (!file) {
+          return;
+      }
+
+      setImage(file);
+
+      setPreview(URL.createObjectURL(file));
     };
 
     //Handle the Business Image changes
@@ -207,7 +218,7 @@ function CreateCompany() {
         }
 
         //If profile image is not present on user, then it needs to be filled in
-        else if (image.length < 1) {
+        else if (!image) {
 
           showToast.error("Image Error", {
             description: 'Image cannot be empty',

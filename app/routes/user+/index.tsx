@@ -14,6 +14,7 @@ import { authSessionStorage } from '#app/utils/session.server.ts'
 import { redirect } from '@remix-run/node'
 
 //API Call
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 // Define the User type
@@ -65,7 +66,7 @@ export default function ProfileRoute() {
 	const { user, userJoinedDisplay }  = useLoaderData<{ user: User, userJoinedDisplay: Date}>();
 
 	const loggedInUser = useOptionalUser()
-	const isLoggedInUser = user.id === loggedInUser?.id
+	const isLoggedInUser = user._id === loggedInUser?._id
 
 	return (
 		<div className="container mb-48 mt-36 flex flex-col items-center justify-center">

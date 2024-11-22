@@ -7,7 +7,9 @@ import { authSessionStorage } from '#app/utils/session.server.ts'
 import { useNavigate } from 'react-router-dom';
 
 //Import API
-import { generalAPI } from "../../api/generalAPI.js"; 
+// @ts-ignore
+import { generalAPI } from "../../api/generalAPI.js";
+// @ts-ignore
 import { transactionAPI } from "../../api/transactionAPI.js"; 
 
 //Toast
@@ -44,6 +46,11 @@ interface Business {
       tradeDate: string;
     }
   ];
+}
+
+interface ButtonPanelProps {
+  transactionType: string;
+  balance: number | null;
 }
 
 // Fetch business details
@@ -175,7 +182,7 @@ export default function BusinessDetails() {
   /**
    * Button panel for buying and selling stock
    */
-  const buttonPanel = (transactionType: string) => {
+  const ButtonPanel: React.FC<ButtonPanelProps> = ({ transactionType, balance }) => {
     const [buyPrice, setBuyPrice] = useState<number | "">(0);
     const [sellPrice, setSellPrice] = useState<number | "">(0);
     
@@ -194,7 +201,7 @@ export default function BusinessDetails() {
         const isConfirmed = window.confirm(`Are you sure you want to buy at $${sellPrice}?`);
         if (isConfirmed) {
           try {
-            await handleBuyClick(buyPrice);
+            await handleBuyClick(buyPrice as number);
             // Handle success (e.g., show a success message)
           } catch (error) {
             // Handle error (e.g., show an error message)
@@ -219,7 +226,7 @@ export default function BusinessDetails() {
         const isConfirmed = window.confirm(`Are you sure you want to sell at $${sellPrice}?`);
         if (isConfirmed) {
           try {
-            await handleSellClick(sellPrice);
+            await handleSellClick(sellPrice as number);
             // Handle success (e.g., show a success message)
           } catch (error) {
             // Handle error (e.g., show an error message)

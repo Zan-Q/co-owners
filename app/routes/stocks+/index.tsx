@@ -4,9 +4,11 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { useCallback, useEffect, useState } from 'react';
 
 //Import API
+// @ts-ignore
 import { generalAPI } from "../../api/generalAPI.js"; // Adjust the path as necessary
 
 // Import custom hook
+// @ts-ignore
 import { useUserLocation } from '../../hooks/userLocation.js'; // Adjust the path as necessary
 
 // Loading Screen

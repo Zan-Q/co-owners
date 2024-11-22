@@ -8,6 +8,7 @@ import { Elements, useStripe, useElements, CardElement } from '@stripe/react-str
 import { loadStripe } from '@stripe/stripe-js';
 
 //API Services
+// @ts-ignore
 import { transactionAPI } from "../../api/transactionAPI.js"; 
 
 //Toast

@@ -11,6 +11,7 @@ import Sidebar from "#app/components/Sidebar";
 import { redirectWithToast } from '#app/utils/toast.server.ts'
 
 //API
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Typography, IconButton } from '@mui/material';

@@ -16,6 +16,7 @@ import Valuation from '#app/components/dashboard/Valuation';
 import WatchList from '#app/components/dashboard/Watchlist';
 
 //API
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 //IsMobile

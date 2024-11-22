@@ -10,7 +10,9 @@ import { authSessionStorage } from '#app/utils/session.server.ts'
 import { redirect } from '@remix-run/node';
 
 //API
+// @ts-ignore
 import { transactionAPI } from '../../api/transactionAPI';
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 const storage = new Storage();

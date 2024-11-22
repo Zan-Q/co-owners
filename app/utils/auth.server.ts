@@ -9,7 +9,9 @@ import { combineHeaders, downloadFile } from './misc.tsx'
 import { type ProviderUser } from './providers/provider.ts'
 import { authSessionStorage } from './session.server.ts' 
 import { createToastHeaders } from '#app/utils/toast.server.ts'
+
 //API
+// @ts-ignore
 import { userAPI } from '../api/userAPI'
 
 export const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30

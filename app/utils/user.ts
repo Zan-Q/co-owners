@@ -53,7 +53,7 @@ export function userHasPermission(
 ) {
 	if (!user) return false
 	const { action, entity, access } = parsePermissionString(permission)
-	return user.roles.some((role) =>
+	return user.roles.some((role: { permissions: Array<{ entity: Entity, action: Action, access: Access }> }) =>
 		role.permissions.some(
 			(permission) =>
 				permission.entity === entity &&
@@ -68,5 +68,5 @@ export function userHasRole(
 	role: string,
 ) {
 	if (!user) return false
-	return user.roles.some((r) => r.name === role)
+	return user.roles.some((r: { name: string }) => r.name === role)
 }

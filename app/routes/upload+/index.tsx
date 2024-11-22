@@ -10,6 +10,7 @@ import { sessionKey } from '#app/utils/auth.server.ts'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 
 //API
+// @ts-ignore
 import { transactionAPI } from '../../api/transactionAPI';
 
 const storage = new Storage();
@@ -57,14 +58,14 @@ export const action: ActionFunction = async ({ request }) => {
   try {
 
     //Get original file name
-    const originalFileName = file.name;
+    const originalFileName = (file as File).name;
     
     //Get today's date and time in unix format
     const date = new Date();
     const unixDate = date.getTime();
 
     //Get file extension
-    const file_extension = file.name.split('.').pop();
+    const file_extension = (file as File).name.split('.').pop();
 
     const fileName = `${originalFileName}_${unixDate}.${file_extension}`;
     const fileUpload = storage.bucket(bucketName).file(fileName);

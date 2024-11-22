@@ -16,7 +16,9 @@ import { authSessionStorage } from '#app/utils/session.server.ts'
 import { redirect } from '@remix-run/node';
 
 //API Calls
+// @ts-ignore
 import { generalAPI } from "../../api/generalAPI.js"; // Adjust the path as necessary
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 // Tailwind Grid cell classes lookup
@@ -42,7 +44,7 @@ interface Announcement {
     name: string;
     logo: string;
     description: string;
-    website: number;
+	website: string;
     location: {
 		address: string,
 		city: string,
@@ -182,8 +184,7 @@ export default function Index() {
 					key={announcement.id}
 					className="flex w-full max-w-xs flex-col items-center text-center xl:max-w-2xl xl:order-2 xl:items-start xl:text-left bg-white shadow-2xl rounded-lg p-4 sm:p-6 md:p-8 xl:p-[10vh]"
 				>
-					<a
-						href={announcement.website}
+					<a href={announcement.website}
 						className="animate-slide-top [animation-fill-mode:backwards] xl:animate-slide-left xl:[animation-delay:0.5s] xl:[animation-fill-mode:backwards]"
 						>
 					<img

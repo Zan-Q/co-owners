@@ -23,8 +23,11 @@ import {
 } from 'chart.js';
 
 //Import API
+// @ts-ignore
 import { generalAPI } from "../../api/generalAPI.js"; // Adjust the path as necessary
+// @ts-ignore
 import { userAPI } from "../../api/userAPI.js"; // Adjust the path as necessary
+// @ts-ignore
 import { transactionAPI } from "../../api/transactionAPI.js"; // Adjust the path as necessary
 
 import { format } from 'date-fns';
@@ -410,7 +413,7 @@ export default function BusinessDetails() {
   /**
    * Image Carousel of the Business
    */
-  const imageCarousel: React.FC = () => {
+  const ImageCarousel: React.FC = () => {
     const [viewportRef, embla] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
     return (
@@ -464,7 +467,7 @@ export default function BusinessDetails() {
             </div>
           </div>
         </div>
-        {imageCarousel()}
+        <ImageCarousel />
         {graph()}
         {buttonPanel(ownerPermissions)}
         {orderTable()}
@@ -504,7 +507,7 @@ export default function BusinessDetails() {
             </div>
           </div>
         </div>
-        {imageCarousel()}
+        <ImageCarousel />
         {graph()}
         {buttonPanel(ownerPermissions)}
         {orderTable()}

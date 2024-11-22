@@ -23,6 +23,7 @@ import { twoFAVerificationType } from './profile.two-factor.tsx'
 import { useLocation } from 'react-router-dom';
 
 //API
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 export const handle: SEOHandle = {

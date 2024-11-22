@@ -7,7 +7,9 @@ import { sessionKey } from '#app/utils/auth.server.ts';
 import Sidebar from "#app/components/Sidebar";
 
 //API
+// @ts-ignore
 import { leaderboardAPI } from '../../api/leaderboardAPI';
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 import { Pagination, Box, Typography, IconButton } from '@mui/material';
@@ -184,10 +186,10 @@ const Leaderboard = () => {
                     </button>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    {activeTab === 'tab1' && <TabContent title="Monthly Profits Leaderboard" data={monthlyProfitsBoard} />}
-                    {activeTab === 'tab2' && <TabContent title="Total Profits Leaderboard" data={totalProfitsBoard} />}
-                    {activeTab === 'tab3' && <TabContent title="Monthly Transactions Leaderboard" data={monthlyTransactionsBoard}/>}
-                    {activeTab === 'tab4' && <TabContent title="Total Transactions Leaderboard" data={totalTransactionsBoard}/>}
+                    {activeTab === 'tab1' && <TabContent title="Monthly Profits Leaderboard" data={monthlyProfitsBoard} username={username} />}
+                    {activeTab === 'tab2' && <TabContent title="Total Profits Leaderboard" data={totalProfitsBoard} username={username} />}
+                    {activeTab === 'tab3' && <TabContent title="Monthly Transactions Leaderboard" data={monthlyTransactionsBoard} username={username} />}
+                    {activeTab === 'tab4' && <TabContent title="Total Transactions Leaderboard" data={totalTransactionsBoard} username={username} />}
                 </div>
             </div>
         );

@@ -250,10 +250,10 @@ if (!portAvailable && !IS_DEV) {
 	process.exit(1)
 }
 
-const SSL_OPTIONS = {
+/*const SSL_OPTIONS = {
 	key: fs.readFileSync('./cert/privkey.pem'),
 	cert: fs.readFileSync('./cert/fullchain.pem')
-};
+};*/
 
 let server;
 

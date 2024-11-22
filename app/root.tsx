@@ -186,6 +186,7 @@ function App() {
 			allowIndexing={allowIndexing}
 			env={data.ENV}
 		>
+			{/*//@ts-ignore*/}
 			<MantineProvider theme={{ withGlobalStyles: true, withNormalizeCSS: true }}>
 
 			<div className="flex h-screen flex-col justify-between">

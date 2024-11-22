@@ -126,7 +126,7 @@ const Valuation = ({ profit, valuation }: ValuationProps) => {
     plugins: {
       legend: {
         display: true,
-        position: 'top',
+        position: 'top' as const,
       },
       title: {
         display: true,
@@ -134,7 +134,7 @@ const Valuation = ({ profit, valuation }: ValuationProps) => {
       },
       tooltip: {
         callbacks: {
-          label: function (context) {
+          label: function (context: any) {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';

@@ -40,6 +40,7 @@ import { NameSchema, UsernameSchema } from '#app/utils/user-validation.ts'
 import { verifySessionStorage } from '#app/utils/verification.server.ts'
 import { onboardingEmailSessionKey } from './onboarding'
 
+// @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
 export const providerIdKey = 'providerId'
@@ -155,7 +156,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 	const { session, remember } = submission.value
 
 	const redirectTo = '/dashboard'
-	
+
 	const authSession = await authSessionStorage.getSession(
 		request.headers.get('cookie'),
 	)
