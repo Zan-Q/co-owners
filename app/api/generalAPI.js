@@ -2,7 +2,7 @@ import { api } from "./config/axiosConfig";
 
 export const generalAPI = {
 
-  getAnnoucements: async function () {
+  getAnnouncements: async function () {
 
       const response = await api.request({
         url: `/general/announcements`,

@@ -9,7 +9,6 @@ import rateLimit from "express-rate-limit";
 import getPort, { portNumbers } from "get-port";
 import helmet from "helmet";
 import morgan from "morgan";
-import fs from "fs";
 const MODE = process.env.NODE_ENV ?? "development";
 const IS_PROD = MODE === "production";
 const IS_DEV = MODE === "development";
@@ -195,10 +194,6 @@ if (!portAvailable && !IS_DEV) {
   console.log(`\u26A0\uFE0F Port ${desiredPort} is not available.`);
   process.exit(1);
 }
-const SSL_OPTIONS = {
-  key: fs.readFileSync("./cert/privkey.pem"),
-  cert: fs.readFileSync("./cert/fullchain.pem")
-};
 let server;
 server = app.listen(portToUse, () => {
   if (!portAvailable) {

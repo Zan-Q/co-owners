@@ -406,7 +406,7 @@ export default function BusinessDetails() {
         ) 
         }
       </div>
-      {buttonPanel(transactionType)}
+      <ButtonPanel transactionType={transactionType} balance={balance ? Number(balance) : null}/>
       {orderTable()}
     </div>
   );

@@ -95,7 +95,7 @@ export const loader: LoaderFunction = async ({request}) => {
         if (user) {
 
 			// Fetch data here
-			const announcements = await generalAPI.getAnnoucements();
+			const announcements = await generalAPI.getAnnouncements();
 
 			// Fetch trending businesses
 			const trendingBusinesses = await generalAPI.getTrendingBusinesses();
