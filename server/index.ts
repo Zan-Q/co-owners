@@ -10,6 +10,8 @@ import rateLimit from 'express-rate-limit'
 import getPort, { portNumbers } from 'get-port'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import fs from 'fs'
+import https from 'https'
 
 const MODE = process.env.NODE_ENV ?? 'development'
 const IS_PROD = MODE === 'production'
@@ -248,18 +250,18 @@ if (!portAvailable && !IS_DEV) {
 	process.exit(1)
 }
 
-/*const SSL_OPTIONS = {
+const SSL_OPTIONS = {
 	key: fs.readFileSync('./cert/privkey.pem'),
 	cert: fs.readFileSync('./cert/fullchain.pem')
-};*/
+};
 
 let server;
 
 // Create HTTPS Server
-//server = https.createServer(SSL_OPTIONS, app);
+server = https.createServer(SSL_OPTIONS, app);
 
 // Start the SSL server
-/*server.listen(portToUse, () => {
+server.listen(portToUse, () => {
 	if (!portAvailable) {
 		console.warn(
 			chalk.yellow(
@@ -285,10 +287,10 @@ let server;
 		${chalk.bold('Press Ctrl+C to stop')}
 		`.trim(),
 	)
-})*/
+})
 
 // Start the server
-server = app.listen(portToUse, () => {
+/*server = app.listen(portToUse, () => {
 	if (!portAvailable) {
 		console.warn(
 			chalk.yellow(
@@ -320,4 +322,4 @@ closeWithGrace(async () => {
 	await new Promise((resolve, reject) => {
 		server.close((e) => (e ? reject(e) : resolve('ok')))
 	})
-})
+})*/
