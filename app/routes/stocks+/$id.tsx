@@ -173,7 +173,24 @@ export default function BusinessDetails() {
   // State to manage user login status
   const [isLoggedIn, setIsLoggedIn] = useState(token ? true : false);
 
+  //Dark Mode?
+  const [prefersDarkMode, setPrefersDarkMode] = useState(false);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      setPrefersDarkMode(mediaQuery.matches);
+
+      const handleChange = (e: MediaQueryListEvent) => {
+        setPrefersDarkMode(e.matches);
+      };
+
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+  }, []);
 
   const data = {
     labels: business.valuation.map((entry) => format(new Date(entry.valDate), 'MMM yyyy')),
@@ -345,13 +362,28 @@ export default function BusinessDetails() {
   );
 
 
+  const options = {
+    scales: {
+      x: {
+        ticks: {
+          color: prefersDarkMode ? '#ffffff' : '#4B5563', // Tailwind CSS color for gray-700
+        },
+      },
+      y: {
+        ticks: {
+          color: prefersDarkMode ? '#ffffff' : '#4B5563', // Tailwind CSS color for gray-700
+        },
+      },
+    },
+  };
+
   /**
    * Graph of the business valuation and Current Price
    */
   const graph = () => (
     <div className="p-2 lg:p-4 w-full lg:w-3/4 mx-auto">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center lg:text-left">Valuation</h2>
-      <Line data={data} />
+      <h2 className={`text-2xl sm:text-3xl font-bold text-center lg:text-left ${prefersDarkMode ? 'text-white' : 'text-black'}`}>Valuation</h2>
+      <Line data={data} options={options} />
     </div>
   );
 

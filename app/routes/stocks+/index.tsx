@@ -3,6 +3,9 @@ import { useLoaderData, useNavigate, Link } from '@remix-run/react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { useCallback, useEffect, useState } from 'react';
 
+//import tailwind styles
+import 'tailwindcss/tailwind.css';
+
 //Import API
 // @ts-ignore
 import { generalAPI } from "../../api/generalAPI.js"; // Adjust the path as necessary
@@ -31,6 +34,7 @@ export default function Stocks() {
   const [businesses, setBusinesses] = useState<Business[] | null>(null);
   const navigate = useNavigate();
   const userLocation = useUserLocation();
+  const [prefersDarkMode, setPrefersDarkMode] = useState(false);
 
   const handleMarkerClick = useCallback((id: string) => {
     navigate(`/stocks/${id}`);
@@ -51,11 +55,25 @@ export default function Stocks() {
     }
   }, [userLocation]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      setPrefersDarkMode(mediaQuery.matches);
+
+      const handleChange = (e: MediaQueryListEvent) => {
+        setPrefersDarkMode(e.matches);
+      };
+
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+  }, []);
+
   if (!businesses) {
     return (
       <div className="flex justify-center items-center h-screen">
         <RingLoader
-          color={"#000080"}
+          color={ prefersDarkMode ? "#fff" : "#000080"}
           loading={true}
           size={100}
           aria-label="Loading Maps"
@@ -64,6 +82,7 @@ export default function Stocks() {
     );
   }
   else {
+
     return (
       <LoadScript googleMapsApiKey="AIzaSyCn_0w1J9f-e1m7YKb59DhsRIftV05XU7A">
         <GoogleMap

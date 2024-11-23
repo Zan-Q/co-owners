@@ -1,0 +1,38 @@
+[
+  {
+    "code": "MOCK_CODE_GITHUB_KODY",
+    "accessToken": "MOCK_CODE_GITHUB_KODY_mock_access_token",
+    "profile": {
+      "login": "Amya.Nolan47",
+      "id": "7dc21e4b-06b8-499a-a8fa-3c592e7dbdf2",
+      "name": "Ora Cronin DVM",
+      "avatar_url": "https://github.com/ghost.png",
+      "emails": [
+        "Justine_Feest@yahoo.com",
+        "Sigurd33@gmail.com",
+        "Glenda.Kuhn63@gmail.com"
+      ]
+    },
+    "emails": [
+      {
+        "email": "Justine_Feest@yahoo.com",
+        "verified": false,
+        "primary": false,
+        "visibility": "public"
+      },
+      {
+        "email": "Sigurd33@gmail.com",
+        "verified": true,
+        "primary": false,
+        "visibility": null
+      },
+      {
+        "email": "Glenda.Kuhn63@gmail.com",
+        "verified": true,
+        "primary": true,
+        "visibility": null
+      }
+    ],
+    "primaryEmail": "Glenda.Kuhn63@gmail.com"
+  }
+]

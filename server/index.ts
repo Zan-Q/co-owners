@@ -258,10 +258,10 @@ const SSL_OPTIONS = {
 let server;
 
 // Create HTTPS Server
-server = https.createServer(SSL_OPTIONS, app);
+//server = https.createServer(SSL_OPTIONS, app);
 
 // Start the SSL server
-server.listen(portToUse, () => {
+/*server.listen(portToUse, () => {
 	if (!portAvailable) {
 		console.warn(
 			chalk.yellow(
@@ -287,10 +287,10 @@ server.listen(portToUse, () => {
 		${chalk.bold('Press Ctrl+C to stop')}
 		`.trim(),
 	)
-})
+})*/
 
 // Start the server
-/*server = app.listen(portToUse, () => {
+server = app.listen(portToUse, () => {
 	if (!portAvailable) {
 		console.warn(
 			chalk.yellow(
@@ -322,4 +322,4 @@ closeWithGrace(async () => {
 	await new Promise((resolve, reject) => {
 		server.close((e) => (e ? reject(e) : resolve('ok')))
 	})
-})*/
+})
