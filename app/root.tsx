@@ -50,6 +50,7 @@ import { getToast } from './utils/toast.server.ts'
 import { useOptionalUser, useUser } from './utils/user.ts'
 import { useNavigate, useNavigationType, NavigationType } from 'react-router-dom'
 import { MantineProvider } from '@mantine/core';
+import { useState, useEffect } from 'react'
 
 export const links: LinksFunction = () => {
 	return [
@@ -226,6 +227,24 @@ function App() {
 }
 
 function Logo({ navigationType, navigate, type}: { navigationType: ReturnType<typeof useNavigationType>, navigate?: ReturnType<typeof useNavigate>, type?: string }) {
+	
+	//Dark Mode?
+	const [prefersDarkMode, setPrefersDarkMode] = useState(false);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+		  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		  setPrefersDarkMode(mediaQuery.matches);
+	
+		  const handleChange = (e: MediaQueryListEvent) => {
+			setPrefersDarkMode(e.matches);
+		  };
+	
+		  mediaQuery.addEventListener('change', handleChange);
+		  return () => mediaQuery.removeEventListener('change', handleChange);
+		}
+	}, []);
+	
 	return (
 		<div className="flex items-center">
 			<Link to="/" className="group grid leading-snug">
@@ -258,7 +277,7 @@ function Logo({ navigationType, navigate, type}: { navigationType: ReturnType<ty
 				{type === "footer" ?
 					(
 						<div className="flex items-center justify-between gap-4 w-full">
-							<p className="flex justify-center items-center text-sm w-1/4">
+							<p className={`flex justify-center items-center text-sm w-1/4 ${prefersDarkMode ? 'text-white' : 'text-black'}`}>
 								&copy; {new Date().getFullYear()} Co-Owners
 							</p>
 							<div className="flex gap-4 justify-center w-full">

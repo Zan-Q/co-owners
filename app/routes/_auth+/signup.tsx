@@ -24,6 +24,8 @@ import { useIsPending } from '#app/utils/misc.tsx'
 import { EmailSchema } from '#app/utils/user-validation.ts'
 import { prepareVerification } from './verify.server.ts'
 
+import { useEffect, useState } from 'react';
+
 // @ts-ignore
 import { userAPI } from '../../api/userAPI';
 
@@ -70,12 +72,6 @@ export async function action({ request }: ActionFunctionArgs) {
 	})
 
 	const response = await userAPI.sendEmailVerification(email, otp, verifyUrl.toString());
-	
-	/*const response = await sendEmail({
-		to: email,
-		subject: `Welcome to Co Owners!`,
-		react: <SignupEmail onboardingUrl={verifyUrl.toString()} otp={otp} />,
-	})*/
 
 	if (response.data.status === 'success') {
 		return redirect(redirectTo.toString())
@@ -128,6 +124,9 @@ export default function SignupRoute() {
 	const [searchParams] = useSearchParams()
 	const redirectTo = searchParams.get('redirectTo')
 
+	//Dark Mode?
+	const [prefersDarkMode, setPrefersDarkMode] = useState(false);
+
 	const [form, fields] = useForm({
 		id: 'signup-form',
 		constraint: getZodConstraint(SignupSchema),
@@ -139,10 +138,24 @@ export default function SignupRoute() {
 		shouldRevalidate: 'onBlur',
 	})
 
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+		  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		  setPrefersDarkMode(mediaQuery.matches);
+	
+		  const handleChange = (e: MediaQueryListEvent) => {
+			setPrefersDarkMode(e.matches);
+		  };
+	
+		  mediaQuery.addEventListener('change', handleChange);
+		  return () => mediaQuery.removeEventListener('change', handleChange);
+		}
+	}, []);
+
 	return (
 		<div className="container flex flex-col justify-center pb-32 pt-20">
 			<div className="text-center">
-				<h1 className="text-h1">Let's start building your empire!</h1>
+				<h1 className={`text-h1 ${prefersDarkMode ? 'text-white' : 'text-black'}`}>Let's start building your empire!</h1>
 				<p className="mt-3 text-body-md text-muted-foreground">
 					Please enter your email.
 				</p>
@@ -154,10 +167,12 @@ export default function SignupRoute() {
 						labelProps={{
 							htmlFor: fields.email.id,
 							children: 'Email',
+							className: `${prefersDarkMode ? 'text-white' : 'text-black'}`
 						}}
 						inputProps={{
 							...getInputProps(fields.email, { type: 'email' }),
 							autoFocus: true,
+							className: `lowercase ${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 							autoComplete: 'email',
 						}}
 						errors={fields.email.errors}

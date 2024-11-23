@@ -28,6 +28,7 @@ import { safeRedirect } from 'remix-utils/safe-redirect'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 import { verifySessionStorage } from '#app/utils/verification.server.ts'
 
+import { useEffect, useState } from 'react';
 
 export const handle: SEOHandle = {
 	getSitemapEntries: () => null,
@@ -114,6 +115,9 @@ export default function LoginPage() {
 	const [searchParams] = useSearchParams()
 	const redirectTo = searchParams.get('redirectTo')
 
+	//Dark Mode?
+	const [prefersDarkMode, setPrefersDarkMode] = useState(false);
+
 	const [form, fields] = useForm({
 		id: 'login-form',
 		constraint: getZodConstraint(LoginFormSchema),
@@ -125,11 +129,26 @@ export default function LoginPage() {
 		shouldRevalidate: 'onBlur',
 	})
 
+	
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+		  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		  setPrefersDarkMode(mediaQuery.matches);
+	
+		  const handleChange = (e: MediaQueryListEvent) => {
+			setPrefersDarkMode(e.matches);
+		  };
+	
+		  mediaQuery.addEventListener('change', handleChange);
+		  return () => mediaQuery.removeEventListener('change', handleChange);
+		}
+	}, []);
+
 	return (
 		<div className="flex min-h-full flex-col justify-center pb-32 pt-20">
 			<div className="mx-auto w-full max-w-md">
 				<div className="flex flex-col gap-3 text-center">
-					<h2 className="text-h2">Your empire awaits!</h2>
+					<h2 className={`text-h2 ${prefersDarkMode ? 'text-white' : 'text-black'}`}>Your empire awaits!</h2>
 					<p className="text-body-sm text-muted-foreground">
 						Log in to your account to continue building your monopoly
 					</p>
@@ -141,22 +160,22 @@ export default function LoginPage() {
 						<Form method="POST" {...getFormProps(form)}>
 							<HoneypotInputs />
 							<Field
-								labelProps={{ children: 'Email' }}
+								labelProps={{ children: 'Email', className: `${prefersDarkMode ? 'text-white' : 'text-black'}` }}
 								inputProps={{
 									...getInputProps(fields.username, { type: 'text' }),
 									autoFocus: true,
-									className: 'lowercase',
+									className: `lowercase ${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 									autoComplete: 'username',
 								}}
 								errors={fields.username.errors}
 							/>
-
 							<Field
-								labelProps={{ children: 'Password' }}
+								labelProps={{ children: 'Password', className: `${prefersDarkMode ? 'text-white' : 'text-black'}` }}
 								inputProps={{
 									...getInputProps(fields.password, {
 										type: 'password',
 									}),
+									className: `lowercase ${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 									autoComplete: 'current-password',
 								}}
 								errors={fields.password.errors}
@@ -210,7 +229,7 @@ export default function LoginPage() {
 								</li>
 							))}
 						</ul>
-						<div className="flex items-center justify-center gap-2 pt-6">
+						<div className={`flex items-center justify-center gap-2 pt-6`}>
 							<span className="text-muted-foreground">New here?</span>
 							<Link
 								to={
@@ -218,6 +237,7 @@ export default function LoginPage() {
 										? `/signup?${encodeURIComponent(redirectTo)}`
 										: '/signup'
 								}
+								className={prefersDarkMode ? 'text-white' : 'text-black'}
 							>
 								Create an account
 							</Link>

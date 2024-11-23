@@ -30,6 +30,7 @@ import {
 	UsernameSchema,
 } from '#app/utils/user-validation.ts'
 import { verifySessionStorage } from '#app/utils/verification.server.ts'
+import { useEffect, useState } from 'react';
 
 export const onboardingEmailSessionKey = 'onboardingEmail'
 
@@ -126,6 +127,9 @@ export default function OnboardingRoute() {
 	const [searchParams] = useSearchParams()
 	const redirectTo = searchParams.get('redirectTo')
 
+	//Dark Mode?
+	const [prefersDarkMode, setPrefersDarkMode] = useState(false);
+
 	const [form, fields] = useForm({
 		id: 'onboarding-form',
 		constraint: getZodConstraint(SignupFormSchema),
@@ -137,11 +141,25 @@ export default function OnboardingRoute() {
 		shouldRevalidate: 'onBlur',
 	})
 
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+		  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		  setPrefersDarkMode(mediaQuery.matches);
+	
+		  const handleChange = (e: MediaQueryListEvent) => {
+			setPrefersDarkMode(e.matches);
+		  };
+	
+		  mediaQuery.addEventListener('change', handleChange);
+		  return () => mediaQuery.removeEventListener('change', handleChange);
+		}
+	}, []);
+
 	return (
 		<div className="container flex min-h-full flex-col justify-center pb-32 pt-20">
 			<div className="mx-auto w-full max-w-lg">
 				<div className="flex flex-col gap-3 text-center">
-					<h1 className="text-h1">Welcome aboard {data.email}!</h1>
+					<h1 className={`text-h1 ${prefersDarkMode ? 'text-white' : 'text-black'}`}>Welcome aboard {data.email}!</h1>
 					<p className="text-body-md text-muted-foreground">
 						Please enter your details.
 					</p>
@@ -154,27 +172,29 @@ export default function OnboardingRoute() {
 				>
 					<HoneypotInputs />
 					<Field
-						labelProps={{ htmlFor: fields.username.id, children: 'Username' }}
+						labelProps={{ htmlFor: fields.username.id, children: 'Username', className: `${prefersDarkMode ? 'text-white' : 'text-black'}` }}
 						inputProps={{
 							...getInputProps(fields.username, { type: 'text' }),
 							autoComplete: 'username',
-							className: 'lowercase',
+							className: `lowercase ${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 						}}
 						errors={fields.username.errors}
 					/>
 					<Field
-						labelProps={{ htmlFor: fields.name.id, children: 'Name' }}
+						labelProps={{ htmlFor: fields.name.id, children: 'Name', className: `${prefersDarkMode ? 'text-white' : 'text-black'}` }}
 						inputProps={{
 							...getInputProps(fields.name, { type: 'text' }),
 							autoComplete: 'name',
+							className: `${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 						}}
 						errors={fields.name.errors}
 					/>
 					<Field
-						labelProps={{ htmlFor: fields.password.id, children: 'Password' }}
+						labelProps={{ htmlFor: fields.password.id, children: 'Password', className: `${prefersDarkMode ? 'text-white' : 'text-black'}` }}
 						inputProps={{
 							...getInputProps(fields.password, { type: 'password' }),
 							autoComplete: 'new-password',
+							className: `${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 						}}
 						errors={fields.password.errors}
 					/>
@@ -183,10 +203,12 @@ export default function OnboardingRoute() {
 						labelProps={{
 							htmlFor: fields.confirmPassword.id,
 							children: 'Confirm Password',
+							className: `${prefersDarkMode ? 'text-white' : 'text-black'}`
 						}}
 						inputProps={{
 							...getInputProps(fields.confirmPassword, { type: 'password' }),
 							autoComplete: 'new-password',
+							className: `${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 						}}
 						errors={fields.confirmPassword.errors}
 					/>

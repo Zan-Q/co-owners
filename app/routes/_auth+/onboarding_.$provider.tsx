@@ -38,6 +38,7 @@ import { redirectWithToast } from '#app/utils/toast.server.ts'
 import { NameSchema, UsernameSchema } from '#app/utils/user-validation.ts'
 import { verifySessionStorage } from '#app/utils/verification.server.ts'
 import { onboardingEmailSessionKey } from './onboarding'
+import { useEffect, useState } from 'react';
 
 // @ts-ignore
 import { userAPI } from '../../api/userAPI';
@@ -195,6 +196,9 @@ export default function OnboardingProviderRoute() {
 	const [searchParams] = useSearchParams()
 	const redirectTo = searchParams.get('redirectTo')
 
+	//Dark Mode?
+	const [prefersDarkMode, setPrefersDarkMode] = useState(false);
+
 	const [form, fields] = useForm({
 		id: 'onboarding-provider-form',
 		constraint: getZodConstraint(SignupFormSchema),
@@ -205,12 +209,26 @@ export default function OnboardingProviderRoute() {
 		shouldRevalidate: 'onBlur',
 	})
 
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+		  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		  setPrefersDarkMode(mediaQuery.matches);
+	
+		  const handleChange = (e: MediaQueryListEvent) => {
+			setPrefersDarkMode(e.matches);
+		  };
+	
+		  mediaQuery.addEventListener('change', handleChange);
+		  return () => mediaQuery.removeEventListener('change', handleChange);
+		}
+	}, []);
+
 	return (
 		<div className="container flex min-h-full flex-col justify-center pb-32 pt-20">
 			<div className="mx-auto w-full max-w-lg">
 				<div className="flex flex-col gap-3 text-center">
 					<h1 className="text-h1">Welcome aboard {data.email}!</h1>
-					<p className="text-body-md text-muted-foreground">
+					<p className={`text-body-md text-muted-foreground ${prefersDarkMode ? 'text-white' : 'text-black'}`}>
 						Please enter your details.
 					</p>
 				</div>
@@ -234,19 +252,20 @@ export default function OnboardingProviderRoute() {
 						</div>
 					) : null}
 					<Field
-						labelProps={{ htmlFor: fields.username.id, children: 'Username' }}
+						labelProps={{ htmlFor: fields.username.id, children: 'Username', className: `${prefersDarkMode ? 'text-white' : 'text-black'}` }}
 						inputProps={{
 							...getInputProps(fields.username, { type: 'text' }),
 							autoComplete: 'username',
-							className: 'lowercase',
+							className: `lowercase ${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 						}}
 						errors={fields.username.errors}
 					/>
 					<Field
-						labelProps={{ htmlFor: fields.name.id, children: 'Name' }}
+						labelProps={{ htmlFor: fields.name.id, children: 'Name', className: `${prefersDarkMode ? 'text-white' : 'text-black'}` }}
 						inputProps={{
 							...getInputProps(fields.name, { type: 'text' }),
 							autoComplete: 'name',
+							className: `${prefersDarkMode ? 'bg-white text-black' : 'bg-transparent text-black'}`,
 						}}
 						errors={fields.name.errors}
 					/>
@@ -256,6 +275,7 @@ export default function OnboardingProviderRoute() {
 							htmlFor: fields.agreeToTermsOfServiceAndPrivacyPolicy.id,
 							children:
 								'Do you agree to our Terms of Service and Privacy Policy?',
+							className: `${prefersDarkMode ? 'text-white' : 'text'}`,
 						}}
 						buttonProps={getInputProps(
 							fields.agreeToTermsOfServiceAndPrivacyPolicy,
@@ -267,6 +287,7 @@ export default function OnboardingProviderRoute() {
 						labelProps={{
 							htmlFor: fields.remember.id,
 							children: 'Remember me',
+							className: `${prefersDarkMode ? 'text-white' : 'text-black'}`,
 						}}
 						buttonProps={getInputProps(fields.remember, { type: 'checkbox' })}
 						errors={fields.remember.errors}

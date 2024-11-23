@@ -12,6 +12,7 @@ import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { checkHoneypot } from '#app/utils/honeypot.server.ts'
 import { useIsPending } from '#app/utils/misc.tsx'
 import { validateRequest } from './verify.server.ts'
+import { useEffect, useState } from 'react';
 
 export const handle: SEOHandle = {
 	getSitemapEntries: () => null,
@@ -47,9 +48,26 @@ export default function VerifyRoute() {
 	)
 	const type = parseWithZoddType.success ? parseWithZoddType.data : null
 
+	//Dark Mode?
+	const [prefersDarkMode, setPrefersDarkMode] = useState(false);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+		  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		  setPrefersDarkMode(mediaQuery.matches);
+	
+		  const handleChange = (e: MediaQueryListEvent) => {
+			setPrefersDarkMode(e.matches);
+		  };
+	
+		  mediaQuery.addEventListener('change', handleChange);
+		  return () => mediaQuery.removeEventListener('change', handleChange);
+		}
+	}, []);
+
 	const checkEmail = (
 		<>
-			<h1 className="text-h1">Check your email</h1>
+			<h1 className={`text-h1 ${prefersDarkMode ? 'text-white' : 'text-black'}`}>Check your email</h1>
 			<p className="mt-3 text-body-md text-muted-foreground">
 				We've sent you a code to verify your email address.
 			</p>
@@ -100,11 +118,12 @@ export default function VerifyRoute() {
 				<div className="flex w-full gap-2">
 					<Form method="POST" {...getFormProps(form)} className="flex-1">
 						<HoneypotInputs />
-						<div className="flex items-center justify-center">
+						<div className={`flex items-center justify-center ${prefersDarkMode ? 'text-white' : 'text-black'}`}>
 							<OTPField
 								labelProps={{
 									htmlFor: fields[codeQueryParam].id,
 									children: 'Code',
+									className: `${prefersDarkMode ? 'text-white' : 'text-black'}`,
 								}}
 								inputProps={{
 									...getInputProps(fields[codeQueryParam], { type: 'text' }),
